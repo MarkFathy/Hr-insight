@@ -3,7 +3,7 @@ import 'package:hr_app/src/core/consts/consts.dart';
 
 const fontFamily = 'Cairo';
 const secondaryColor = Color.fromARGB(255, 30, 63, 107);
-const primaryColor = Color(0xFFf5d656);
+const primaryColor = Color(0xFFD4A017); // golden dark yellow - visible on both dark & white backgrounds
 const bg = Color.fromARGB(255, 20, 28, 37);
 final themeData = ThemeData(
 

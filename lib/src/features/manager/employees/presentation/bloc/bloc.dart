@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:hr_app/src/core/usecases/usecase.dart';
 import 'package:hr_app/src/features/manager/employees/domain/entities/employees_entity.dart';
 import 'package:hr_app/src/features/manager/employees/domain/use_cases/delete.dart';

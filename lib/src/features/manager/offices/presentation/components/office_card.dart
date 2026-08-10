@@ -62,16 +62,20 @@ class OfficeCard extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                padding: const EdgeInsets.symmetric(horizontal: 2.0),
                 child: Row(
                   children: [
-                    const Icon(Icons.crisis_alert_outlined),
-                    5.pw,
-                    Text('${office.radius} m'),
+                    const Icon(Icons.crisis_alert_outlined, size: 20),
+                    2.pw,
+                    Flexible(
+                        child: Text('${office.radius} m',
+                            overflow: TextOverflow.ellipsis)),
                     const Spacer(),
-                    const Icon(Icons.person),
-                    5.pw,
-                    Text(office.employeeCount.toString()),
+                    const Icon(Icons.person, size: 20),
+                    2.pw,
+                    Flexible(
+                        child: Text(office.employeeCount.toString(),
+                            overflow: TextOverflow.ellipsis)),
                   ],
                 ),
               ),

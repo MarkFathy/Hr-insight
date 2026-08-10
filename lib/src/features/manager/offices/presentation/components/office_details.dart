@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:hr_app/src/core/shared_widgets/s_back_button.dart';
 import 'package:hr_app/src/core/utils/extentions.dart';
 import 'package:hr_app/src/core/utils/nav.dart';

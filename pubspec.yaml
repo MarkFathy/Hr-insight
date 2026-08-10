@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: 'none'
 
-version: 1.0.7+10
+version: 1.0.0+1
 
 environment:
   sdk: '>=3.1.1 <4.0.0'
@@ -31,19 +31,21 @@ dependencies:
   get_it: ^7.6.4
   gif: ^2.3.0
   google_fonts: ^6.1.0
-  google_maps_flutter: ^2.5.0
+  flutter_map: ^6.1.0
+  latlong2: ^0.9.0
   http: ^1.1.0
   image_picker: ^1.0.4
   internet_connection_checker: ^1.0.0+1
   lottie: ^2.7.0
   mockito: ^5.4.4
-  page_transition: ^2.1.0
+  page_transition: ^2.2.2
   shared_preferences: ^2.2.2
   shimmer: ^3.0.0
   slide_digital_clock: ^1.0.3
   one_clock: ^2.0.1
   permission_handler: ^11.3.1
   dio: ^5.7.0
+  url_launcher: ^6.3.2
 
 
 

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AppConsts {
-  static const baseUrl = 'https://hr.gomltak.com/api/v1';
+  //static const baseUrl = 'https://hr.gomltak.com/api/v1';
+  static const baseUrl = 'https://hr.emenu.club/api/v1';
   static const kVerifyEmail = 'برجاء تاكيد الحساب';
 }
 

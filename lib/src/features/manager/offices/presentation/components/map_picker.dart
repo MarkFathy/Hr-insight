@@ -1,7 +1,7 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:hr_app/src/features/manager/offices/presentation/bloc/bloc.dart';
 
 class MapPicker extends StatefulWidget {
@@ -13,10 +13,9 @@ class MapPicker extends StatefulWidget {
 }
 
 class _MapPickerState extends State<MapPicker> {
-  final Completer<GoogleMapController> _controller =
-      Completer<GoogleMapController>();
-
   LatLng? selectedPlace;
+  final MapController _mapController = MapController();
+
   @override
   void initState() {
     if (widget.oldLoc != null) selectedPlace = widget.oldLoc;
@@ -26,33 +25,44 @@ class _MapPickerState extends State<MapPicker> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: GoogleMap(
-        mapType: MapType.normal,
-        mapToolbarEnabled: true,
-        initialCameraPosition: CameraPosition(
-          target: widget.oldLoc ??
-              const LatLng(30.03433422537047, 31.214909143745903),
-          zoom: 15.0,
-        ),
-        onTap: (point) {
-          // print(point);
-          context.read<OfficesBloc>().location = point;
-          selectedPlace = point;
-          setState(() {});
-        },
-        myLocationButtonEnabled: true,
-        myLocationEnabled: true,
-        markers: {
-          if (selectedPlace != null)
-            Marker(
-              markerId: const MarkerId('selectedPlace'),
-              position: selectedPlace!,
-              icon: BitmapDescriptor.defaultMarker,
-            )
-        },
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
+      child: Stack(
+        children: [
+          FlutterMap(
+            mapController: _mapController,
+            options: MapOptions(
+              initialCenter: widget.oldLoc ??
+                  const LatLng(30.03433422537047, 31.214909143745903),
+              initialZoom: 15.0,
+              onTap: (tapPosition, point) {
+                context.read<OfficesBloc>().location = point;
+                setState(() {
+                  selectedPlace = point;
+                });
+              },
+            ),
+            children: [
+              TileLayer(
+                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                userAgentPackageName: 'fourth_pyramid.hr_insightapp',
+              ),
+              if (selectedPlace != null)
+                MarkerLayer(
+                  markers: [
+                    Marker(
+                      point: selectedPlace!,
+                      width: 80,
+                      height: 80,
+                      child: const Icon(
+                        Icons.location_on,
+                        color: Colors.red,
+                        size: 40,
+                      ),
+                    ),
+                  ],
+                ),
+            ],
+          ),
+        ],
       ),
     );
   }

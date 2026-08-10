@@ -93,14 +93,14 @@ class SignWidget extends StatelessWidget {
                                       },
                                       child: const Text(
                                         "تسجيل",style: TextStyle(
-                                          color: Colors.amberAccent
+                                          color: Color(0xFFD4A017)
                                         ),
                                         )),
                                   TextButton(
                                     onPressed: () => NV.pop(context),
                                     child: const Text("إلغاء",
                                     style: TextStyle(
-                                          color: Colors.amber
+                                          color:Color(0xFFD4A017)
                                         ),
                                     ),
                                   ),

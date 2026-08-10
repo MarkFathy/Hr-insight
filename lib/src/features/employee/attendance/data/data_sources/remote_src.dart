@@ -7,7 +7,7 @@ import 'package:hr_app/src/features/employee/attendance/data/models/attendance_m
 import 'package:hr_app/src/features/employee/attendance/data/models/sign_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:latlong2/latlong.dart';
 
 abstract class AttendanceRemoteDataSrc {
   Future<AttendanceModel> fetchAttendance();

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
 class MapViewScreen extends StatelessWidget {
   final LatLng location;
@@ -9,18 +10,27 @@ class MapViewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GoogleMap(
-        mapType: MapType.normal,
-        initialCameraPosition: CameraPosition(
-          target: location,
-          zoom: 15,
+      body: FlutterMap(
+        options: MapOptions(
+          initialCenter: location,
+          initialZoom: 15,
         ),
-        markers: {
-          Marker(markerId: const MarkerId('office-Loc'), position: location)
-        },
-        onMapCreated: (GoogleMapController controller) {
-          // _controller.complete(controller);
-        },
+        children: [
+          TileLayer(
+            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+            userAgentPackageName: 'fourth_pyramid.hr_insightapp',
+          ),
+          MarkerLayer(
+            markers: [
+              Marker(
+                point: location,
+                width: 80,
+                height: 80,
+                child: const Icon(Icons.location_on, color: Colors.red, size: 40),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

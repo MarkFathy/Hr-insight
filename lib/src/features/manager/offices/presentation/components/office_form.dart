@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:hr_app/src/core/shared_widgets/button_indicator.dart';
 import 'package:hr_app/src/core/shared_widgets/s_button.dart';
 import 'package:hr_app/src/core/shared_widgets/s_text_field.dart';
@@ -79,10 +79,12 @@ class OfficeForm extends StatelessWidget {
                         STextField(
                           lable: 'إسم المكتب',
                           controller: bloc.nameCtrl..text,
+                          textColor: Colors.black,
                         ),
                         STextField(
                             lable: "مساحة التوقيع",
                             controller: bloc.radiusCtrl,
+                            textColor: Colors.black,
                             type: TextInputType.number),
                         state is OfficesLoadingState
                             ? const ButtonIncdicator()

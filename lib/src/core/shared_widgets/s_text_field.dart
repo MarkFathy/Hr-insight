@@ -14,6 +14,7 @@ class STextField extends StatelessWidget {
   final TextInputType? type;
   final String? Function(String? value)? validator;
   final void Function(String? value)? onChange;
+  final Color? textColor;
 
   const STextField(
       {super.key,
@@ -26,6 +27,7 @@ class STextField extends StatelessWidget {
       this.isPassword = false,
       this.enabled = true,
       this.onChange,
+      this.textColor,
       this.type = TextInputType.text,
       required this.lable});
 
@@ -53,8 +55,8 @@ class STextField extends StatelessWidget {
             decoration: InputDecoration(
                 contentPadding: const EdgeInsets.symmetric(horizontal: 15),
                 hintText: lable,
-                hintStyle:  const TextStyle(color: Colors.white),
-                labelStyle: const TextStyle(color: Colors.white),
+                hintStyle:  TextStyle(color: textColor ?? Colors.white),
+                labelStyle: TextStyle(color: textColor ?? Colors.white),
 
                 border: border,
                 suffixIcon: isPassword
@@ -68,7 +70,7 @@ class STextField extends StatelessWidget {
                 enabledBorder: border),
             style: safeGoogleFont('Cairo',
                 fontWeight: FontWeight.w800, fontSize: 12.r,
-              color: Colors.white
+              color: textColor ?? Colors.white
 
             ),
             validator: optional
