@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy & Data Deletion - HR Insight | Fourth Pyramid</title>
+    <meta name="description" content="Official Privacy Policy and Account Deletion Request Portal for HR Insight mobile application developed by Fourth Pyramid.">
+    <meta name="keywords" content="HR Insight, Fourth Pyramid, Privacy Policy, Account Deletion, HR App, Employee Portal">
+    <meta name="author" content="Fourth Pyramid">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="HR Insight - Privacy Policy & Account Deletion">
+    <meta property="og:description" content="Privacy policy, data protection details, and account deletion request instructions for HR Insight app users.">
+    <meta property="og:type" content="website">
+
+    <!-- Google Fonts: Inter & Cairo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: rgba(30, 41, 59, 0.7);
+            --bg-card-hover: rgba(30, 41, 59, 0.9);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --accent-blue: #3b82f6;
+            --accent-blue-hover: #2563eb;
+            --accent-cyan: #06b6d4;
+            --accent-emerald: #10b981;
+            --accent-rose: #f43f5e;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            --shadow-glow: 0 0 25px rgba(59, 130, 246, 0.15);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-family: 'Inter', 'Cairo', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.12), transparent 50%),
+                        radial-gradient(circle at 80% 60%, rgba(6, 182, 212, 0.08), transparent 40%),
+                        var(--bg-primary);
+            background-attachment: fixed;
+        }
+
+        /* Container */
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header / Navbar */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            background: rgba(15, 23, 42, 0.85);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 72px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 800;
+            font-size: 1.25rem;
+            letter-spacing: -0.02em;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-weight: 900;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, var(--accent-rose), #e11d48);
+            color: #ffffff !important;
+            padding: 8px 16px !important;
+            border-radius: var(--radius-sm);
+            font-weight: 600 !important;
+            box-shadow: 0 4px 12px rgba(244, 63, 94, 0.25);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(244, 63, 94, 0.35);
+        }
+
+        /* Hero Banner */
+        .hero {
+            padding: 64px 0 40px 0;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 50px;
+            color: var(--accent-blue);
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .hero-badge span {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-emerald);
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .hero h1 {
+            font-size: 2.75rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #ffffff 30%, var(--text-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 680px;
+            margin: 0 auto 24px auto;
+        }
+
+        .meta-info {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+        }
+
+        /* Navigation Cards / Quick Links */
+        .quick-nav {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 48px;
+        }
+
+        .card-link {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .card-link:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--accent-blue);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .icon-privacy {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--accent-blue);
+        }
+
+        .icon-delete {
+            background: rgba(244, 63, 94, 0.15);
+            color: var(--accent-rose);
+        }
+
+        .icon-contact {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-emerald);
+        }
+
+        .card-link h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .card-link p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Content Sections */
+        .content-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(12px);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 28px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section-header h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        .badge-tag {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .badge-blue { background: rgba(59, 130, 246, 0.2); color: var(--accent-blue); }
+        .badge-rose { background: rgba(244, 63, 94, 0.2); color: var(--accent-rose); }
+
+        .policy-text h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 28px 0 12px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .policy-text h3:first-of-type {
+            margin-top: 0;
+        }
+
+        .policy-text p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            font-size: 1rem;
+        }
+
+        .policy-text ul {
+            margin: 0 0 20px 24px;
+            color: var(--text-secondary);
+        }
+
+        .policy-text li {
+            margin-bottom: 8px;
+        }
+
+        .highlight-box {
+            background: rgba(59, 130, 246, 0.08);
+            border-left: 4px solid var(--accent-blue);
+            padding: 16px 20px;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            margin: 20px 0;
+        }
+
+        .highlight-box p {
+            margin-bottom: 0;
+            color: #dbeafe;
+            font-size: 0.95rem;
+        }
+
+        .warning-box {
+            background: rgba(244, 63, 94, 0.08);
+            border-left: 4px solid var(--accent-rose);
+            padding: 16px 20px;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            margin: 20px 0;
+        }
+
+        .warning-box p {
+            margin-bottom: 0;
+            color: #fecdd3;
+            font-size: 0.95rem;
+        }
+
+        /* Account Deletion Box & Interactive Form */
+        .deletion-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin-top: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .deletion-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero h1 { font-size: 2rem; }
+            .content-section { padding: 24px; }
+            .nav-links { display: none; }
+        }
+
+        .deletion-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .step-card {
+            display: flex;
+            gap: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            padding: 16px;
+            border-radius: var(--radius-md);
+        }
+
+        .step-num {
+            width: 32px;
+            height: 32px;
+            background: var(--accent-blue);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .deletion-form-container {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px 14px;
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--accent-rose), #e11d48);
+            color: #ffffff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 14px rgba(244, 63, 94, 0.3);
+        }
+
+        .btn-submit:hover {
+            background: linear-gradient(135deg, #e11d48, #be123c);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(244, 63, 94, 0.4);
+        }
+
+        .btn-secondary {
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--accent-emerald);
+            color: #ffffff;
+            padding: 12px 24px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+            display: none;
+            z-index: 1000;
+            animation: fadeIn 0.3s forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Footer */
+        footer {
+            margin-top: auto;
+            background: rgba(15, 23, 42, 0.95);
+            border-top: 1px solid var(--border-color);
+            padding: 32px 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        footer a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        footer a:hover {
+            color: var(--accent-blue);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Navigation -->
+    <header>
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">HR</div>
+                    <span>HR Insight</span>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="#privacy" class="active">Privacy Policy</a></li>
+                    <li><a href="#permissions">Permissions</a></li>
+                    <li><a href="#deletion">Delete Account</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="delete-account.html" class="nav-btn">Request Deletion</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-badge">
+                <span></span> Developed by Fourth Pyramid
+            </div>
+            <h1>Privacy Policy & Data Security</h1>
+            <p>Transparency regarding how HR Insight collects, uses, and protects your information, alongside full support for account & data deletion requests.</p>
+            <div class="meta-info">
+                <div><strong>Application:</strong> HR Insight</div>
+                <div><strong>Package:</strong> com.fourth_pyramid.hrapp</div>
+                <div><strong>Last Updated:</strong> August 11, 2026</div>
+            </div>
+        </section>
+
+        <!-- Quick Access Cards -->
+        <section class="quick-nav">
+            <a href="#privacy" class="card-link">
+                <div class="card-icon icon-privacy">🔒</div>
+                <h3>Privacy Policy</h3>
+                <p>Read about our strict privacy commitment, data encryption, and usage rules.</p>
+            </a>
+            <a href="delete-account.html" class="card-link">
+                <div class="card-icon icon-delete">🗑️</div>
+                <h3>Request Account Deletion</h3>
+                <p>Learn how to permanently remove your account data or submit an instant request.</p>
+            </a>
+            <a href="#contact" class="card-link">
+                <div class="card-icon icon-contact">✉️</div>
+                <h3>Support Contact</h3>
+                <p>Reach out directly to Fourth Pyramid developers at fourthpyramid21@gmail.com</p>
+            </a>
+        </section>
+
+        <!-- Section 1: Privacy Policy -->
+        <section id="privacy" class="content-section">
+            <div class="section-header">
+                <h2>Privacy Policy</h2>
+                <span class="badge-tag badge-blue">Official Document</span>
+            </div>
+
+            <div class="policy-text">
+                <h3>1. Introduction</h3>
+                <p>Welcome to <strong>HR Insight</strong>, a mobile human resource management application developed and operated by <strong>Fourth Pyramid</strong> ("we", "our", or "us"). This Privacy Policy describes how we collect, store, process, and protect your personal information when you use the HR Insight application.</p>
+                <p>By registering, logging in, or using HR Insight, you consent to the data practices described in this policy.</p>
+
+                <h3>2. Information We Collect</h3>
+                <p>To provide accurate HR, attendance, and organizational operations, HR Insight collects the following categories of data:</p>
+                <ul>
+                    <li><strong>Personal Identity Information:</strong> Full name, employee identification number, job title, department, email address, and contact phone number provided by your organization or created during registration.</li>
+                    <li><strong>Location Data (Precise & Approximate):</strong> GPS coordinates and network location when checking in or out of work shifts, verifying presence at designated company geofenced offices, or logging location-based attendance.</li>
+                    <li><strong>Camera & Photo Gallery Access:</strong> Images captured or uploaded through your mobile device when setting up a profile picture or uploading supporting documentation for leave requests, expense claims, or HR reports.</li>
+                    <li><strong>Technical & Device Data:</strong> Mobile device model, operating system version, unique device identifiers, IP address, and app usage logs for diagnostic and security audit purposes.</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <p><strong>📍 Important Notice regarding Location Data:</strong> HR Insight accesses your location ONLY when performing attendance clock-in/out or map location picker actions inside designated workplace features. Location data is used strictly for employment attendance verification and is never sold or shared with external advertising networks.</p>
+                </div>
+
+                <h3>3. How We Use Your Data</h3>
+                <p>We process collected data exclusively for valid business and HR purposes, including:</p>
+                <ul>
+                    <li>Verifying employee identity and authenticating secure user sessions.</li>
+                    <li>Processing office arrival/departure times, shift logs, and attendance reports.</li>
+                    <li>Facilitating leave applications, manager approval workflows, and employee directories.</li>
+                    <li>Ensuring system security, preventing unauthorized access, and debugging application errors.</li>
+                </ul>
+
+                <h3>4. Data Sharing & Third-Party Services</h3>
+                <p>We respect your privacy and enforce strict confidentiality boundaries:</p>
+                <ul>
+                    <li><strong>Your Employing Organization:</strong> Your profile, attendance logs, and submitted requests are accessible to authorized HR administrators and managers within your designated employer's organization.</li>
+                    <li><strong>No Commercial Data Selling:</strong> We do NOT sell, rent, or trade your personal information to third parties or advertising networks under any circumstances.</li>
+                    <li><strong>Service Infrastructure:</strong> Data is securely transmitted over HTTPS/TLS encrypted channels to our backend cloud servers.</li>
+                </ul>
+
+                <h3>5. Data Security</h3>
+                <p>Fourth Pyramid employs industry-standard administrative, physical, and technical security safeguards—including encryption in transit (SSL/TLS) and secure token storage—to protect your personal data against unauthorized disclosure, alteration, loss, or access.</p>
+            </div>
+        </section>
+
+        <!-- Section 2: Mobile App Permissions -->
+        <section id="permissions" class="content-section">
+            <div class="section-header">
+                <h2>Mobile App Permissions</h2>
+                <span class="badge-tag badge-blue">App Disclosures</span>
+            </div>
+            <div class="policy-text">
+                <p>HR Insight requests specific permissions on your Android or iOS device to enable core features:</p>
+                <ul>
+                    <li><strong><code>ACCESS_FINE_LOCATION</code> / <code>ACCESS_COARSE_LOCATION</code>:</strong> Used to confirm that you are within designated office bounds when clocking in or out.</li>
+                    <li><strong><code>CAMERA</code>:</strong> Used to take real-time photos for employee profile pictures or document scanning.</li>
+                    <li><strong><code>READ_EXTERNAL_STORAGE</code> / <code>READ_MEDIA_IMAGES</code>:</strong> Used to let you choose existing photos or files from your gallery to attach to HR requests.</li>
+                    <li><strong><code>INTERNET</code>:</strong> Required for secure communication with company HR API services.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Section 3: Account Deletion Request -->
+        <section id="deletion" class="content-section">
+            <div class="section-header">
+                <h2>Account & Data Deletion Request</h2>
+                <span class="badge-tag badge-rose">Google & Apple Compliant</span>
+            </div>
+
+            <div class="policy-text">
+                <p>In compliance with Google Play Store and Apple App Store developer policies, HR Insight provides users with full control over their account data, including the right to request permanent account deletion and data removal.</p>
+
+                <div class="warning-box">
+                    <p><strong>⚠️ Warning:</strong> Requesting account deletion will permanently remove your login credentials, personal profile details, and mobile access tokens. Note that mandatory employment historical records (such as past approved tax or payroll audit logs) may be retained by your employer as mandated by local labor laws.</p>
+                </div>
+
+                <div class="deletion-grid">
+                    <!-- Left Column: Steps -->
+                    <div class="deletion-steps">
+                        <h3>How Deletion Works</h3>
+                        
+                        <div class="step-card">
+                            <div class="step-num">1</div>
+                            <div>
+                                <h4>Submit Request</h4>
+                                <p style="font-size: 0.875rem; margin-bottom: 0;">Fill out the form or email <code>fourthpyramid21@gmail.com</code> with your account details.</p>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-num">2</div>
+                            <div>
+                                <h4>Identity Verification</h4>
+                                <p style="font-size: 0.875rem; margin-bottom: 0;">Our admin team verifies your request with your employer HR department for safety.</p>
+                            </div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-num">3</div>
+                            <div>
+                                <h4>Purge & Confirmation</h4>
+                                <p style="font-size: 0.875rem; margin-bottom: 0;">Your personal account and credentials are deleted within 7 to 30 business days, and confirmation is sent to your email.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Interactive Form -->
+                    <div class="deletion-form-container">
+                        <h3 style="margin-bottom: 16px;">Direct Request Form</h3>
+                        <form id="deletionForm" onsubmit="handleFormSubmit(event)">
+                            <div class="form-group">
+                                <label for="userName">Full Name *</label>
+                                <input type="text" id="userName" required placeholder="John Doe">
+                            </div>
+                            <div class="form-group">
+                                <label for="userEmail">Registered Email *</label>
+                                <input type="email" id="userEmail" required placeholder="employee@company.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="employeeId">Employee ID (Optional)</label>
+                                <input type="text" id="employeeId" placeholder="EMP-1024">
+                            </div>
+                            <div class="form-group">
+                                <label for="reason">Reason for Deletion (Optional)</label>
+                                <textarea id="reason" rows="3" placeholder="No longer working at organization / want to delete personal data"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn-submit">
+                                📩 Send Deletion Email
+                            </button>
+                            <button type="button" class="btn-secondary" onclick="copyRequestTemplate()">
+                                📋 Copy Request Template
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Contact Us -->
+        <section id="contact" class="content-section">
+            <div class="section-header">
+                <h2>Contact Us</h2>
+                <span class="badge-tag badge-blue">Developer Support</span>
+            </div>
+            <div class="policy-text">
+                <p>If you have any questions, concerns, or requests regarding this Privacy Policy or your data security, please contact the developer team at Fourth Pyramid:</p>
+                <div class="highlight-box" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+                    <div>
+                        <strong style="color: #fff; font-size: 1.1rem; display: block;">Fourth Pyramid Developer Support</strong>
+                        <span style="color: var(--text-secondary);">Email: fourthpyramid21@gmail.com</span>
+                    </div>
+                    <a href="mailto:fourthpyramid21@gmail.com?subject=HR%20Insight%20Privacy%20Support" class="nav-btn" style="text-decoration: none;">Email Us Now</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="#privacy">Privacy Policy</a> • 
+                <a href="delete-account.html">Delete Account</a> • 
+                <a href="mailto:fourthpyramid21@gmail.com">fourthpyramid21@gmail.com</a>
+            </div>
+            <p>&copy; 2026 Fourth Pyramid. All Rights Reserved. HR Insight App.</p>
+        </div>
+    </footer>
+
+    <!-- Toast -->
+    <div id="toast" class="toast">Request copied to clipboard!</div>
+
+    <!-- Scripts -->
+    <script>
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('userName').value.trim();
+            const email = document.getElementById('userEmail').value.trim();
+            const empId = document.getElementById('employeeId').value.trim();
+            const reason = document.getElementById('reason').value.trim();
+
+            const subject = encodeURIComponent("Account Deletion Request - HR Insight");
+            const body = encodeURIComponent(
+                `Hello Fourth Pyramid Support Team,\n\n` +
+                `I would like to request the permanent deletion of my account and personal data from the HR Insight application.\n\n` +
+                `Account Details:\n` +
+                `- Full Name: ${name}\n` +
+                `- Registered Email: ${email}\n` +
+                `- Employee ID: ${empId || 'N/A'}\n` +
+                `- Reason for Deletion: ${reason || 'N/A'}\n\n` +
+                `Please process this request and confirm once completed.\n\nThank you,\n${name}`
+            );
+
+            window.location.href = `mailto:fourthpyramid21@gmail.com?subject=${subject}&body=${body}`;
+        }
+
+        function copyRequestTemplate() {
+            const name = document.getElementById('userName').value.trim() || '[Your Name]';
+            const email = document.getElementById('userEmail').value.trim() || '[Your Registered Email]';
+            const empId = document.getElementById('employeeId').value.trim() || '[Your Employee ID]';
+            const reason = document.getElementById('reason').value.trim() || '[Reason for request]';
+
+            const textToCopy = 
+                `Account Deletion Request - HR Insight\n\n` +
+                `To: fourthpyramid21@gmail.com\n\n` +
+                `Hello Fourth Pyramid Support Team,\n\n` +
+                `I would like to request the permanent deletion of my account and personal data from the HR Insight application.\n\n` +
+                `Account Details:\n` +
+                `- Full Name: ${name}\n` +
+                `- Registered Email: ${email}\n` +
+                `- Employee ID: ${empId}\n` +
+                `- Reason: ${reason}\n\n` +
+                `Please process this request and confirm via email.`;
+
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                showToast("Request template copied to clipboard!");
+            }).catch(err => {
+                showToast("Failed to copy. Please select text manually.");
+            });
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
