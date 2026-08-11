@@ -1,16 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account Deletion Request - HR Insight | Fourth Pyramid</title>
     <meta name="description" content="Official Account & Data Deletion Request page for HR Insight mobile application by Fourth Pyramid. Submit your account deletion request.">
-    <meta name="keywords" content="HR Insight, Account Deletion, Fourth Pyramid, Delete Account, Data Removal">
+    <meta name="keywords" content="HR Insight, Account Deletion, Fourth Pyramid, Delete Account, Data Removal, حذف الحساب">
     <meta name="author" content="Fourth Pyramid">
+
+    <!-- Favicon / Logo -->
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
 
     <!-- Open Graph -->
     <meta property="og:title" content="HR Insight - Account Deletion Request">
     <meta property="og:description" content="Submit a request to permanently delete your account and personal data from HR Insight.">
+    <meta property="og:image" content="assets/images/logo.png">
     <meta property="og:type" content="website">
 
     <!-- Google Fonts: Inter & Cairo -->
@@ -23,7 +27,7 @@
             --bg-primary: #0f172a;
             --bg-secondary: #1e293b;
             --bg-card: rgba(30, 41, 59, 0.75);
-            --border-color: rgba(255, 255, 255, 0.1);
+            --border-color: rgba(255, 255, 255, 0.12);
             --accent-blue: #3b82f6;
             --accent-cyan: #06b6d4;
             --accent-emerald: #10b981;
@@ -77,31 +81,33 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 72px;
+            height: 76px;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             text-decoration: none;
             color: var(--text-primary);
             font-weight: 800;
-            font-size: 1.25rem;
+            font-size: 1.3rem;
         }
 
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--accent-rose), #e11d48);
+        .logo-img {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
             border-radius: var(--radius-md);
+            background: #ffffff;
+            padding: 4px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-right {
             display: flex;
             align-items: center;
-            justify-content: center;
-            color: #ffffff;
-            font-weight: 900;
-            font-size: 1.2rem;
-            box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3);
+            gap: 16px;
         }
 
         .nav-link {
@@ -114,9 +120,38 @@
 
         .nav-link:hover { color: var(--text-primary); }
 
+        .lang-switch-btn {
+            background: rgba(244, 63, 94, 0.15);
+            color: var(--accent-rose);
+            border: 1px solid rgba(244, 63, 94, 0.3);
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            font-family: 'Cairo', 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .lang-switch-btn:hover {
+            background: rgba(244, 63, 94, 0.25);
+            transform: translateY(-1px);
+        }
+
         .hero {
             padding: 48px 0 32px 0;
             text-align: center;
+        }
+
+        .hero-logo {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+            margin-bottom: 16px;
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 10px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), 0 0 20px rgba(244, 63, 94, 0.2);
         }
 
         .hero-badge {
@@ -174,12 +209,24 @@
             margin-bottom: 24px;
         }
 
+        html[dir="rtl"] .info-box {
+            border-left: none;
+            border-right: 4px solid var(--accent-blue);
+            border-radius: var(--radius-md) 0 0 var(--radius-md);
+        }
+
         .warning-box {
             background: rgba(244, 63, 94, 0.08);
             border-left: 4px solid var(--accent-rose);
             padding: 16px 20px;
             border-radius: 0 var(--radius-md) var(--radius-md) 0;
             margin-bottom: 24px;
+        }
+
+        html[dir="rtl"] .warning-box {
+            border-left: none;
+            border-right: 4px solid var(--accent-rose);
+            border-radius: var(--radius-md) 0 0 var(--radius-md);
         }
 
         .data-list {
@@ -211,9 +258,7 @@
             gap: 8px;
         }
 
-        .form-group {
-            margin-bottom: 16px;
-        }
+        .form-group { margin-bottom: 16px; }
 
         .form-group label {
             display: block;
@@ -301,6 +346,8 @@
             display: none;
             z-index: 1000;
         }
+
+        html[dir="rtl"] .toast { right: auto; left: 24px; }
     </style>
 </head>
 <body>
@@ -309,37 +356,41 @@
         <div class="container">
             <div class="nav-wrapper">
                 <a href="index.html" class="logo">
-                    <div class="logo-icon">HR</div>
-                    <span>HR Insight</span>
+                    <img src="assets/images/logo.png" alt="HR Insight Logo" class="logo-img">
+                    <span id="navTitle">HR Insight</span>
                 </a>
-                <a href="index.html" class="nav-link">← Back to Privacy Policy</a>
+                <div class="nav-right">
+                    <a href="index.html" class="nav-link" id="navBackLink">← Back to Privacy Policy</a>
+                    <button class="lang-switch-btn" onclick="toggleLang()" id="langBtn">🌐 العربية</button>
+                </div>
             </div>
         </div>
     </header>
 
     <main class="container">
         <section class="hero">
-            <div class="hero-badge">Google Play & Apple Compliant</div>
-            <h1>Account Deletion Request</h1>
-            <p>Request the permanent deletion of your HR Insight account and associated personal data.</p>
+            <img src="assets/images/logo.png" alt="HR Insight Logo" class="hero-logo">
+            <div class="hero-badge" id="heroBadge">Google Play & Apple Compliant</div>
+            <h1 id="heroTitle">Account Deletion Request</h1>
+            <p id="heroSubtitle">Request the permanent deletion of your HR Insight account and associated personal data.</p>
         </section>
 
         <section class="card">
-            <h2 class="section-title">Overview & Policy</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 16px;">
+            <h2 class="section-title" id="secTitleOverview">Overview & Policy</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 16px;" id="secTextOverview">
                 You have the right to request deletion of your account and personal data processed by the <strong>HR Insight</strong> mobile application.
             </p>
 
             <div class="warning-box">
-                <p style="color: #fecdd3;">
+                <p style="color: #fecdd3;" id="warningMsg">
                     <strong>⚠️ Important:</strong> Account deletion is permanent. Once completed, your user profile, mobile tokens, and app authentication access will be removed.
                 </p>
             </div>
 
             <div class="data-list">
                 <div class="data-card">
-                    <h4 style="color: var(--accent-rose);">🗑️ Data Deleted Upon Request</h4>
-                    <ul style="color: var(--text-secondary); font-size: 0.875rem; margin-left: 18px;">
+                    <h4 style="color: var(--accent-rose);" id="titleDeleted">🗑️ Data Deleted Upon Request</h4>
+                    <ul style="color: var(--text-secondary); font-size: 0.875rem; margin-left: 18px;" id="listDeleted">
                         <li>Account credentials & profile photos</li>
                         <li>Mobile device registration & push tokens</li>
                         <li>Personal contact information & phone numbers</li>
@@ -348,47 +399,47 @@
                 </div>
 
                 <div class="data-card">
-                    <h4 style="color: var(--accent-cyan);">📁 Data Retained (Employer Policy)</h4>
-                    <ul style="color: var(--text-secondary); font-size: 0.875rem; margin-left: 18px;">
+                    <h4 style="color: var(--accent-cyan);" id="titleRetained">📁 Data Retained (Employer Policy)</h4>
+                    <ul style="color: var(--text-secondary); font-size: 0.875rem; margin-left: 18px;" id="listRetained">
                         <li>Historical company payroll & tax audit records</li>
                         <li>Approved attendance logs legally required by labor laws</li>
                     </ul>
                 </div>
             </div>
 
-            <h2 class="section-title" style="margin-top: 32px;">Submit Deletion Request</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 20px;">
+            <h2 class="section-title" style="margin-top: 32px;" id="secTitleSubmit">Submit Deletion Request</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;" id="secTextSubmit">
                 Fill out the form below to automatically open your email app addressed to <strong>fourthpyramid21@gmail.com</strong>, or copy the request details.
             </p>
 
             <form id="deleteForm" onsubmit="sendDeletionEmail(event)">
                 <div class="form-group">
-                    <label for="fullName">Full Name *</label>
+                    <label for="fullName" id="lblFullname">Full Name *</label>
                     <input type="text" id="fullName" required placeholder="e.g. John Doe">
                 </div>
                 <div class="form-group">
-                    <label for="emailAddr">Registered Account Email *</label>
+                    <label for="emailAddr" id="lblEmail">Registered Account Email *</label>
                     <input type="email" id="emailAddr" required placeholder="e.g. employee@company.com">
                 </div>
                 <div class="form-group">
-                    <label for="empCode">Employee ID Code (Optional)</label>
+                    <label for="empCode" id="lblCode">Employee ID Code (Optional)</label>
                     <input type="text" id="empCode" placeholder="e.g. EMP-2024">
                 </div>
                 <div class="form-group">
-                    <label for="reasonMsg">Reason for Deletion (Optional)</label>
+                    <label for="reasonMsg" id="lblReason">Reason for Deletion (Optional)</label>
                     <textarea id="reasonMsg" rows="3" placeholder="e.g. Account no longer needed / Left organization"></textarea>
                 </div>
 
-                <button type="submit" class="btn-submit">
+                <button type="submit" class="btn-submit" id="btnSendEmail">
                     📩 Send Email to fourthpyramid21@gmail.com
                 </button>
-                <button type="button" class="btn-copy" onclick="copyTemplate()">
+                <button type="button" class="btn-copy" onclick="copyTemplate()" id="btnCopyText">
                     📋 Copy Text Template to Clipboard
                 </button>
             </form>
 
             <div class="info-box" style="margin-top: 28px; margin-bottom: 0;">
-                <p style="color: #dbeafe; font-size: 0.875rem;">
+                <p style="color: #dbeafe; font-size: 0.875rem;" id="infoProcessing">
                     <strong>⏱ Processing Time:</strong> Deletion requests are processed within 7 to 30 business days after verifying user identity with your employer's HR administrator. Confirmation will be sent to your registered email.
                 </p>
             </div>
@@ -404,6 +455,128 @@
     <div id="toast" class="toast">Text copied to clipboard!</div>
 
     <script>
+        let currentLang = 'en';
+
+        const i18n = {
+            en: {
+                navBackLink: "← Back to Privacy Policy",
+                langBtn: "🌐 العربية",
+                heroBadge: "Google Play & Apple Compliant",
+                heroTitle: "Account Deletion Request",
+                heroSubtitle: "Request the permanent deletion of your HR Insight account and associated personal data.",
+                secTitleOverview: "Overview & Policy",
+                secTextOverview: "You have the right to request deletion of your account and personal data processed by the <strong>HR Insight</strong> mobile application.",
+                warningMsg: "<strong>⚠️ Important:</strong> Account deletion is permanent. Once completed, your user profile, mobile tokens, and app authentication access will be removed.",
+                titleDeleted: "🗑️ Data Deleted Upon Request",
+                listDeleted: `
+                    <li>Account credentials & profile photos</li>
+                    <li>Mobile device registration & push tokens</li>
+                    <li>Personal contact information & phone numbers</li>
+                    <li>Saved app settings & preferences</li>
+                `,
+                titleRetained: "📁 Data Retained (Employer Policy)",
+                listRetained: `
+                    <li>Historical company payroll & tax audit records</li>
+                    <li>Approved attendance logs legally required by labor laws</li>
+                `,
+                secTitleSubmit: "Submit Deletion Request",
+                secTextSubmit: "Fill out the form below to automatically open your email app addressed to <strong>fourthpyramid21@gmail.com</strong>, or copy the request details.",
+                lblFullname: "Full Name *",
+                lblEmail: "Registered Account Email *",
+                lblCode: "Employee ID Code (Optional)",
+                lblReason: "Reason for Deletion (Optional)",
+                phName: "e.g. John Doe",
+                phEmail: "e.g. employee@company.com",
+                phCode: "e.g. EMP-2024",
+                phReason: "e.g. Account no longer needed / Left organization",
+                btnSendEmail: "📩 Send Email to fourthpyramid21@gmail.com",
+                btnCopyText: "📋 Copy Text Template to Clipboard",
+                infoProcessing: "<strong>⏱ Processing Time:</strong> Deletion requests are processed within 7 to 30 business days after verifying user identity with your employer's HR administrator. Confirmation will be sent to your registered email.",
+                toastSuccess: "Template copied to clipboard!"
+            },
+            ar: {
+                navBackLink: "→ العودة لسياسة الخصوصية",
+                langBtn: "🌐 English",
+                heroBadge: "متوافق مع سياسات Google و Apple",
+                heroTitle: "طلب حذف الحساب والبيانات",
+                heroSubtitle: "تقديم طلب للحذف النهائي لحسابك في تطبيق HR Insight والبيانات الشخصية المرتبطة به.",
+                secTitleOverview: "نظرة عامة والسياسة",
+                secTextOverview: "يحق لك طلب حذف حسابك وكافة البيانات الشخصية المعالجة من قبل تطبيق <strong>HR Insight</strong> للموارد البشرية.",
+                warningMsg: "<strong>⚠️ تنبيه هام:</strong> عملية حذف الحساب نهائية. فور إتمامها سيتم إزالة بيانات ملفك الشخصي ورموز الدخول والتصاريح تماماً.",
+                titleDeleted: "🗑️ البيانات التي يتم حذفها عند الطلب",
+                listDeleted: `
+                    <li>بيانات الحساب والصورة الشخصية</li>
+                    <li>بيانات الجهاز المسجل ورموز الإشعارات</li>
+                    <li>معلومات الاتصال الشخصية وأرقام الهواتف</li>
+                    <li>الإعدادات والتفضيلات المحفوظة داخل التطبيق</li>
+                `,
+                titleRetained: "📁 البيانات المحتفظ بها (سياسة جهة العمل)",
+                listRetained: `
+                    <li>السجلات التاريخية لمسيرات الرواتب والضرائب المعتمدة</li>
+                    <li>سجلات الحضور القانونية التي تتطلبها قوانين العمل</li>
+                `,
+                secTitleSubmit: "تقديم طلب الحذف",
+                secTextSubmit: "قم بملء النموذج أدناه لفتح تطبيق البريد الإلكتروني تلقائياً متجهاً إلى <strong>fourthpyramid21@gmail.com</strong>، أو قم بنسخ بيانات الطلب.",
+                lblFullname: "الاسم الكامل *",
+                lblEmail: "البريد الإلكتروني المسجل بالحساب *",
+                lblCode: "الرقم الوظيفي (اختياري)",
+                lblReason: "سبب الحذف (اختياري)",
+                phName: "مثال: أحمد محمد",
+                phEmail: "e.g. employee@company.com",
+                phCode: "مثال: EMP-2024",
+                phReason: "مثال: لم أعد أعمل بالشركة / ترقية في حذف بياناتي",
+                btnSendEmail: "📩 إرسال البريد إلى fourthpyramid21@gmail.com",
+                btnCopyText: "📋 نسخ قالب الطلب إلى الحافظة",
+                infoProcessing: "<strong>⏱ مدة المعالجة:</strong> يتم معالجة طلبات الحذف خلال 7 إلى 30 يوم عمل بعد التحقق من هوية المستخدم مع مسؤول الموارد البشرية بجهة عملك. وسيم إرسال تأكيد إلى بريدك الإلكتروني.",
+                toastSuccess: "تم نسخ القالب إلى الحافظة بنجاح!"
+            }
+        };
+
+        function setLang(lang) {
+            currentLang = lang;
+            const t = i18n[lang];
+            const htmlEl = document.documentElement;
+
+            htmlEl.setAttribute('lang', lang);
+            htmlEl.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+
+            document.getElementById('navBackLink').textContent = t.navBackLink;
+            document.getElementById('langBtn').textContent = t.langBtn;
+            document.getElementById('heroBadge').textContent = t.heroBadge;
+            document.getElementById('heroTitle').textContent = t.heroTitle;
+            document.getElementById('heroSubtitle').textContent = t.heroSubtitle;
+
+            document.getElementById('secTitleOverview').textContent = t.secTitleOverview;
+            document.getElementById('secTextOverview').innerHTML = t.secTextOverview;
+            document.getElementById('warningMsg').innerHTML = t.warningMsg;
+
+            document.getElementById('titleDeleted').textContent = t.titleDeleted;
+            document.getElementById('listDeleted').innerHTML = t.listDeleted;
+            document.getElementById('titleRetained').textContent = t.titleRetained;
+            document.getElementById('listRetained').innerHTML = t.listRetained;
+
+            document.getElementById('secTitleSubmit').textContent = t.secTitleSubmit;
+            document.getElementById('secTextSubmit').innerHTML = t.secTextSubmit;
+
+            document.getElementById('lblFullname').textContent = t.lblFullname;
+            document.getElementById('lblEmail').textContent = t.lblEmail;
+            document.getElementById('lblCode').textContent = t.lblCode;
+            document.getElementById('lblReason').textContent = t.lblReason;
+
+            document.getElementById('fullName').placeholder = t.phName;
+            document.getElementById('emailAddr').placeholder = t.phEmail;
+            document.getElementById('empCode').placeholder = t.phCode;
+            document.getElementById('reasonMsg').placeholder = t.phReason;
+
+            document.getElementById('btnSendEmail').textContent = t.btnSendEmail;
+            document.getElementById('btnCopyText').textContent = t.btnCopyText;
+            document.getElementById('infoProcessing').innerHTML = t.infoProcessing;
+        }
+
+        function toggleLang() {
+            setLang(currentLang === 'en' ? 'ar' : 'en');
+        }
+
         function sendDeletionEmail(e) {
             e.preventDefault();
             const name = document.getElementById('fullName').value.trim();
@@ -411,7 +584,7 @@
             const code = document.getElementById('empCode').value.trim();
             const reason = document.getElementById('reasonMsg').value.trim();
 
-            const subject = encodeURIComponent("Account Deletion Request - HR Insight");
+            const subject = encodeURIComponent(currentLang === 'ar' ? "طلب حذف الحساب - HR Insight" : "Account Deletion Request - HR Insight");
             const body = encodeURIComponent(
                 `Hello Fourth Pyramid Team,\n\n` +
                 `Please delete my account and personal data from the HR Insight application.\n\n` +
@@ -444,7 +617,7 @@
                 `- Reason: ${reason}\n`;
 
             navigator.clipboard.writeText(text).then(() => {
-                showToast("Template copied to clipboard!");
+                showToast(i18n[currentLang].toastSuccess);
             });
         }
 
@@ -454,6 +627,9 @@
             t.style.display = 'block';
             setTimeout(() => { t.style.display = 'none'; }, 3000);
         }
+
+        // Initialize
+        setLang('en');
     </script>
 </body>
 </html>
