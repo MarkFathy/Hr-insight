@@ -175,13 +175,15 @@ class DayWidget extends StatelessWidget {
                               style: theme.textTheme.labelSmall,
                             ),
                             Material(
+                                color: Colors.white,
                                 elevation: 4,
                                 child: Padding(
                                   padding:
                                   const EdgeInsets.symmetric(horizontal: 2.0),
                                   child: Text(
                                     _addHours(dayData!.attendanceTime!, 3),
-                                    style: theme.textTheme.labelLarge,
+                                    style: theme.textTheme.labelLarge!
+                                        .copyWith(color: Colors.black, fontWeight: FontWeight.bold),
                                   ),
                                 )),
                           ],
@@ -198,6 +200,7 @@ class DayWidget extends StatelessWidget {
                             style: theme.textTheme.labelSmall!.copyWith(color:Colors.green),
                           ),
                           Material(
+                              color: Colors.white,
                               borderRadius: const BorderRadius.only(
                                   bottomLeft: Radius.circular(5),
                                   bottomRight: Radius.circular(5)),
@@ -207,7 +210,8 @@ class DayWidget extends StatelessWidget {
                                     horizontal: 2.0),
                                 child: Text(
                                   _addHours(dayData!.departureTime!, 3),
-                                  style: theme.textTheme.labelLarge,
+                                  style: theme.textTheme.labelLarge!
+                                      .copyWith(color: Colors.black, fontWeight: FontWeight.bold),
                                 ),
                               )),
                         ],

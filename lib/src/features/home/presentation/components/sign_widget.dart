@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hr_app/src/core/consts/consts.dart';
 import 'package:hr_app/src/core/shared_widgets/animated_swich.dart';
 import 'package:hr_app/src/core/shared_widgets/snake_bar.dart';
 import 'package:hr_app/src/core/utils/nav.dart';
@@ -200,10 +199,12 @@ class SignWidget extends StatelessWidget {
                     element.date ==
                         intl.DateFormat('yyyy-MM-dd').format(DateTime.now())))
                   Material(
-                    color: MyColors.greyColor,
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(6),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0,
+                        horizontal: 10.0,
+                        vertical: 4.0,
                       ),
                       child: bloc.attendance!.data!
                           .firstWhere((element) =>
@@ -214,9 +215,9 @@ class SignWidget extends StatelessWidget {
                           null
                           ? const Center()
                           : Text(
-                        'الحضور :${bloc.attendance!.data!.firstWhere((element) => element.date == intl.DateFormat('yyyy-MM-dd').format(DateTime.now())).getAdjustedAttendanceTime()}',
+                        'الحضور : ${bloc.attendance!.data!.firstWhere((element) => element.date == intl.DateFormat('yyyy-MM-dd').format(DateTime.now())).getAdjustedAttendanceTime()}',
                         style: theme.textTheme.labelLarge!
-                            .copyWith(color: theme.primaryColor),
+                            .copyWith(color: Colors.black, fontWeight: FontWeight.bold),
                       ),
                     ),
                   )

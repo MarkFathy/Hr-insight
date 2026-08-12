@@ -63,13 +63,15 @@ class ManagerDayWidget extends StatelessWidget {
                               .copyWith(color:Colors.white),
                         ),
                         Material(
+                            color: Colors.white,
                             elevation: 4,
                             child: Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 2.0),
                               child: Text(
                                 _addHours(dayData!.attendanceTime!, 3),
-                                style: theme.textTheme.labelLarge,
+                                style: theme.textTheme.labelLarge!
+                                    .copyWith(color: Colors.black, fontWeight: FontWeight.bold),
                               ),
                             )),
                       ],
@@ -87,6 +89,7 @@ class ManagerDayWidget extends StatelessWidget {
                                   .copyWith(color:Colors.green),
                             ),
                             Material(
+                                color: Colors.white,
                                 borderRadius: const BorderRadius.only(
                                     bottomLeft: Radius.circular(5),
                                     bottomRight: Radius.circular(5)),
@@ -96,7 +99,8 @@ class ManagerDayWidget extends StatelessWidget {
                                       horizontal: 2.0),
                                   child: Text(
                                     _addHours(dayData!.departureTime!, 3),
-                                    style: theme.textTheme.labelLarge,
+                                    style: theme.textTheme.labelLarge!
+                                        .copyWith(color: Colors.black, fontWeight: FontWeight.bold),
                                   ),
                                 )),
                           ],
