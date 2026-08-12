@@ -4,8 +4,8 @@ import 'package:hr_app/src/core/consts/consts.dart';
 const fontFamily = 'Cairo';
 const secondaryColor = Color.fromARGB(255, 30, 63, 107);
 
-/// اللون الرئيسي: amber/gold غامق يظهر بوضوح على الخلفيات الداكنة
-const primaryColor = Color(0xFFC8920A); // deep amber - high contrast on dark surfaces
+/// اللون الرئيسي: أصفر زاهي ومميز للمظاهر الداكنة
+const primaryColor = Color(0xFFFFC107); // Vibrant Yellow
 
 const bg = Color.fromARGB(255, 20, 28, 37);
 

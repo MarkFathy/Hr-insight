@@ -60,7 +60,7 @@ class ManagerDayWidget extends StatelessWidget {
                         Text(
                           'الحضور',
                           style: theme.textTheme.labelSmall!
-                              .copyWith(color:Colors.white),
+                              .copyWith(color: Colors.white),
                         ),
                         Material(
                             color: Colors.white,
@@ -87,7 +87,7 @@ class ManagerDayWidget extends StatelessWidget {
                             Text(
                               'الإنصراف',
                               style: theme.textTheme.labelSmall!
-                                  .copyWith(color:Colors.green),
+                                  .copyWith(color: Colors.green),
                             ),
                             Material(
                                 color: Colors.white,

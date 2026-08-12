@@ -72,21 +72,28 @@ class UserCard extends StatelessWidget {
                         horizontal: 18.0, vertical: 10),
                     child: Row(
                       children: [
-                        Material(
-                          shape: const CircleBorder(),
-                          clipBehavior: Clip.hardEdge,
-                          elevation: 4,
-                          child: CachedNetworkImage(
-                            imageUrl:
-                                state.employeeProfile?.data?.image.toValidImageUrl ??
-                                    '',
-                            width: 60.r,
-                            height: 60.r,
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) =>
-                                const Icon(Icons.person_2_outlined),
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.person_2_outlined),
+                        Container(
+                          width: 65.r,
+                          height: 65.r,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: theme.primaryColor, width: 2),
+                          ),
+                          child: ClipOval(
+                            child: CachedNetworkImage(
+                              imageUrl:
+                                  state.employeeProfile?.data?.image.toValidImageUrl ??
+                                      '',
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => Container(
+                                color: Colors.grey.shade800,
+                                child: const Icon(Icons.person_2_outlined, color: Colors.white),
+                              ),
+                              errorWidget: (context, url, error) => Container(
+                                color: Colors.grey.shade800,
+                                child: const Icon(Icons.person_2_outlined, color: Colors.white),
+                              ),
+                            ),
                           ),
                         ),
                         10.pw,
@@ -117,41 +124,30 @@ class UserCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       if (state is ProfileLoadedState)
-                        Material(
-                            color: theme.colorScheme.secondary,
-                            shape: CircleBorder(
-                                side: BorderSide(color: theme.primaryColor)),
-                            child: Padding(
-                                padding: const EdgeInsets.all(6.0),
-                                child: CachedNetworkImage(
-                                  imageUrl: state
-                                          .managerProfile?.data?.image.toValidImageUrl ??
-                                      '',
-                                  imageBuilder: (context, imageProvider) =>
-                                      Container(
-                                    clipBehavior: Clip.hardEdge,
-                                    height: 60.r,
-                                    width: 60.r,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.grey.shade700,
-                                        border: Border.all(
-                                            color: theme.primaryColor),
-                                        image: DecorationImage(
-                                            image: imageProvider),
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color: Colors.grey.shade700,
-                                              blurRadius: 7,
-                                              spreadRadius: 5,
-                                              blurStyle: BlurStyle.inner)
-                                        ]),
-                                  ),
-                                  placeholder: (context, url) =>
-                                      const Icon(Icons.person_2_outlined),
-                                  errorWidget: (context, url, error) =>
-                                      const Icon(Icons.person_2_outlined),
-                                ))),
+                        Container(
+                          width: 65.r,
+                          height: 65.r,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: theme.primaryColor, width: 2),
+                          ),
+                          child: ClipOval(
+                            child: CachedNetworkImage(
+                              imageUrl: state
+                                      .managerProfile?.data?.image.toValidImageUrl ??
+                                  '',
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => Container(
+                                color: Colors.grey.shade800,
+                                child: const Icon(Icons.person_2_outlined, color: Colors.white),
+                              ),
+                              errorWidget: (context, url, error) => Container(
+                                color: Colors.grey.shade800,
+                                child: const Icon(Icons.person_2_outlined, color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ),
                       if (state is ProfileLoadingState)
                         Shimmer.fromColors(
                           baseColor: Colors.blueGrey.shade500,

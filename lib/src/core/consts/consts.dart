@@ -12,9 +12,10 @@ class MyColors {
   static const Color surfaceColor = Color(0xFF1E2A38);
   static const Color cardColor = Color(0xFF253347);
 
-  // Primary accent - deeper amber/gold (visible on dark backgrounds)
-  static const Color primaryColor = Color(0xFFB8860B); // dark golden rod
-  static const Color primaryLight = Color(0xFFD4A017); // lighter gold for highlights
+  // Primary accents
+  static const Color primaryColor = Color(0xFFFFC107); // Vibrant Yellow for dark backgrounds
+  static const Color primaryLight = Color(0xFFFFD54F); // Light bright yellow
+  static const Color yellowOnWhite = Color(0xFFD97706); // Darker amber/orangeish yellow for white backgrounds
 
   // Secondary
   static const Color secondaryColor = Color(0xFF1E3F6B);
