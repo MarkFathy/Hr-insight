@@ -176,6 +176,7 @@ class DayWidget extends StatelessWidget {
                             ),
                             Material(
                                 color: Colors.white,
+                                borderRadius: BorderRadius.circular(3),
                                 elevation: 4,
                                 child: Padding(
                                   padding:
@@ -183,7 +184,7 @@ class DayWidget extends StatelessWidget {
                                   child: Text(
                                     _addHours(dayData!.attendanceTime!, 3),
                                     style: theme.textTheme.labelLarge!
-                                        .copyWith(color: Colors.black, fontWeight: FontWeight.bold),
+                                        .copyWith(color: Colors.black),
                                   ),
                                 )),
                           ],
@@ -211,7 +212,7 @@ class DayWidget extends StatelessWidget {
                                 child: Text(
                                   _addHours(dayData!.departureTime!, 3),
                                   style: theme.textTheme.labelLarge!
-                                      .copyWith(color: Colors.black, fontWeight: FontWeight.bold),
+                                      .copyWith(color: Colors.black),
                                 ),
                               )),
                         ],
