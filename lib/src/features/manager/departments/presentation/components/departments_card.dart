@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hr_app/src/core/consts/consts.dart';
 import 'package:hr_app/src/core/utils/extentions.dart';
 import 'package:hr_app/src/core/utils/nav.dart';
 import 'package:hr_app/src/features/manager/departments/domain/entities/departments_entity.dart';
@@ -79,6 +80,7 @@ class DepartmentCard extends StatelessWidget {
                           context: context,
                           builder: (ctx) {
                             return AlertDialog.adaptive(
+                              backgroundColor: MyColors.greyColor,
                               content: const Text("سيتم حذف القسم نهائياً"),
                               actions: [
                                 TextButton(

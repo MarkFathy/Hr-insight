@@ -31,16 +31,20 @@ class Form2 extends StatelessWidget {
                 color: Colors.grey.shade200,
                 shape: const CircleBorder(),
                 clipBehavior: Clip.hardEdge,
-                child: Padding(
-                  padding: EdgeInsets.all(12.r),
-                  child: context.read<AuthBloc>().profileImage != null
-                      ? Image.file(context.read<AuthBloc>().profileImage!,
-                          width: 50.r)
-                      : Icon(
+                child: context.read<AuthBloc>().profileImage != null
+                    ? Image.file(
+                        context.read<AuthBloc>().profileImage!,
+                        width: 70.r,
+                        height: 70.r,
+                        fit: BoxFit.cover,
+                      )
+                    : Padding(
+                        padding: EdgeInsets.all(12.r),
+                        child: Icon(
                           Icons.face,
                           size: 50.r,
                         ),
-                ),
+                      ),
               ),
             ),
           );

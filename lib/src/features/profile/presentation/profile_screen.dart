@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/src/core/consts/app_images.dart';
+import 'package:hr_app/src/core/consts/consts.dart';
 import 'package:hr_app/src/core/public_models/token.dart';
 import 'package:hr_app/src/core/utils/nav.dart';
 import 'package:hr_app/src/features/authentication/presentation/bloc/bloc.dart';
@@ -48,6 +49,7 @@ class ProfileScreen extends StatelessWidget {
                     final passwordController = TextEditingController();
 
                     return AlertDialog(
+                      backgroundColor: MyColors.greyColor,
                       title: const Text('تأكيد حذف الحساب'),
                       content: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -112,7 +114,7 @@ class ProfileScreen extends StatelessWidget {
 
     try {
       final response = await dio.delete(
-        'https://hr.gomltak.com/api/v1/employee/deleteAccount',
+        '${AppConsts.baseUrl}/employee/deleteAccount',
         options: Options(
           headers: headers,
           contentType: Headers.formUrlEncodedContentType,

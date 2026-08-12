@@ -7,6 +7,24 @@ extension ImagePath on String {
   String get toGif => 'assets/images/$this.gif';
 }
 
+extension ValidImageUrl on String? {
+  String get toValidImageUrl {
+    if (this == null || this!.trim().isEmpty) return '';
+    String url = this!.trim();
+    if (url.contains('hr.gomltak.com')) {
+      url = url.replaceAll('hr.gomltak.com', 'hr.emenu.club');
+    }
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      if (url.startsWith('/')) {
+        url = 'https://hr.emenu.club$url';
+      } else {
+        url = 'https://hr.emenu.club/$url';
+      }
+    }
+    return url;
+  }
+}
+
 extension Emptypadding on num {
   SizedBox get ph => SizedBox(height: toDouble());
   SizedBox get pw => SizedBox(width: toDouble());

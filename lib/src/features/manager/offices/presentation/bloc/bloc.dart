@@ -72,11 +72,12 @@ class OfficesBloc extends Bloc<OfficesEvent, OfficesState> {
   FutureOr<void> _addOffice(
       AddOfficeEvent event, Emitter<OfficesState> emit) async {
     emit(OfficesLoadingState());
+    final radiusVal = double.tryParse(radiusCtrl.text.trim()) ?? 0.0;
     final failureOrSections = await addOfficeUC.call(OfficeParams(
         name: nameCtrl.text,
         lat: location!.latitude,
         lng: location!.longitude,
-        radius: double.parse(radiusCtrl.text)));
+        radius: radiusVal));
     emit(failureOrSections.fold((failure) {
       return OfficesErrorState(message: failure.message);
     }, (result) {
@@ -88,12 +89,13 @@ class OfficesBloc extends Bloc<OfficesEvent, OfficesState> {
   FutureOr<void> _editOffice(
       EditOfficeEvent event, Emitter<OfficesState> emit) async {
     emit(OfficesLoadingState());
+    final radiusVal = double.tryParse(radiusCtrl.text.trim()) ?? 0.0;
     final failureOrSections = await editOfficeUC.call(OfficeParams(
         id: event.id,
         name: nameCtrl.text,
         lat: location!.latitude,
         lng: location!.longitude,
-        radius: double.parse(radiusCtrl.text)));
+        radius: radiusVal));
     emit(failureOrSections.fold((failure) {
       return OfficesErrorState(message: failure.message);
     }, (result) {

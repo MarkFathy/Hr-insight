@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -54,16 +55,39 @@ class EmployeeDetailsScreen extends StatelessWidget {
                 child: Hero(
                   tag: 'User-Profile',
                   child: Container(
-                      decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          image: DecorationImage(
-                            image: NetworkImage(employee.image.toString()),
-                          ),
-                          borderRadius: BorderRadius.circular(7),
-                          border: Border.all(color: theme.primaryColor)),
-                      child: SizedBox.square(
-                        dimension: 120.r,
-                      )),
+                    width: 120.r,
+                    height: 120.r,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(7),
+                      border: Border.all(color: theme.primaryColor),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(6),
+                      child: employee.image.toValidImageUrl.isNotEmpty
+                          ? CachedNetworkImage(
+                              imageUrl: employee.image.toValidImageUrl,
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => Center(
+                                child: SizedBox(
+                                  width: 24.r,
+                                  height: 24.r,
+                                  child: const CircularProgressIndicator(
+                                      strokeWidth: 2),
+                                ),
+                              ),
+                              errorWidget: (context, url, error) => Icon(
+                                Icons.person,
+                                size: 60.r,
+                                color: theme.primaryColor.withValues(alpha: 0.5),
+                              ),
+                            )
+                          : Icon(
+                              Icons.person,
+                              size: 60.r,
+                              color: theme.primaryColor.withValues(alpha: 0.5),
+                            ),
+                    ),
+                  ),
                 ),
               ),
               Expanded(

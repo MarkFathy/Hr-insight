@@ -83,23 +83,33 @@ class AuthRemoteSourceImpl extends AuthRemoteSource {
       'job_id': params.jobId.toString(),
       'office_id': params.officeId.toString()
     });
-    final image = http.MultipartFile.fromBytes(
-        'image', params.image.readAsBytesSync(),
-        filename: params.image.path);
+    final imagePath = params.image.path;
+    final filename = imagePath.split('/').last.split('\\').last;
+    final image = await http.MultipartFile.fromPath(
+      'image',
+      imagePath,
+      filename: filename,
+    );
     request.files.add(image);
     final response = await request.send();
     debugPrint(response.statusCode.toString());
-    String? body = await response.stream.bytesToString();
+    String body = await response.stream.bytesToString();
+    debugPrint("Employee Register Response: $body");
     if (response.statusCode < 400) {
-      if (jsonDecode(body)['status'] == 0) {
-        throw ServerFailure(jsonDecode(body)['message']);
+      final json = jsonDecode(body);
+      if (json['status'] == 0) {
+        throw ServerFailure(json['message'] ?? 'Registration failed');
       } else {
         return EmployeeEntity.fromJson(body);
       }
-    } else if (response.statusCode >= 400) {
-      throw ServerFailure(jsonDecode(body)['message']);
     } else {
-      throw const ServerFailure("SignUp Exeption!");
+      try {
+        final json = jsonDecode(body);
+        throw ServerFailure(json['message'] ?? 'Server error (${response.statusCode})');
+      } catch (e) {
+        if (e is ServerFailure) rethrow;
+        throw ServerFailure('Server error (${response.statusCode})');
+      }
     }
   }
 
@@ -119,25 +129,33 @@ class AuthRemoteSourceImpl extends AuthRemoteSource {
       'phone': params.phone,
       'company_name': params.companyName,
     });
-    final image = http.MultipartFile.fromBytes(
-        'image', params.image.readAsBytesSync(),
-        filename: params.image.path);
+    final imagePath = params.image.path;
+    final filename = imagePath.split('/').last.split('\\').last;
+    final image = await http.MultipartFile.fromPath(
+      'image',
+      imagePath,
+      filename: filename,
+    );
     request.files.add(image);
     final response = await request.send();
-    String? body = await response.stream.bytesToString();
+    String body = await response.stream.bytesToString();
     debugPrint(response.statusCode.toString());
-    debugPrint(body);
+    debugPrint("Manager Register Response: $body");
     if (response.statusCode < 400) {
-      debugPrint('XXXXXXXXXXXXXXX$body');
-      if (jsonDecode(body)['status'] == 0) {
-        throw ServerFailure(jsonDecode(body)['message']);
+      final json = jsonDecode(body);
+      if (json['status'] == 0) {
+        throw ServerFailure(json['message'] ?? 'Registration failed');
       } else {
-        return ManagerEntity.fromJson(jsonDecode(body));
+        return ManagerEntity.fromJson(json);
       }
-    } else if (response.statusCode >= 400) {
-      throw ServerFailure(jsonDecode(body)['message']);
     } else {
-      throw const ServerFailure("SignUp Exeption!");
+      try {
+        final json = jsonDecode(body);
+        throw ServerFailure(json['message'] ?? 'Server error (${response.statusCode})');
+      } catch (e) {
+        if (e is ServerFailure) rethrow;
+        throw ServerFailure('Server error (${response.statusCode})');
+      }
     }
   }
 

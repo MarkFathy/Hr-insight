@@ -3,6 +3,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hr_app/src/core/consts/consts.dart';
 import 'package:hr_app/src/core/utils/extentions.dart';
 import 'package:hr_app/src/core/utils/nav.dart';
 import 'package:hr_app/src/features/authentication/domain/entities/employee_entity.dart';
@@ -259,6 +260,7 @@ Future<bool?> _showDeleteConfirmationDialog(BuildContext context) {
   return showDialog<bool>(
     context: context,
     builder: (context) => AlertDialog(
+      backgroundColor: MyColors.greyColor,
       title: const Text('تأكيد الحذف'),
       content: const Text('هل أنت متأكد أنك تريد حذف هذا الموظف؟'),
       actions: [

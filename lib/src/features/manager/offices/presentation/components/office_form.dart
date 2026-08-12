@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
@@ -79,13 +80,25 @@ class OfficeForm extends StatelessWidget {
                         STextField(
                           lable: 'إسم المكتب',
                           controller: bloc.nameCtrl..text,
-                          textColor: Colors.black,
                         ),
                         STextField(
-                            lable: "مساحة التوقيع",
-                            controller: bloc.radiusCtrl,
-                            textColor: Colors.black,
-                            type: TextInputType.number),
+                          lable: "مساحة التوقيع (بالأمتار)",
+                          controller: bloc.radiusCtrl,
+                          type: const TextInputType.numberWithOptions(decimal: true),
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
+                          ],
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'يرجى أدخال المساحة';
+                            }
+                            final val = double.tryParse(value.trim());
+                            if (val == null || val <= 0) {
+                              return 'أدخل رقم صحيح أكبر من 0';
+                            }
+                            return null;
+                          },
+                        ),
                         state is OfficesLoadingState
                             ? const ButtonIncdicator()
                             : SButton(

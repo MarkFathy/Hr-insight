@@ -124,22 +124,26 @@ class _ManagerSignUpScreenState extends State<ManagerSignUpScreen> {
                                           child: Material(
                                             color: Colors.grey.shade200,
                                             shape: const CircleBorder(),
-                                            child: Padding(
-                                              padding: EdgeInsets.all(10.r),
-                                              child: context
-                                                          .read<AuthBloc>()
-                                                          .profileImage !=
-                                                      null
-                                                  ? Image.file(
-                                                      context
-                                                          .read<AuthBloc>()
-                                                          .profileImage!,
-                                                      width: 50.r)
-                                                  : Icon(
+                                            clipBehavior: Clip.hardEdge,
+                                            child: context
+                                                        .read<AuthBloc>()
+                                                        .profileImage !=
+                                                    null
+                                                ? Image.file(
+                                                    context
+                                                        .read<AuthBloc>()
+                                                        .profileImage!,
+                                                    width: 70.r,
+                                                    height: 70.r,
+                                                    fit: BoxFit.cover,
+                                                  )
+                                                : Padding(
+                                                    padding: EdgeInsets.all(12.r),
+                                                    child: Icon(
                                                       Icons.face,
                                                       size: 50.r,
                                                     ),
-                                            ),
+                                                  ),
                                           ),
                                         ),
                                       );

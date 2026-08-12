@@ -54,7 +54,9 @@ class Form1 extends StatelessWidget {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 10.0),
                               child: CachedNetworkImage(
-                                imageUrl: bloc.info!.data!.manager.image!,
+                                imageUrl:
+                                    bloc.info?.data?.manager.image.toValidImageUrl ??
+                                        '',
                                 imageBuilder: (context, imageProvider) =>
                                     EntranceFader(
                                   offset: const Offset(-5, -10),

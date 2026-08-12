@@ -77,9 +77,16 @@ class UserCard extends StatelessWidget {
                           clipBehavior: Clip.hardEdge,
                           elevation: 4,
                           child: CachedNetworkImage(
-                            imageUrl: state.employeeProfile!.data!.image!,
+                            imageUrl:
+                                state.employeeProfile?.data?.image.toValidImageUrl ??
+                                    '',
                             width: 60.r,
                             height: 60.r,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) =>
+                                const Icon(Icons.person_2_outlined),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.person_2_outlined),
                           ),
                         ),
                         10.pw,
@@ -117,7 +124,9 @@ class UserCard extends StatelessWidget {
                             child: Padding(
                                 padding: const EdgeInsets.all(6.0),
                                 child: CachedNetworkImage(
-                                  imageUrl: state.managerProfile!.data!.image!,
+                                  imageUrl: state
+                                          .managerProfile?.data?.image.toValidImageUrl ??
+                                      '',
                                   imageBuilder: (context, imageProvider) =>
                                       Container(
                                     clipBehavior: Clip.hardEdge,
@@ -141,7 +150,7 @@ class UserCard extends StatelessWidget {
                                   placeholder: (context, url) =>
                                       const Icon(Icons.person_2_outlined),
                                   errorWidget: (context, url, error) =>
-                                      const Icon(Icons.error),
+                                      const Icon(Icons.person_2_outlined),
                                 ))),
                       if (state is ProfileLoadingState)
                         Shimmer.fromColors(

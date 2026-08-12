@@ -18,7 +18,7 @@ class MapViewScreen extends StatelessWidget {
         children: [
           TileLayer(
             urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-            userAgentPackageName: 'fourth_pyramid.hr_insightapp',
+            userAgentPackageName: 'com.fourth_pyramid.hrapp',
           ),
           MarkerLayer(
             markers: [

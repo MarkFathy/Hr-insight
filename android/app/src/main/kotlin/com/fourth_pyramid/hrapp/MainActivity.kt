@@ -1,4 +1,4 @@
-package fourth_pyramid.hr_insightapp
+package com.fourth_pyramid.hrapp
 
 import io.flutter.embedding.android.FlutterActivity
 

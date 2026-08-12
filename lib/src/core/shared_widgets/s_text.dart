@@ -33,7 +33,7 @@ class SText extends StatelessWidget {
         fontSize: isTitle ? fontSize ?? 32.r : fontSize ?? 16.r,
         fontWeight: FontWeight.w800,
         height: 1.2125.r,
-        color: color ?? (lightBg ? theme.primaryColor : Colors.black),
+        color: color ?? (lightBg ? theme.primaryColor : Colors.white),
         
       ),
     );

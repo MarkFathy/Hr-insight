@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/src/core/utils/google_fonts.dart';
 
@@ -12,6 +13,7 @@ class STextField extends StatelessWidget {
   final bool isMultiLine;
   final bool enabled;
   final TextInputType? type;
+  final List<TextInputFormatter>? inputFormatters;
   final String? Function(String? value)? validator;
   final void Function(String? value)? onChange;
   final Color? textColor;
@@ -29,6 +31,7 @@ class STextField extends StatelessWidget {
       this.onChange,
       this.textColor,
       this.type = TextInputType.text,
+      this.inputFormatters,
       required this.lable});
 
   @override
@@ -43,11 +46,11 @@ class STextField extends StatelessWidget {
       return Padding(
         padding: EdgeInsets.symmetric(vertical: 10.r),
         child: TextFormField(
-
             controller: controller,
             autocorrect: false,
             enabled: enabled,
-            // keyboardType: type,
+            keyboardType: type,
+            inputFormatters: inputFormatters,
             expands: false,
             onChanged: onChange,
             maxLines: isMultiLine ? 3 : 1,
