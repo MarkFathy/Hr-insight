@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/src/core/shared_widgets/animated_swich.dart';
 import 'package:hr_app/src/features/home/presentation/home_screen.dart';
 import 'package:hr_app/src/features/profile/presentation/profile_screen.dart';
-import 'package:upgrader/upgrader.dart';
 
 class NavigationScreen extends StatelessWidget {
   final bool isEmployee;
@@ -14,14 +13,7 @@ class NavigationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     int currentIndx = 0;
     final theme = Theme.of(context);
-    return UpgradeAlert(
-      showIgnore: false,
-      showLater: true,
-      showReleaseNotes: false,
-      upgrader: Upgrader(
-        durationUntilAlertAgain: Duration.zero,
-      ),
-      child: DefaultTabController(
+    return DefaultTabController(
       length: 3,
       child: StatefulBuilder(builder: (context, changeState) {
         return Stack(
@@ -65,7 +57,7 @@ class NavigationScreen extends StatelessWidget {
           ],
         );
       }),
-    ));
+    );
   }
 }
 

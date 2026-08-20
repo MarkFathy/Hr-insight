@@ -18,6 +18,7 @@ class RoutingScreen extends StatelessWidget {
       showReleaseNotes: false,
       upgrader: Upgrader(
         durationUntilAlertAgain: Duration.zero,
+        languageCode: 'ar',
       ),
       child: BlocProvider(
         create: (context) => sl<AuthBloc>()..add(AutoLoginEvent()),
