@@ -6,6 +6,8 @@ import 'package:latlong2/latlong.dart';
 import 'package:hr_app/src/core/theme/core_theme.dart';
 import 'package:hr_app/src/features/manager/offices/presentation/bloc/bloc.dart';
 
+import 'package:location/location.dart' as loc;
+
 class MapPicker extends StatefulWidget {
   final LatLng? oldLoc;
   const MapPicker({super.key, this.oldLoc});
@@ -29,11 +31,15 @@ class _MapPickerState extends State<MapPicker> {
     setState(() => _loadingLocation = true);
 
     try {
-      // 1. تأكد من تفعيل خدمة الموقع
-      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      // 1. طلب تفعيل خدمة الموقع (GPS) عبر نافذة النظام المباشرة
+      final loc.Location locationService = loc.Location();
+      bool serviceEnabled = await locationService.serviceEnabled();
       if (!serviceEnabled) {
-        _showSnack('خدمة الموقع غير مفعّلة');
-        return;
+        serviceEnabled = await locationService.requestService();
+        if (!serviceEnabled) {
+          _showSnack('يرجى تفعيل خدمة الموقع (GPS)');
+          return;
+        }
       }
 
       // 2. تحقق/اطلب الصلاحية
@@ -46,7 +52,8 @@ class _MapPickerState extends State<MapPicker> {
         }
       }
       if (permission == LocationPermission.deniedForever) {
-        _showSnack('الصلاحية مرفوضة نهائياً — افتح الإعدادات لتفعيلها');
+        _showSnack('الصلاحية مرفوضة نهائياً — يرجى تفعيلها من الإعدادات');
+        await Geolocator.openAppSettings();
         return;
       }
 

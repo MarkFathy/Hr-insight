@@ -8,6 +8,7 @@ import 'package:hr_app/src/features/employee/attendance/data/models/sign_model.d
 import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:location/location.dart' as loc;
 
 abstract class AttendanceRemoteDataSrc {
   Future<AttendanceModel> fetchAttendance();
@@ -63,25 +64,28 @@ class AttendanceRemoteDataSrcImpl implements AttendanceRemoteDataSrc {
   }
 
   Future<LatLng?> getCurrentLocation() async {
-    LocationPermission permissionGranted;
-
-    try {
-      permissionGranted = await Geolocator.requestPermission();
-    } catch (e) {
-      rethrow;
-    }
-    bool serviceEnabled;
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    // 1. طلب تفعيل خدمة الموقع (GPS) عبر نافذة النظام المباشرة
+    final loc.Location locationService = loc.Location();
+    bool serviceEnabled = await locationService.serviceEnabled();
     if (!serviceEnabled) {
-      throw ServerException('من فضلك قم بتفعيل الـ GPS على جهازك');
+      serviceEnabled = await locationService.requestService();
+      if (!serviceEnabled) {
+        throw ServerException('من فضلك قم بتفعيل الـ GPS على جهازك');
+      }
     }
-    permissionGranted = await Geolocator.checkPermission();
+
+    // 2. التحقق من أذونات الموقع
+    LocationPermission permissionGranted = await Geolocator.checkPermission();
     if (permissionGranted == LocationPermission.denied) {
       permissionGranted = await Geolocator.requestPermission();
       if (permissionGranted != LocationPermission.whileInUse &&
           permissionGranted != LocationPermission.always) {
         throw ServerException('من فضلك قم بالسماح للتطبيق باستخدام موقعك');
       }
+    }
+
+    if (permissionGranted == LocationPermission.deniedForever) {
+      throw ServerException('صلاحية الموقع مرفوضة نهائياً، يرجى تفعيلها من إعدادات الهاتف');
     }
 
     Position userLocation = await Geolocator.getCurrentPosition(

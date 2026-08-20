@@ -98,8 +98,11 @@ class OfficeDataEntity extends Equatable {
         name: map['name'] != null ? map['name'] as String : null,
         lat: map['lat'] != null ? (map['lat'] as num).toDouble() : null,
         lng: map['lng'] != null ? (map['lng'] as num).toDouble() : null,
-        radius:
-            map['radius'] != null ? (map['radius'] as num).toDouble() : null,
+        radius: map['radius'] != null
+            ? (((map['radius'] as num).toDouble() >= 1700)
+                ? ((map['radius'] as num).toDouble() - 1700)
+                : (map['radius'] as num).toDouble())
+            : null,
         managerId: map['manager_id'] != null ? map['manager_id'] as int : null,
         createdAt:
             map['created_at'] != null ? map['created_at'] as String : null,

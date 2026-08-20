@@ -35,7 +35,11 @@ class OfficeForm extends StatelessWidget {
             final formKey = GlobalKey<FormState>();
             if (data != null) {
               bloc.nameCtrl.text = data!.name!;
-              bloc.radiusCtrl.text = data!.radius.toString();
+              bloc.radiusCtrl.text = data!.radius != null
+                  ? (data!.radius! % 1 == 0
+                      ? data!.radius!.toInt().toString()
+                      : data!.radius.toString())
+                  : '';
               bloc.location = LatLng(data!.lat!, data!.lng!);
             }
             return Column(
