@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hr_app/src/core/consts/consts.dart';
-import 'package:hr_app/src/core/shared_widgets/search_fied.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hr_app/src/core/shared_widgets/s_back_button.dart';
+import 'package:hr_app/src/core/utils/extentions.dart';
+import 'package:hr_app/src/features/authentication/domain/entities/employee_entity.dart';
+import 'package:hr_app/src/features/manager/employees/presentation/components/employee_picker_sheet.dart';
 import 'package:hr_app/src/features/manager/manager_attendance/data/models/attendance_params.dart';
 import 'package:hr_app/src/features/manager/manager_attendance/presenation/bloc/attendance_block.dart';
 import 'package:hr_app/src/features/manager/manager_attendance/presenation/bloc/attendance_event.dart';
@@ -21,7 +24,6 @@ class ManagerAttendanceScreen extends StatelessWidget {
     DateTime signatureMonth = DateTime.now();
     int? selectedId;
     final theme = Theme.of(context);
-    String query = '';
     return BlocProvider(
       create: (context) => sl<ManagerAttendanceBloc>(),
       child: BlocBuilder<ManagerAttendanceBloc, ManagerAttendanceState>(
@@ -29,72 +31,120 @@ class ManagerAttendanceScreen extends StatelessWidget {
         return Scaffold(
             appBar: AppBar(
               title: const Text('حضور الموظفين الشهرى'),
+              leading: const SBackButton(),
               centerTitle: true,
               bottom: PreferredSize(
-                  preferredSize: const Size.fromHeight(50),
+                  preferredSize: Size.fromHeight(56.r),
                   child: BlocProvider(
                     create: (context) =>
                         sl<EmployeesBloc>()..add(const GetEmployeesEvent()),
                     child: BlocBuilder<EmployeesBloc, EmployeesState>(
-                      builder: (context, state) {
-                        return ListTile(
-                          leading: const Icon(Icons.person),
-                          title: Builder(
+                      builder: (context, empState) {
+                        return Padding(
+                          padding: EdgeInsets.fromLTRB(16.r, 0, 16.r, 10.r),
+                          child: Builder(
                             builder: (context) {
-                              if (state is EmployeesLoadingState) {
-                                return DropdownButton(
-                                    hint: Shimmer.fromColors(
-                                        baseColor: Colors.transparent,
-                                        highlightColor: theme.primaryColor,
-                                        child: const Text('الموظفين')),
-                                    isExpanded: true,
-                                    underline: const Center(),
-                                    items: const [],
-                                    onChanged: (val) {});
+                              if (empState is EmployeesLoadingState) {
+                                return Container(
+                                  height: 44.r,
+                                  decoration: BoxDecoration(
+                                    color: theme.colorScheme.secondary.withValues(alpha: 0.5),
+                                    borderRadius: BorderRadius.circular(14.r),
+                                  ),
+                                  child: Center(
+                                    child: Shimmer.fromColors(
+                                      baseColor: Colors.transparent,
+                                      highlightColor: theme.primaryColor,
+                                      child: const Text('جاري تحميل الموظفين...'),
+                                    ),
+                                  ),
+                                );
                               }
-                              if (state is EmployeesLoadedState) {
-                                return Align(
-                                  alignment: Alignment.centerRight,
-                                  child: StatefulBuilder(
-                                      builder: (context, changeState) {
-                                    return DropdownButton(
-                                      dropdownColor: MyColors.greyColor,
-                                        items: [
-
-                                          DropdownMenuItem(
-                                              value: null,
-                                              enabled: false,
-                                              child: SearchField(
-                                                  onChanged: (value) {
-                                                    query = value!;
-
-                                                    changeState(() {});
-                                                  },
-                                                  hint: 'اسم الموظف')),
-                                          ...state.employees.data!
-                                              .where((element) => element.name!
-                                                  .startsWith(query))
-                                              .map((e) => DropdownMenuItem(
-                                                  value: e.id,
-                                                  // alignment: Alignment.center,
-                                                  child: Text(e.name!)))
-                                              .toList()
-                                        ],
-                                        underline: const Center(),
-                                        hint: const Text('اختر الموظف'),
-                                        isExpanded: true,
-                                        value: selectedId,
-                                        onChanged: (value) {
-                                          selectedId = value;
-                                          context
-                                              .read<ManagerAttendanceBloc>()
-                                              .add(LoadManagerAttendanceEvent(
-                                                  ManagerAttendanceParams(
-                                                      date: signatureMonth,
-                                                      employeeId: selectedId
-                                                          .toString())));
-                                        });
-                                  }),
+                              if (empState is EmployeesLoadedState) {
+                                final employeesList = empState.employees.data ?? [];
+                                final selectedEmp = selectedId != null
+                                    ? employeesList.firstWhere(
+                                        (e) => e.id == selectedId,
+                                        orElse: () => const EmployeeDataEntity(),
+                                      )
+                                    : null;
+                                return StatefulBuilder(
+                                  builder: (context, changeState) {
+                                    return InkWell(
+                                      onTap: () {
+                                        EmployeePickerSheet.show(
+                                          context: context,
+                                          employees: employeesList,
+                                          selectedId: selectedId,
+                                          showAllOption: false,
+                                          onSelected: (emp) {
+                                            if (emp != null) {
+                                              changeState(() {
+                                                selectedId = emp.id;
+                                              });
+                                              context
+                                                  .read<ManagerAttendanceBloc>()
+                                                  .add(LoadManagerAttendanceEvent(
+                                                      ManagerAttendanceParams(
+                                                          date: signatureMonth,
+                                                          employeeId: selectedId
+                                                              .toString())));
+                                            }
+                                          },
+                                        );
+                                      },
+                                      borderRadius: BorderRadius.circular(14.r),
+                                      child: Container(
+                                        height: 46.r,
+                                        padding: EdgeInsets.symmetric(horizontal: 14.r),
+                                        decoration: BoxDecoration(
+                                          color: theme.colorScheme.secondary,
+                                          borderRadius: BorderRadius.circular(14.r),
+                                          border: Border.all(
+                                            color: selectedId != null
+                                                ? theme.primaryColor
+                                                : theme.primaryColor.withValues(alpha: 0.25),
+                                            width: 1.5,
+                                          ),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.person_rounded,
+                                              color: theme.primaryColor,
+                                              size: 20.r,
+                                            ),
+                                            10.pw,
+                                            Expanded(
+                                              child: Text(
+                                                selectedEmp?.name ?? 'اختر الموظف لعرض الحضور',
+                                                style: TextStyle(
+                                                  color: selectedId != null
+                                                      ? theme.primaryColor
+                                                      : Colors.white.withValues(alpha: 0.8),
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 13.r,
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.all(4.r),
+                                              decoration: BoxDecoration(
+                                                color: theme.primaryColor.withValues(alpha: 0.12),
+                                                shape: BoxShape.circle,
+                                              ),
+                                              child: Icon(
+                                                Icons.keyboard_arrow_down_rounded,
+                                                color: theme.primaryColor,
+                                                size: 18.r,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 );
                               }
                               return const SizedBox();

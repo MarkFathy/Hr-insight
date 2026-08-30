@@ -79,10 +79,29 @@ final themeData = ThemeData(
   primaryColor: primaryColor,
   fontFamily: fontFamily,
 
+  // ========== Text Selection & Context Menu ==========
+  textSelectionTheme: TextSelectionThemeData(
+    cursorColor: primaryColor,
+    selectionColor: primaryColor.withValues(alpha: 0.35),
+    selectionHandleColor: primaryColor,
+  ),
+
+  popupMenuTheme: PopupMenuThemeData(
+    color: const Color(0xFF1E293B),
+    textStyle: const TextStyle(color: Colors.white, fontFamily: fontFamily),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+  ),
+
   colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.amber).copyWith(
     secondary: secondaryColor,
     brightness: Brightness.dark,
-    surface: MyColors.greyColor,
+    surface: const Color(0xFF1E293B), // أزرق كربوني فخم (Slate 800) مريح للعين وقوائم الـ ContextMenu
+    surfaceContainer: const Color(0xFF1E293B),
+    surfaceContainerHigh: const Color(0xFF334155), // Slate 700
+    onSurface: Colors.white, // لون النصوص على الـ Surface والقوائم (أبيض)
+    onSurfaceVariant: Colors.white,
+    onSecondary: Colors.white,
+    onPrimary: Colors.black,
   ),
 );
 

@@ -97,13 +97,36 @@ class Form1 extends StatelessWidget {
                           ),
                           if (bloc.info == null)
                             Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: ElevatedButton(
-                                  onPressed: () => context
-                                      .read<AuthBloc>()
-                                      .add(GetDepartmentsEvent()),
-                                  child: const Icon(Icons.done)),
+                              padding: EdgeInsets.symmetric(horizontal: 8.r),
+                              child: (bloc.state is AuthLoadingState)
+                                  ? SizedBox(
+                                      width: 28.r,
+                                      height: 28.r,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2.5,
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                    )
+                                  : ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Theme.of(context).primaryColor,
+                                        foregroundColor: Colors.black,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(12.r),
+                                        ),
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 16.r,
+                                          vertical: 12.r,
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        if (bloc.managerPin.text.trim().isEmpty) return;
+                                        context
+                                            .read<AuthBloc>()
+                                            .add(GetDepartmentsEvent());
+                                      },
+                                      child: const Icon(Icons.done_rounded),
+                                    ),
                             )
                         ],
                       ),
@@ -115,7 +138,7 @@ class Form1 extends StatelessWidget {
                 DropdownButtonFormField<int>(
                   dropdownColor: MyColors.greyColor,
                   hint: const Text('اختر القسم'),
-                  value: bloc.departId,
+                  initialValue: bloc.departId,
                   items: bloc.info!.data!.departments
                       .map((e) => DropdownMenuItem<int>(
                             value: e.id,
@@ -129,12 +152,12 @@ class Form1 extends StatelessWidget {
                     });
                   },
                 ),
-                15.ph,
-                if (bloc.departId != null)
-                  DropdownButtonFormField(
+                if (bloc.departId != null) ...[
+                  15.ph,
+                  DropdownButtonFormField<int>(
                     dropdownColor: MyColors.greyColor,
                     hint: const Text('اختر المسمى الوظيفى'),
-                    value: bloc.jobId,
+                    initialValue: bloc.jobId,
                     items: bloc.info!.data!.departments
                         .firstWhere((element) => element.id == bloc.departId)
                         .jobs!
@@ -149,11 +172,13 @@ class Form1 extends StatelessWidget {
                       });
                     },
                   ),
-                if (bloc.info!.data!.offices.isNotEmpty)
-                  DropdownButtonFormField(
+                ],
+                if (bloc.info!.data!.offices.isNotEmpty) ...[
+                  15.ph,
+                  DropdownButtonFormField<int>(
                     dropdownColor: MyColors.greyColor,
                     hint: const Text('اختر المكتب'),
-                    value: bloc.officeId,
+                    initialValue: bloc.officeId,
                     items: bloc.info!.data!.offices
                         .map((e) => DropdownMenuItem<int>(
                               value: e.id,
@@ -166,6 +191,7 @@ class Form1 extends StatelessWidget {
                       });
                     },
                   ),
+                ],
               ]
             ]);
       }),

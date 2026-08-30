@@ -83,7 +83,7 @@ class DepartmentDataEntity extends Equatable {
       'updated_at': updatedAt,
       'jobs_count': jobsCount,
       'number_of_employees': numberOfEmployees,
-      'jobs': jobs != null ? jobs!.map((x) => x.toMap()).toList() : null,
+      'jobs': jobs?.map((x) => x.toMap()).toList(),
     };
   }
 

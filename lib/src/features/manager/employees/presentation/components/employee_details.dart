@@ -16,123 +16,144 @@ class EmployeeDetailsScreen extends StatelessWidget {
   final EmployeeDataEntity employee;
   final Function() rebuild;
 
-  const EmployeeDetailsScreen(
-      {super.key, required this.rebuild, required this.employee});
+  const EmployeeDetailsScreen({
+    super.key,
+    required this.rebuild,
+    required this.employee,
+  });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final validImageUrl = employee.image.toValidImageUrl;
+
     return Scaffold(
       appBar: AppBar(
         leading: const SBackButton(),
-        title: Text(employee.name!),
+        title: Text(employee.name ?? 'تفاصيل الموظف'),
         centerTitle: true,
         actions: [
           TextButton(
-              onPressed: () async {
-                await showDialog(
-                  context: context,
-                  builder: (ctx) => SetEmployeeDialog(
-                    rebuild: () {
-                      rebuild();
-                      NV.pop(context);
-                    },
-                    employee: employee,
-                  ),
-                );
-              },
-              child: const Text('تعديل'))
+            onPressed: () async {
+              await showDialog(
+                context: context,
+                builder: (ctx) => SetEmployeeDialog(
+                  rebuild: () {
+                    rebuild();
+                    NV.pop(context);
+                  },
+                  employee: employee,
+                ),
+              );
+            },
+            child: Text(
+              'تعديل',
+              style: TextStyle(
+                color: theme.primaryColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
         ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           5.ph,
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Hero(
-                  tag: 'User-Profile',
+          // Top Header: Photo + Main Work Info
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Hero(
+                  tag: 'User-Profile-${employee.id}',
                   child: Container(
-                    width: 120.r,
-                    height: 120.r,
+                    width: 110.r,
+                    height: 110.r,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(7),
-                      border: Border.all(color: theme.primaryColor),
+                      color: theme.colorScheme.secondary,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: theme.primaryColor,
+                        width: 1.5,
+                      ),
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(6),
-                      child: employee.image.toValidImageUrl.isNotEmpty
+                      borderRadius: BorderRadius.circular(9),
+                      child: validImageUrl.isNotEmpty
                           ? CachedNetworkImage(
-                              imageUrl: employee.image.toValidImageUrl,
+                              imageUrl: validImageUrl,
                               fit: BoxFit.cover,
                               placeholder: (context, url) => Center(
                                 child: SizedBox(
-                                  width: 24.r,
-                                  height: 24.r,
-                                  child: const CircularProgressIndicator(
-                                      strokeWidth: 2),
+                                  width: 22.r,
+                                  height: 22.r,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: theme.primaryColor,
+                                  ),
                                 ),
                               ),
                               errorWidget: (context, url, error) => Icon(
                                 Icons.person,
-                                size: 60.r,
+                                size: 55.r,
                                 color: theme.primaryColor.withValues(alpha: 0.5),
                               ),
                             )
                           : Icon(
                               Icons.person,
-                              size: 60.r,
+                              size: 55.r,
                               color: theme.primaryColor.withValues(alpha: 0.5),
                             ),
                     ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    InfoCard(
-                      title: 'المكتب',
-                      value: employee.office == null
-                          ? 'لم يتم تعيين مكتب'
-                          : employee.office!.name!,
-                    ),
-                    InfoCard(
+                10.pw,
+                Expanded(
+                  child: Column(
+                    children: [
+                      InfoCard(
+                        title: 'المكتب',
+                        value: employee.office == null
+                            ? 'لم يتم تعيين مكتب'
+                            : employee.office!.name,
+                      ),
+                      InfoCard(
                         title: 'القسم',
                         value: employee.department == null
                             ? 'لم يتم تعيين قسم'
-                            : employee.department!.name!),
-                    InfoCard(
+                            : employee.department!.name,
+                      ),
+                      InfoCard(
                         title: 'المسمى الوظيفى',
                         value: employee.job == null
                             ? 'لم يتم تعيين وظيفة'
-                            : employee.job!.title!),
-                  ],
+                            : employee.job!.title,
+                      ),
+                    ],
+                  ),
                 ),
-              )
-            ],
+              ],
+            ),
           ),
           5.ph,
-          // const Divider(),
+          // Contact & General Info Rows
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              // spacing: 20,
               children: [
                 InfoCard(title: 'البريد', value: employee.email),
                 InfoCard(title: 'الهاتف', value: employee.phone),
+                InfoCard(title: 'العنوان', value: employee.address),
                 InfoCard(
-                  title: 'العنوان',
-                  value: employee.address,
+                  title: 'تاريخ الإنضمام',
+                  value: employee.createdAt != null
+                      ? DateFormat.yMMMMd('ar').format(DateTime.parse(employee.createdAt!))
+                      : 'غير محدد',
                 ),
-                InfoCard(
-                    title: 'تاريخ الإنضمام',
-                    value: DateFormat.yMMMMd('ar')
-                        .format(DateTime.parse(employee.createdAt!))),
                 10.ph,
+                // Attendance section
                 Expanded(
                   child: BlocProvider(
                     create: (context) => sl<ManagerAttendanceBloc>(),
@@ -140,7 +161,7 @@ class EmployeeDetailsScreen extends StatelessWidget {
                       employeeId: employee.id,
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -159,24 +180,33 @@ class InfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      padding: const EdgeInsets.symmetric(vertical: 3.0, horizontal: 8.0),
       child: Material(
         color: theme.colorScheme.secondary,
+        borderRadius: BorderRadius.circular(8),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 5.0),
+          padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 title,
-                style: theme.textTheme.labelLarge!
-                    .copyWith(color: theme.primaryColor),
+                style: theme.textTheme.labelLarge!.copyWith(
+                  color: theme.primaryColor,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              // 20.pw,
-              Text(
-                value ?? 'فارغ',
-                style: theme.textTheme.labelLarge!.copyWith(color: Colors.white),
-              )
+              10.pw,
+              Flexible(
+                child: Text(
+                  value != null && value!.isNotEmpty ? value! : 'فارغ',
+                  style: theme.textTheme.labelMedium!.copyWith(
+                    color: Colors.white,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.end,
+                ),
+              ),
             ],
           ),
         ),

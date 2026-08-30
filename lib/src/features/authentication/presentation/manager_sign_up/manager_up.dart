@@ -12,11 +12,11 @@ import 'package:hr_app/src/core/shared_widgets/s_text_field.dart';
 import 'package:hr_app/src/core/shared_widgets/snake_bar.dart';
 import 'package:hr_app/src/core/utils/extentions.dart';
 import 'package:hr_app/src/core/utils/nav.dart';
+import 'package:hr_app/src/core/utils/image_picker_helper.dart';
 import 'package:hr_app/src/features/authentication/domain/entities/verify_params.dart';
 import 'package:hr_app/src/features/authentication/presentation/bloc/bloc.dart';
 import 'package:hr_app/src/features/authentication/presentation/sign_in/sign_in.dart';
 import 'package:hr_app/src/injector.dart';
-import 'package:image_picker/image_picker.dart';
 
 class ManagerSignUpScreen extends StatefulWidget {
   static const routeName = '/manager-signup';
@@ -37,10 +37,8 @@ class _ManagerSignUpScreenState extends State<ManagerSignUpScreen> {
     super.didChangeDependencies();
   }
 
-  Future<File> pickImage() async {
-    return File(await ImagePicker()
-        .pickImage(source: ImageSource.gallery)
-        .then((value) => value!.path));
+  Future<File?> pickImage() async {
+    return ImagePickerHelper.pickAndCropImage(context: context);
   }
 
   @override
@@ -111,39 +109,84 @@ class _ManagerSignUpScreenState extends State<ManagerSignUpScreen> {
                                   children: [
                                     StatefulBuilder(
                                         builder: (context, changeState) {
+                                      final profileImg = bloc.profileImage;
                                       return Padding(
-                                        padding: EdgeInsets.all(10.r),
-                                        child: InkWell(
+                                        padding: EdgeInsets.symmetric(vertical: 8.r),
+                                        child: GestureDetector(
                                           onTap: () async {
-                                            context
-                                                    .read<AuthBloc>()
-                                                    .profileImage =
-                                                await pickImage();
-                                            changeState(() {});
+                                            final image = await pickImage();
+                                            if (image != null) {
+                                              bloc.profileImage = image;
+                                              changeState(() {});
+                                            }
                                           },
-                                          child: Material(
-                                            color: Colors.grey.shade200,
-                                            shape: const CircleBorder(),
-                                            clipBehavior: Clip.hardEdge,
-                                            child: context
-                                                        .read<AuthBloc>()
-                                                        .profileImage !=
-                                                    null
-                                                ? Image.file(
-                                                    context
-                                                        .read<AuthBloc>()
-                                                        .profileImage!,
-                                                    width: 70.r,
-                                                    height: 70.r,
-                                                    fit: BoxFit.cover,
-                                                  )
-                                                : Padding(
-                                                    padding: EdgeInsets.all(12.r),
-                                                    child: Icon(
-                                                      Icons.face,
-                                                      size: 50.r,
-                                                    ),
+                                          child: Stack(
+                                            clipBehavior: Clip.none,
+                                            children: [
+                                              Container(
+                                                width: 105.r,
+                                                height: 105.r,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: theme.primaryColor.withValues(alpha: 0.06),
+                                                  border: Border.all(
+                                                    color: theme.primaryColor.withValues(alpha: 0.85),
+                                                    width: 2.5.r,
                                                   ),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: theme.primaryColor.withValues(alpha: 0.15),
+                                                      blurRadius: 16,
+                                                      offset: const Offset(0, 6),
+                                                      spreadRadius: 1,
+                                                    ),
+                                                  ],
+                                                ),
+                                                child: ClipOval(
+                                                  child: profileImg != null
+                                                      ? Image.file(
+                                                          profileImg,
+                                                          width: 105.r,
+                                                          height: 105.r,
+                                                          fit: BoxFit.cover,
+                                                        )
+                                                      : Center(
+                                                          child: Icon(
+                                                            Icons.person_outline_rounded,
+                                                            size: 55.r,
+                                                            color: theme.primaryColor.withValues(alpha: 0.6),
+                                                          ),
+                                                        ),
+                                                ),
+                                              ),
+                                              Positioned(
+                                                bottom: 2.r,
+                                                right: 2.r,
+                                                child: Container(
+                                                  padding: EdgeInsets.all(7.r),
+                                                  decoration: BoxDecoration(
+                                                    color: theme.primaryColor,
+                                                    shape: BoxShape.circle,
+                                                    border: Border.all(
+                                                      color: Colors.white,
+                                                      width: 2.5.r,
+                                                    ),
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: Colors.black.withValues(alpha: 0.15),
+                                                        blurRadius: 6,
+                                                        offset: const Offset(0, 2),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.camera_alt_rounded,
+                                                    size: 16.r,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       );
@@ -190,7 +233,7 @@ class _ManagerSignUpScreenState extends State<ManagerSignUpScreen> {
                                           return;
                                         }
                                         if (bloc.profileImage == null) {
-                                          showBar('اضف صوؤة شخصية', context);
+                                          showBar('اضف صورة شخصية', context);
                                           return;
                                         }
                                         bloc.add(ManagerSignUpEvent());
@@ -200,16 +243,17 @@ class _ManagerSignUpScreenState extends State<ManagerSignUpScreen> {
                                 children: [
                                   SText(
                                     'لديك حساب بالفعل؟ ',
-                                    fontSize: 11.r,
+                                    color: Colors.white,
+                                    fontSize: 12.r,
                                   ),
                                   InkWell(
                                     onTap: () => NV.nextScreenReplaceNamed(
                                         context, SignInScreen.routeName,
                                         args: false),
                                     child: SText(
-                                      'تسجيل دخول',
+                                      'تسجيل الدخول',
                                       color: theme.primaryColor,
-                                      fontSize: 11.r,
+                                      fontSize: 12.r,
                                     ),
                                   )
                                 ],

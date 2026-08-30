@@ -55,9 +55,16 @@ class _ManagerMonthlySignaturesCalendarState
         return MonthView(
           controller: EventController(),
           headerStyle: HeaderStyle(
-              decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.secondary,
-          )),
+            leftIconConfig: IconDataConfig(
+              color: Theme.of(context).primaryColor,
+            ),
+            rightIconConfig: IconDataConfig(
+              color: Theme.of(context).primaryColor,
+            ),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+          ),
           weekDayBuilder: (day) {
             return Material(
                 color: MyColors.greyColor,
@@ -144,6 +151,7 @@ class HeaderCard extends StatefulWidget {
 class _HeaderCardState extends State<HeaderCard> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -153,18 +161,24 @@ class _HeaderCardState extends State<HeaderCard> {
               widget.turnPage(false);
               setState(() {});
             },
-            child: const Icon(Icons.arrow_back_ios),
+            child: Icon(
+              Icons.arrow_back_ios,
+              color: theme.primaryColor,
+            ),
           ),
           Text(
             DateFormat('MM-yyyy').format(widget.date).toString(),
-            style: Theme.of(context).textTheme.titleMedium,
+            style: theme.textTheme.titleMedium,
           ),
           InkWell(
             onTap: () {
               widget.turnPage(true);
               setState(() {});
             },
-            child: const Icon(Icons.arrow_forward_ios),
+            child: Icon(
+              Icons.arrow_forward_ios,
+              color: theme.primaryColor,
+            ),
           ),
         ]),
       ),

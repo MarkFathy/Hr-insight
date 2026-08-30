@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hr_app/src/core/shared_widgets/s_back_button.dart';
 import 'package:hr_app/src/core/utils/extentions.dart';
 import 'package:hr_app/src/features/employee/leaves/presentation/bloc/bloc.dart';
 import 'package:hr_app/src/features/employee/leaves/presentation/components/card_indicator.dart';
@@ -20,6 +21,7 @@ class LeavesScreen extends StatelessWidget {
           return Scaffold(
               appBar: AppBar(
                 title: const Text('طلبات الإجازات'),
+                leading: const SBackButton(),
                 centerTitle: true,
               ),
               body: SingleChildScrollView(

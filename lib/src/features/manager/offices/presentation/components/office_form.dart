@@ -6,6 +6,7 @@ import 'package:hr_app/src/core/shared_widgets/button_indicator.dart';
 import 'package:hr_app/src/core/shared_widgets/s_button.dart';
 import 'package:hr_app/src/core/shared_widgets/s_text_field.dart';
 import 'package:hr_app/src/core/shared_widgets/snake_bar.dart';
+import 'package:hr_app/src/core/utils/extentions.dart';
 import 'package:hr_app/src/core/utils/nav.dart';
 import 'package:hr_app/src/features/manager/offices/domain/entities/offices_entity.dart';
 import 'package:hr_app/src/features/manager/offices/presentation/bloc/bloc.dart';
@@ -35,11 +36,7 @@ class OfficeForm extends StatelessWidget {
             final formKey = GlobalKey<FormState>();
             if (data != null) {
               bloc.nameCtrl.text = data!.name!;
-              bloc.radiusCtrl.text = data!.radius != null
-                  ? (data!.radius! % 1 == 0
-                      ? data!.radius!.toInt().toString()
-                      : data!.radius.toString())
-                  : '';
+              bloc.radiusCtrl.text = data!.radius.formatRadius;
               bloc.location = LatLng(data!.lat!, data!.lng!);
             }
             return Column(

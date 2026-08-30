@@ -30,6 +30,22 @@ extension Emptypadding on num {
   SizedBox get pw => SizedBox(width: toDouble());
 }
 
+extension FormattedRadius on num? {
+  String get formatRadius {
+    if (this == null) return '';
+    final d = this!.toDouble();
+    final fixed = double.parse(d.toStringAsFixed(2));
+    if (fixed % 1 == 0) {
+      return fixed.toInt().toString();
+    }
+    String str = fixed.toStringAsFixed(2);
+    if (str.contains('.')) {
+      str = str.replaceAll(RegExp(r'0+$'), '').replaceAll(RegExp(r'\.$'), '');
+    }
+    return str;
+  }
+}
+
 extension ThemeShortCuts on BuildContext {
   TextTheme get textTheme => Theme.of(this).textTheme;
   // ElevatedButtonThemeData get elevatedButtonTheme =>

@@ -2,6 +2,7 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hr_app/src/core/consts/consts.dart';
+import 'package:hr_app/src/core/shared_widgets/s_back_button.dart';
 import 'package:hr_app/src/features/employee/attendance/presentation/bloc/bloc.dart';
 import 'package:hr_app/src/features/employee/attendance/presentation/components/day_indicator.dart';
 import 'package:hr_app/src/features/employee/attendance/presentation/components/day_widget.dart';
@@ -22,6 +23,7 @@ class _AttendanceCalendarState extends State<AttendanceCalendar> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('الحضور الشهرى'),
+        leading: const SBackButton(),
         centerTitle: true,
       ),
       body: BlocBuilder<AttendanceBloc, AttendanceState>(
@@ -38,9 +40,16 @@ class _AttendanceCalendarState extends State<AttendanceCalendar> {
           return MonthView(
             controller: EventController(),
             headerStyle: HeaderStyle(
-                decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.secondary,
-            )),
+              leftIconConfig: IconDataConfig(
+                color: Theme.of(context).primaryColor,
+              ),
+              rightIconConfig: IconDataConfig(
+                color: Theme.of(context).primaryColor,
+              ),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
             weekDayBuilder: (day) {
               return Material(
                   color: MyColors.greyColor,

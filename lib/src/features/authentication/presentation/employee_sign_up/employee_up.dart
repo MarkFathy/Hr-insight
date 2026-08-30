@@ -115,18 +115,6 @@ class EmployeeSignUpScreen extends StatelessWidget {
                                       : Column(
                                           children: [
                                             forms[currentIndx],
-                                            if (currentIndx > 0 &&
-                                                currentIndx != 2 &&
-                                                state is! AuthLoadingState)
-                                              IconButton(
-                                                  onPressed: () {
-                                                    if (currentIndx > 0) {
-                                                      --currentIndx;
-                                                      changeState(() {});
-                                                    }
-                                                  },
-                                                  icon: const Icon(
-                                                      Icons.arrow_back_ios)),
                                             if (bloc.info != null)
                                               state is AuthLoadingState
                                                   ? const ButtonIncdicator()

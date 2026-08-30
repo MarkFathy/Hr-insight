@@ -1,8 +1,8 @@
-// ignore_for_file: use_build_context_synchronously
 
-import 'package:flutter/foundation.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/src/core/consts/consts.dart';
 import 'package:hr_app/src/core/utils/extentions.dart';
 import 'package:hr_app/src/core/utils/nav.dart';
@@ -20,17 +20,13 @@ class EmployeeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final validImageUrl = employee.image.toValidImageUrl;
+
     return InkWell(
       onLongPress: () async {
         bool? confirm = await _showDeleteConfirmationDialog(context);
-        if (confirm == true) {
-          if (kDebugMode) {
-            print("wwwwwwwwwwwwwwwwww");
-          }
+        if (confirm == true && context.mounted) {
           context.read<EmployeesBloc>().add(DeleteEmployeeEvent(employee.id!));
-          if (kDebugMode) {
-            print("Doneeeeeeee");
-          }
         }
       },
       onTap: () {
@@ -51,34 +47,67 @@ class EmployeeCard extends StatelessWidget {
             side: BorderSide(color: theme.primaryColor),
             borderRadius: BorderRadius.circular(10)),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
           child: DefaultTextStyle(
             style: theme.textTheme.labelMedium!,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        employee.name!,
-                        style: theme.textTheme.labelLarge!
-                            .copyWith(color: theme.primaryColor),
-                        overflow: TextOverflow.ellipsis,
+                Row(
+                  children: [
+                    Container(
+                      width: 36.r,
+                      height: 36.r,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: theme.primaryColor, width: 1.5),
                       ),
-                      Text(
-                        employee.email!,
-                        style: theme.textTheme.labelSmall!
-                            .copyWith(color: theme.primaryColor),
-                        overflow: TextOverflow.ellipsis,
+                      child: ClipOval(
+                        child: validImageUrl.isNotEmpty
+                            ? CachedNetworkImage(
+                                imageUrl: validImageUrl,
+                                fit: BoxFit.cover,
+                                placeholder: (_, __) => Icon(
+                                  Icons.person,
+                                  color: theme.primaryColor,
+                                  size: 22.r,
+                                ),
+                                errorWidget: (_, __, ___) => Icon(
+                                  Icons.person,
+                                  color: theme.primaryColor,
+                                  size: 22.r,
+                                ),
+                              )
+                            : Icon(
+                                Icons.person,
+                                color: theme.primaryColor,
+                                size: 22.r,
+                              ),
                       ),
-                    ],
-                  ),
+                    ),
+                    8.pw,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            employee.name ?? '',
+                            style: theme.textTheme.labelLarge!
+                                .copyWith(color: theme.primaryColor),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                            employee.email ?? '',
+                            style: theme.textTheme.labelSmall!
+                                .copyWith(color: theme.primaryColor),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                // 10.ph,
                 if (!inOffice) ...[
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -168,27 +197,6 @@ class EmployeeIndicator extends StatelessWidget {
                 child: const SizedBox(height: 10),
               ),
             ),
-            Shimmer.fromColors(
-              baseColor: Colors.grey.shade700,
-              highlightColor: theme.cardColor,
-              direction: ShimmerDirection.rtl,
-              child: Container(
-                margin: const EdgeInsets.only(
-                    top: 10, bottom: 10, left: 30, right: 10),
-                decoration: BoxDecoration(
-                    color: Colors.grey.shade700,
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.grey.shade700,
-                          blurRadius: 3,
-                          spreadRadius: 2,
-                          blurStyle: BlurStyle.inner)
-                    ],
-                    borderRadius: BorderRadius.circular(10)),
-                child: const SizedBox(height: 10),
-              ),
-            ),
-            // Spacer(),
             Shimmer.fromColors(
               baseColor: Colors.grey.shade700,
               highlightColor: theme.cardColor,

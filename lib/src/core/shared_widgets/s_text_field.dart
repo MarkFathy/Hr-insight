@@ -58,8 +58,10 @@ class STextField extends StatelessWidget {
             decoration: InputDecoration(
                 contentPadding: const EdgeInsets.symmetric(horizontal: 15),
                 hintText: lable,
-                hintStyle:  TextStyle(color: textColor ?? Colors.white),
-                labelStyle: TextStyle(color: textColor ?? Colors.white),
+                hintStyle: TextStyle(
+                    color: (textColor ?? Colors.white).withValues(alpha: 0.6)),
+                labelStyle: TextStyle(
+                    color: (textColor ?? Colors.white).withValues(alpha: 0.6)),
 
                 border: border,
                 suffixIcon: isPassword
