@@ -1,81 +1,76 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hr_app/src/core/consts/consts.dart';
-import 'package:hr_app/src/core/error/exceptions.dart';
-import 'package:hr_app/src/core/public_models/token.dart';
-import 'package:hr_app/src/features/employee/attendance/data/models/attendance_model.dart';
-import 'package:hr_app/src/features/employee/attendance/data/models/sign_model.dart';
-import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
+import 'package:hr_app/src/core/errors/exceptions.dart';
+import 'package:hr_app/src/core/network/dio_client.dart';
+import 'package:hr_app/src/core/network/dio_error_handler.dart';
+import 'package:hr_app/src/features/employee/attendance/domain/entities/attendance_entity.dart';
+import 'package:hr_app/src/features/employee/attendance/domain/entities/sign_entity.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:location/location.dart' as loc;
 
 abstract class AttendanceRemoteDataSrc {
-  Future<AttendanceModel> fetchAttendance();
-  Future<SignModel> sign(bool params);
+  Future<AttendanceEntity> fetchAttendance();
+  Future<SignEntity> sign({required bool isAttend});
 }
 
 class AttendanceRemoteDataSrcImpl implements AttendanceRemoteDataSrc {
-  final Token token;
-  final http.Client client;
+  final DioClient dioClient;
 
-  AttendanceRemoteDataSrcImpl({required this.client, required this.token});
+  AttendanceRemoteDataSrcImpl({required this.dioClient});
+
+  Map<String, dynamic> _extractData(dynamic data) {
+    if (data is Map<String, dynamic>) return data;
+    if (data is Map) return Map<String, dynamic>.from(data);
+    if (data is String) return jsonDecode(data) as Map<String, dynamic>;
+    throw ServerException('Invalid response data from server');
+  }
+
+  Never _handleDioError(DioException e) => DioErrorHandler.handle(e);
+
   @override
-  Future<AttendanceModel> fetchAttendance() async {
-    final response = await client.get(
-      Uri.parse("${AppConsts.baseUrl}/employee/attendanceList"),
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-        "Authorization": 'Bearer ${token.getToken}'
-      },
-    );
-
-    if (response.statusCode < 400) {
-      return AttendanceModel.fromJson(response.body);
-    } else {
-      throw ServerException(json.decode(response.body)['message']);
+  Future<AttendanceEntity> fetchAttendance() async {
+    try {
+      final response = await dioClient.get('/employee/attendanceList');
+      final data = _extractData(response.data);
+      if (data['status'] == 0) {
+        throw ServerException(
+          data['message']?.toString() ?? 'Failed to fetch attendance',
+        );
+      }
+      return AttendanceEntity.fromJson(data);
+    } on DioException catch (e) {
+      _handleDioError(e);
     }
   }
 
   @override
-  Future<SignModel> sign(bool params) async {
+  Future<SignEntity> sign({required bool isAttend}) async {
     final location = await getCurrentLocation();
-    final response = await client.post(
-        Uri.parse(
-            "${AppConsts.baseUrl}/employee/${params ? 'setAttendance' : 'setDeparture'}"),
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json",
-          "Authorization": 'Bearer ${token.getToken}'
-        },
-        body:
-            jsonEncode({'lat': location!.latitude, 'lng': location.longitude}));
+    try {
+      final endpoint = '/employee/${isAttend ? 'setAttendance' : 'setDeparture'}';
+      final response = await dioClient.post(
+        endpoint,
+        data: {'lat': location!.latitude, 'lng': location.longitude},
+      );
 
-    if (response.statusCode < 400) {
-      if (jsonDecode(response.body)['status'] == 0) {
-        throw ServerException(jsonDecode(response.body)['message']);
-      } else {
-        return SignModel.fromJson(response.body);
+      final data = _extractData(response.data);
+      if (data['status'] == 0) {
+        throw ServerException(data['message']?.toString() ?? 'Sign failed');
       }
-    } else {
-      throw ServerException(json.decode(response.body)['message']);
+      return SignEntity.fromJson(data);
+    } on DioException catch (e) {
+      _handleDioError(e);
     }
   }
 
   Future<LatLng?> getCurrentLocation() async {
-    // 1. طلب تفعيل خدمة الموقع (GPS) عبر نافذة النظام المباشرة
-    final loc.Location locationService = loc.Location();
-    bool serviceEnabled = await locationService.serviceEnabled();
+    final serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      serviceEnabled = await locationService.requestService();
-      if (!serviceEnabled) {
-        throw ServerException('من فضلك قم بتفعيل الـ GPS على جهازك');
-      }
+      throw ServerException('من فضلك قم بتفعيل الـ GPS على جهازك');
     }
 
-    // 2. التحقق من أذونات الموقع
-    LocationPermission permissionGranted = await Geolocator.checkPermission();
+    var permissionGranted = await Geolocator.checkPermission();
     if (permissionGranted == LocationPermission.denied) {
       permissionGranted = await Geolocator.requestPermission();
       if (permissionGranted != LocationPermission.whileInUse &&
@@ -85,12 +80,14 @@ class AttendanceRemoteDataSrcImpl implements AttendanceRemoteDataSrc {
     }
 
     if (permissionGranted == LocationPermission.deniedForever) {
-      throw ServerException('صلاحية الموقع مرفوضة نهائياً، يرجى تفعيلها من إعدادات الهاتف');
+      throw ServerException(
+        'صلاحية الموقع مرفوضة نهائياً، يرجى تفعيلها من إعدادات الهاتف',
+      );
     }
 
-    Position userLocation = await Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.best)
-        .catchError((e) {
+    final userLocation = await Geolocator.getCurrentPosition().catchError((
+      Object e,
+    ) {
       debugPrint('Please open and check GPS permission for this app.');
       throw e;
     });

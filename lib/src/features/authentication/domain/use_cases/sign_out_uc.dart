@@ -1,14 +1,10 @@
-import 'package:dartz/dartz.dart';
-import 'package:hr_app/src/core/error/failures.dart';
+import 'package:hr_app/src/core/functional/typedefs.dart';
 import 'package:hr_app/src/core/usecases/usecase.dart';
-import 'package:hr_app/src/features/authentication/domain/repositories/repository.dart';
+import 'package:hr_app/src/features/authentication/domain/repositories/auth_repository.dart';
 
-class SignOutUC implements UseCase<String, NoParams> {
+class SignOutUC {
   final AuthRepository repository;
   SignOutUC(this.repository);
 
-  @override
-  Future<Either<Failure, String>> call(NoParams noParams) async {
-    return await repository.signOut();
-  }
+  ResultFuture<String> call(NoParams noParams) async => repository.signOut();
 }

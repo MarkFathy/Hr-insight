@@ -1,30 +1,22 @@
-import "dart:convert";
-import "package:equatable/equatable.dart";
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class UpdateProfileParams extends Equatable {
-  final int? id;
-  final bool? status;
+part 'update_profile_params.freezed.dart';
+part 'update_profile_params.g.dart';
 
-  const UpdateProfileParams({required this.id, required this.status});
+@freezed
+abstract class UpdateProfileParams with _$UpdateProfileParams {
+  const UpdateProfileParams._();
 
-  @override
-  List<Object?> get props => [id, status];
+  const factory UpdateProfileParams({
+    @JsonKey(name: 'leave_id') int? id,
+    bool? status,
+  }) = _UpdateProfileParams;
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      "leave_id": id,
-      "status": status,
-    };
-  }
+  factory UpdateProfileParams.fromJson(Map<String, dynamic> json) =>
+      _$UpdateProfileParamsFromJson(json);
 
-  factory UpdateProfileParams.fromMap(Map<String, dynamic> map) {
-    return UpdateProfileParams(
-        id: map["leave_id"] != null ? map["leave_id"] as int : null,
-        status: map["status"]);
-  }
+  Map<String, dynamic> toMap() => toJson();
 
-  String toJson() => json.encode(toMap());
-
-  factory UpdateProfileParams.fromJson(String source) =>
-      UpdateProfileParams.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory UpdateProfileParams.fromMap(Map<String, dynamic> map) =>
+      UpdateProfileParams.fromJson(map);
 }

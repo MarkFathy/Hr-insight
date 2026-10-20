@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 class EntranceFader extends StatefulWidget {
@@ -14,38 +16,39 @@ class EntranceFader extends StatefulWidget {
   final Offset offset;
 
   const EntranceFader({
-    Key? key,
-    required this.child,
-    this.delay = const Duration(milliseconds: 0),
+    required this.child, super.key,
+    this.delay = const Duration(),
     this.duration = const Duration(milliseconds: 400),
     this.offset = const Offset(0.0, 32.0),
-  }) : super(key: key);
+  });
 
   @override
-  EntranceFaderState createState() {
-    return EntranceFaderState();
-  }
+  EntranceFaderState createState() => EntranceFaderState();
 }
 
 class EntranceFaderState extends State<EntranceFader>
     with SingleTickerProviderStateMixin {
   AnimationController? _controller;
-  Animation? _dxAnimation;
-  Animation? _dyAnimation;
+  Animation<double>? _dxAnimation;
+  Animation<double>? _dyAnimation;
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this, duration: widget.duration);
-    _dxAnimation =
-        Tween(begin: widget.offset.dx, end: 0.0).animate(_controller!);
-    _dyAnimation =
-        Tween(begin: widget.offset.dy, end: 0.0).animate(_controller!);
-    Future.delayed(widget.delay, () {
+    _dxAnimation = Tween<double>(
+      begin: widget.offset.dx,
+      end: 0.0,
+    ).animate(_controller!);
+    _dyAnimation = Tween<double>(
+      begin: widget.offset.dy,
+      end: 0.0,
+    ).animate(_controller!);
+    unawaited(Future.delayed(widget.delay, () {
       if (mounted) {
         _controller!.forward();
       }
-    });
+    }));
   }
 
   @override
@@ -55,8 +58,7 @@ class EntranceFaderState extends State<EntranceFader>
   }
 
   @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
+  Widget build(BuildContext context) => AnimatedBuilder(
       animation: _controller!,
       builder: (context, child) => Opacity(
         opacity: _controller!.value,
@@ -66,5 +68,4 @@ class EntranceFaderState extends State<EntranceFader>
         ),
       ),
     );
-  }
 }

@@ -1,34 +1,12 @@
-part of 'bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-abstract class EmployeesEvent extends Equatable {
-  const EmployeesEvent();
+part 'event.freezed.dart';
 
-  @override
-  List<Object> get props => [];
-}
-
-class GetEmployeesEvent extends EmployeesEvent {
-  const GetEmployeesEvent();
-  @override
-  List<Object> get props => [];
-}
-
-class AddEmployeeEvent extends EmployeesEvent {
-  const AddEmployeeEvent();
-  @override
-  List<Object> get props => [];
-}
-
-class DeleteEmployeeEvent extends EmployeesEvent {
-  final int id;
-  const DeleteEmployeeEvent(this.id);
-  @override
-  List<Object> get props => [id];
-}
-
-class GetEmployeeDetailsEvent extends EmployeesEvent {
-  final int id;
-  const GetEmployeeDetailsEvent(this.id);
-  @override
-  List<Object> get props => [id];
+@freezed
+sealed class EmployeesEvent with _$EmployeesEvent {
+  const factory EmployeesEvent.getEmployees() = GetEmployeesEvent;
+  const factory EmployeesEvent.addEmployee() = AddEmployeeEvent;
+  const factory EmployeesEvent.deleteEmployee(int id) = DeleteEmployeeEvent;
+  const factory EmployeesEvent.getEmployeeDetails(int id) =
+      GetEmployeeDetailsEvent;
 }

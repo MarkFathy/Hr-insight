@@ -1,45 +1,19 @@
-part of 'bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hr_app/src/features/manager/offices/domain/entities/office_details.dart';
+import 'package:hr_app/src/features/manager/offices/domain/entities/offices_entity.dart';
 
-abstract class OfficesState extends Equatable {
-  const OfficesState();
+part 'state.freezed.dart';
 
-  @override
-  List<Object> get props => [];
-}
-
-class OfficesInitialState extends OfficesState {}
-
-class OfficesLoadingState extends OfficesState {}
-
-class OfficesLoadedState extends OfficesState {
-  final OfficesEntity offices;
-
-  const OfficesLoadedState({required this.offices});
-
-  @override
-  List<Object> get props => [offices];
-}
-
-class OfficeDetailsLoadedState extends OfficesState {
-  final OfficeDetailsEntity details;
-
-  const OfficeDetailsLoadedState({required this.details});
-
-  @override
-  List<Object> get props => [details];
-}
-
-class OfficesModifiedState extends OfficesState {
-  final String? message;
-
-  const OfficesModifiedState({this.message});
-}
-
-class OfficesErrorState extends OfficesState {
-  final String message;
-
-  const OfficesErrorState({required this.message});
-
-  @override
-  List<Object> get props => [message];
+@freezed
+sealed class OfficesState with _$OfficesState {
+  const factory OfficesState.initial() = OfficesInitialState;
+  const factory OfficesState.loading() = OfficesLoadingState;
+  const factory OfficesState.loaded({required OfficesEntity offices}) =
+      OfficesLoadedState;
+  const factory OfficesState.officeDetailsLoaded({
+    required OfficeDetailsEntity details,
+  }) = OfficeDetailsLoadedState;
+  const factory OfficesState.modified({String? message}) = OfficesModifiedState;
+  const factory OfficesState.error({required String message}) =
+      OfficesErrorState;
 }

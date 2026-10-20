@@ -1,19 +1,9 @@
-part of 'bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-abstract class LeavesEvent extends Equatable {
-  const LeavesEvent();
+part 'event.freezed.dart';
 
-  @override
-  List<Object> get props => [];
-}
-
-class GetLeavesEvent extends LeavesEvent {
-  @override
-  List<Object> get props => [];
-}
-
-class RequestLeaveEvent extends LeavesEvent {
-  const RequestLeaveEvent();
-  @override
-  List<Object> get props => [];
+@freezed
+sealed class LeavesEvent with _$LeavesEvent {
+  const factory LeavesEvent.getLeaves() = GetLeavesEvent;
+  const factory LeavesEvent.requestLeave() = RequestLeaveEvent;
 }

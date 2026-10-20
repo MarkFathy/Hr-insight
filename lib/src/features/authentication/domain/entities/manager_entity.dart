@@ -1,98 +1,77 @@
-class ManagerEntity {
-  int? status;
-  String? message;
-  TokenDataEntity? data;
+import 'dart:convert';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  ManagerEntity({this.status, this.message, this.data});
+part 'manager_entity.freezed.dart';
+part 'manager_entity.g.dart';
 
-  ManagerEntity.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
-    message = json['message'];
-    data = json['data'] != null ? TokenDataEntity.fromJson(json['data']) : null;
-  }
+@freezed
+abstract class ManagerEntity with _$ManagerEntity {
+  const ManagerEntity._();
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['status'] = status;
-    data['message'] = message;
-    if (this.data != null) {
-      data['data'] = this.data!.toJson();
-    }
-    return data;
-  }
+  const factory ManagerEntity({
+    int? status,
+    String? message,
+    TokenDataEntity? data,
+  }) = _ManagerEntity;
+
+  factory ManagerEntity.fromJson(Map<String, dynamic> json) =>
+      _$ManagerEntityFromJson(json);
+
+  Map<String, dynamic> toMap() => toJson();
+
+  factory ManagerEntity.fromMap(Map<String, dynamic> map) =>
+      ManagerEntity.fromJson(map);
+
+  static ManagerEntity fromRawJson(String str) =>
+      ManagerEntity.fromJson(json.decode(str) as Map<String, dynamic>);
 }
 
-class TokenDataEntity {
-  String? token;
-  ManagerDataEntity? manager;
+@freezed
+abstract class TokenDataEntity with _$TokenDataEntity {
+  const TokenDataEntity._();
 
-  TokenDataEntity({this.token, this.manager});
+  const factory TokenDataEntity({
+    String? token,
+    @JsonKey(name: 'data') ManagerDataEntity? manager,
+  }) = _TokenDataEntity;
 
-  TokenDataEntity.fromJson(Map<String, dynamic> json) {
-    token = json['token'];
-    manager =
-        json['data'] != null ? ManagerDataEntity.fromJson(json['data']) : null;
-  }
+  factory TokenDataEntity.fromJson(Map<String, dynamic> json) =>
+      _$TokenDataEntityFromJson(json);
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['token'] = token;
-    if (manager != null) {
-      data['data'] = manager!.toJson();
-    }
-    return data;
-  }
+  Map<String, dynamic> toMap() => toJson();
+
+  factory TokenDataEntity.fromMap(Map<String, dynamic> map) =>
+      TokenDataEntity.fromJson(map);
+
+  static TokenDataEntity fromRawJson(String str) =>
+      TokenDataEntity.fromJson(json.decode(str) as Map<String, dynamic>);
 }
 
-class ManagerDataEntity {
-  int? id;
-  String? name;
-  String? email;
-  String? phone;
-  String? image;
-  String? pin;
-  String? status;
-  String? company;
-  String? createdAt;
-  String? updatedAt;
+@freezed
+abstract class ManagerDataEntity with _$ManagerDataEntity {
+  const ManagerDataEntity._();
 
-  ManagerDataEntity(
-      {this.id,
-      this.name,
-      this.email,
-      this.phone,
-      this.image,
-      this.pin,
-      this.status,
-      this.company,
-      this.createdAt,
-      this.updatedAt});
+  const factory ManagerDataEntity({
+    int? id,
+    String? name,
+    String? email,
+    String? phone,
+    String? image,
+    String? pin,
+    String? status,
+    String? company,
+    @JsonKey(name: 'created_at') String? createdAt,
+    @JsonKey(name: 'updated_at') String? updatedAt,
+  }) = _ManagerDataEntity;
 
-  ManagerDataEntity.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    email = json['email'];
-    phone = json['phone'];
-    image = json['image'];
-    pin = json['pin'];
-    status = json['status'];
-    company = json['company'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-  }
+  factory ManagerDataEntity.fromJson(Map<String, dynamic> json) =>
+      _$ManagerDataEntityFromJson(json);
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['email'] = email;
-    data['phone'] = phone;
-    data['image'] = image;
-    data['pin'] = pin;
-    data['status'] = status;
-    data['company'] = company;
-    data['created_at'] = createdAt;
-    data['updated_at'] = updatedAt;
-    return data;
-  }
+  Map<String, dynamic> toMap() => toJson();
+
+  factory ManagerDataEntity.fromMap(Map<String, dynamic> map) =>
+      ManagerDataEntity.fromJson(map);
+
+  static ManagerDataEntity fromRawJson(String str) =>
+      ManagerDataEntity.fromJson(json.decode(str) as Map<String, dynamic>);
 }

@@ -1,12 +1,24 @@
-import 'package:equatable/equatable.dart';
+import 'dart:convert';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class SignEntity extends Equatable {
-  final int? status;
-  final String? message;
-  final String? data;
+part 'sign_entity.freezed.dart';
+part 'sign_entity.g.dart';
 
-  const SignEntity({this.status, this.message, this.data});
+@freezed
+abstract class SignEntity with _$SignEntity {
+  const SignEntity._();
 
-  @override
-  List<Object?> get props => [status, message, data];
+  const factory SignEntity({int? status, String? message, String? data}) =
+      _SignEntity;
+
+  factory SignEntity.fromJson(Map<String, dynamic> json) =>
+      _$SignEntityFromJson(json);
+
+  Map<String, dynamic> toMap() => toJson();
+
+  factory SignEntity.fromMap(Map<String, dynamic> map) =>
+      SignEntity.fromJson(map);
+
+  static SignEntity fromRawJson(String str) =>
+      SignEntity.fromJson(json.decode(str) as Map<String, dynamic>);
 }

@@ -1,20 +1,11 @@
-part of 'bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hr_app/src/features/manager/leaves/domain/entities/set_leave_param.dart';
 
-abstract class ManagerLeavesEvent extends Equatable {
-  const ManagerLeavesEvent();
+part 'event.freezed.dart';
 
-  @override
-  List<Object> get props => [];
-}
-
-class GetManagerLeavesEvent extends ManagerLeavesEvent {
-  @override
-  List<Object> get props => [];
-}
-
-class SetLeaveEvent extends ManagerLeavesEvent {
-  final SetLeaveParams params;
-  const SetLeaveEvent(this.params);
-  @override
-  List<Object> get props => [];
+@freezed
+sealed class ManagerLeavesEvent with _$ManagerLeavesEvent {
+  const factory ManagerLeavesEvent.getLeaves() = GetManagerLeavesEvent;
+  const factory ManagerLeavesEvent.setLeave(SetLeaveParams params) =
+      SetLeaveEvent;
 }

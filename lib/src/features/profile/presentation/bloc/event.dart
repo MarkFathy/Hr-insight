@@ -1,23 +1,12 @@
-part of 'bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hr_app/src/features/profile/domain/entities/update_profile_params.dart';
 
-abstract class ProfileEvent extends Equatable {
-  const ProfileEvent();
+part 'event.freezed.dart';
 
-  @override
-  List<Object> get props => [];
-}
-
-class GetProfileEvent extends ProfileEvent {
-  final bool isEmployee;
-
-  const GetProfileEvent({required this.isEmployee});
-  @override
-  List<Object> get props => [isEmployee];
-}
-
-class UpdateProfileEvent extends ProfileEvent {
-  final UpdateProfileParams params;
-  const UpdateProfileEvent(this.params);
-  @override
-  List<Object> get props => [params];
+@freezed
+sealed class ProfileEvent with _$ProfileEvent {
+  const factory ProfileEvent.getProfile({required bool isEmployee}) =
+      GetProfileEvent;
+  const factory ProfileEvent.updateProfile(UpdateProfileParams params) =
+      UpdateProfileEvent;
 }

@@ -1,96 +1,187 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hr_app/src/core/shared_widgets/button_indicator.dart';
-import 'package:hr_app/src/core/shared_widgets/s_button.dart';
-import 'package:hr_app/src/core/shared_widgets/s_text_field.dart';
-import 'package:hr_app/src/core/utils/nav.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hr_app/src/core/di/service_locator.dart';
+import 'package:hr_app/src/core/utils/extensions.dart';
+import 'package:hr_app/src/core/utils/navigation_helper.dart';
+import 'package:hr_app/src/core/widgets/app_back_button.dart';
+import 'package:hr_app/src/core/widgets/app_button.dart';
+import 'package:hr_app/src/core/widgets/app_snack_bar.dart';
+import 'package:hr_app/src/core/widgets/app_text_field.dart';
 import 'package:hr_app/src/features/manager/departments/domain/entities/departments_entity.dart';
 import 'package:hr_app/src/features/manager/departments/presentation/bloc/bloc.dart';
-import 'package:hr_app/src/features/manager/offices/presentation/bloc/bloc.dart';
-import 'package:hr_app/src/injector.dart';
 
-class DepartmentsForm extends StatelessWidget {
-  final Function() rebuild;
+typedef DepartmentsForm = DepartmentFormScreen;
+
+class DepartmentFormScreen extends StatefulWidget {
+  final VoidCallback? rebuild;
   final DepartmentDataEntity? data;
-  const DepartmentsForm({super.key, required this.rebuild, this.data});
+
+  const DepartmentFormScreen({super.key, this.rebuild, this.data});
+
+  @override
+  State<DepartmentFormScreen> createState() => _DepartmentFormScreenState();
+}
+
+class _DepartmentFormScreenState extends State<DepartmentFormScreen> {
+  late final DepartmentsAndJobsBloc _bloc;
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    _bloc = sl<DepartmentsAndJobsBloc>();
+    if (widget.data != null) {
+      _bloc.editDeptNameCtrl.text = widget.data!.name ?? '';
+    } else {
+      _bloc.deptNameCtrl.clear();
+    }
+  }
+
+  @override
+  void dispose() {
+    unawaited(_bloc.close());
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Dialog(
-      child: BlocProvider(
-        create: (context) => sl<DepartmentsAndJobsBloc>(),
-        child: BlocConsumer<DepartmentsAndJobsBloc, DepartmentsAndJobsState>(
-          listener: (context, state) {
-            if (state is DepartmentsModifiedState) {
-              rebuild();
-              NV.pop(context);
-            }
-          },
-          builder: (context, state) {
-            final bloc = context.read<DepartmentsAndJobsBloc>();
-            final formKey = GlobalKey<FormState>();
-            if (data != null) {
-              bloc.deptNameCtrl.text = data!.name!;
-            }
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Material(
-                  color: theme.colorScheme.secondary,
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 8.0, horizontal: 10),
-                        child: InkWell(
-                          onTap: () => NV.pop(context),
-                          child: Icon(
-                            Icons.close_rounded,
-                            color: theme.primaryColor,
-                          ),
+    final colors = context.colors;
+    final typography = context.typography;
+    final isEdit = widget.data != null;
+
+    return BlocProvider.value(
+      value: _bloc,
+      child: BlocConsumer<DepartmentsAndJobsBloc, DepartmentsAndJobsState>(
+        listener: (context, state) {
+          if (state is DepartmentsModifiedState) {
+            widget.rebuild?.call();
+            NavigationHelper.pop(context, true);
+            AppSnackBar.showSuccess(
+              context,
+              isEdit
+                  ? 'تم تعديل اسم القسم بنجاح'
+                  : 'تمت إضافة القسم بنجاح',
+            );
+          } else if (state is DepartmentsErrorState) {
+            AppSnackBar.showError(context, state.message);
+          }
+        },
+        builder: (context, state) => Scaffold(
+          backgroundColor: colors.background,
+          appBar: AppBar(
+            leading: const AppBackButton(),
+            title: Text(isEdit ? 'تعديل قسم' : 'إضافة قسم جديد'),
+            centerTitle: true,
+          ),
+          bottomNavigationBar: SafeArea(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(16.r, 8.r, 16.r, 16.r),
+              child: AppButton(
+                title: isEdit ? 'حفظ التعديلات' : 'إضافة القسم',
+                isLoading: state is DepartmentsLoadingState,
+                icon: isEdit
+                    ? Icons.check_circle_outline_rounded
+                    : Icons.add_circle_outline_rounded,
+                onTap: () {
+                  if (!_formKey.currentState!.validate()) return;
+                  if (isEdit) {
+                    _bloc.add(EditDepartmentEvent(id: widget.data!.id!));
+                  } else {
+                    _bloc.add(const AddDepartmentEvent());
+                  }
+                },
+              ),
+            ),
+          ),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 16.r, vertical: 12.r),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(16.r),
+                      decoration: BoxDecoration(
+                        color: colors.secondary.withValues(alpha: 0.5),
+                        borderRadius: BorderRadius.circular(16.r),
+                        border: Border.all(
+                          color: colors.primary.withValues(alpha: 0.25),
                         ),
                       ),
-                      Text(data != null ? 'تعديل قسم' : 'إضافة قسم')
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 18.0, horizontal: 15),
-                  child: Form(
-                    key: formKey,
-                    child: Column(
-                      children: [
-                        if (state is DepartmentsErrorState)
-                          Text(
-                            state.message,
-                            style: theme.textTheme.labelMedium!
-                                .copyWith(color: Colors.red),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 48.r,
+                            height: 48.r,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: colors.primary.withValues(alpha: 0.15),
+                              border: Border.all(
+                                color: colors.primary.withValues(alpha: 0.4),
+                              ),
+                            ),
+                            child: Icon(
+                              Icons.corporate_fare_rounded,
+                              color: colors.primary,
+                              size: 26.r,
+                            ),
                           ),
-                        STextField(
-                          lable: 'إسم القسم',
-                          controller: bloc.deptNameCtrl..text,
-                        ),
-                        state is OfficesLoadingState
-                            ? const ButtonIncdicator()
-                            : SButton(
-                                title: data != null ? 'تعديل' : 'إضافة',
-                                onTap: () {
-                                  if (!formKey.currentState!.validate()) return;
-
-                                  bloc.add(data != null
-                                      ? EditDepartmentEvent(id: data!.id!)
-                                      : const AddDepartmentEvent());
-                                })
-                      ],
+                          14.pw,
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  isEdit
+                                      ? 'تعديل بيانات القسم'
+                                      : 'إنشاء قسم جديد',
+                                  style: typography.titleMedium.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                4.ph,
+                                Text(
+                                  'أدخل اسم القسم لتنظيم الهيكل الإداري والوظائف التابعة له',
+                                  style: TextStyle(
+                                    color: Colors.white.withValues(alpha: 0.6),
+                                    fontSize: 12.r,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                )
-              ],
-            );
-          },
+                    24.ph,
+                    AppTextField(
+                      controller: isEdit
+                          ? _bloc.editDeptNameCtrl
+                          : _bloc.deptNameCtrl,
+                      label: 'اسم القسم',
+                      hintText: 'مثال: الموارد البشرية، البرمجة، التسويق',
+                      prefixIcon: Icon(
+                        Icons.business_rounded,
+                        color: colors.primary,
+                      ),
+                      validator: (val) {
+                        if (val == null || val.trim().isEmpty) {
+                          return 'يرجى إدخال اسم القسم';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ),
       ),
     );

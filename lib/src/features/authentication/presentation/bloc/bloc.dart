@@ -1,35 +1,35 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hr_app/src/core/consts/consts.dart';
-import 'package:hr_app/src/features/authentication/domain/entities/account_delete_params.dart';
+import 'package:hr_app/src/core/constants/app_constants.dart';
+import 'package:hr_app/src/core/usecases/usecase.dart';
 import 'package:hr_app/src/features/authentication/domain/entities/change_password_params.dart';
 import 'package:hr_app/src/features/authentication/domain/entities/employee_entity.dart';
+import 'package:hr_app/src/features/authentication/domain/entities/employee_register_params.dart';
 import 'package:hr_app/src/features/authentication/domain/entities/forget_password_params.dart';
-import 'package:hr_app/src/core/usecases/usecase.dart';
-import 'package:hr_app/src/features/authentication/domain/entities/manager_info_entity.dart';
-import 'package:hr_app/src/features/authentication/domain/entities/reset_password_params.dart.dart';
-import 'package:hr_app/src/features/authentication/domain/entities/survant_register_params.dart';
 import 'package:hr_app/src/features/authentication/domain/entities/manager_entity.dart';
-import 'package:hr_app/src/features/authentication/domain/entities/user_register_params.dart';
-import 'package:hr_app/src/features/authentication/domain/entities/verify_params.dart';
+import 'package:hr_app/src/features/authentication/domain/entities/manager_info_entity.dart';
+import 'package:hr_app/src/features/authentication/domain/entities/manager_register_params.dart';
 import 'package:hr_app/src/features/authentication/domain/use_cases/auto_login_uc.dart';
 import 'package:hr_app/src/features/authentication/domain/use_cases/change_password_uc.dart';
-import 'package:hr_app/src/features/authentication/domain/use_cases/delete_accoutnt_uc.dart';
+import 'package:hr_app/src/features/authentication/domain/use_cases/delete_account_use_case.dart';
+import 'package:hr_app/src/features/authentication/domain/use_cases/employee_sign_in_uc.dart';
+import 'package:hr_app/src/features/authentication/domain/use_cases/employee_sign_up_uc.dart';
 import 'package:hr_app/src/features/authentication/domain/use_cases/forget_password.dart';
 import 'package:hr_app/src/features/authentication/domain/use_cases/get_departments_uc.dart';
-import 'package:hr_app/src/features/authentication/domain/use_cases/employee_sign_in_uc.dart';
 import 'package:hr_app/src/features/authentication/domain/use_cases/manager_sign_in_uc.dart';
+import 'package:hr_app/src/features/authentication/domain/use_cases/manager_sign_up_uc.dart';
 import 'package:hr_app/src/features/authentication/domain/use_cases/reset_password.dart';
 import 'package:hr_app/src/features/authentication/domain/use_cases/sign_out_uc.dart';
-import 'package:hr_app/src/features/authentication/domain/use_cases/employee_sign_up_uc.dart';
-import 'package:hr_app/src/features/authentication/domain/use_cases/manager_sign_up_uc.dart';
 import 'package:hr_app/src/features/authentication/domain/use_cases/verify_email.dart';
-part 'state.dart';
-part 'event.dart';
+
+import 'package:hr_app/src/features/authentication/presentation/bloc/event.dart';
+import 'package:hr_app/src/features/authentication/presentation/bloc/state.dart';
+
+export 'event.dart';
+export 'state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AutoLoginUC autoLoginUC;
@@ -58,7 +58,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required this.forgetPasswordUC,
     required this.resetPasswordUC,
     required this.deleteAccountUC,
-  }) : super(AuthInitial()) {
+  }) : super(const AuthState.initial()) {
     on<AutoLoginEvent>(_autoLogin);
     on<EmployeeSignInEvent>(_employeeSignIn);
     on<EmployeeSignUpEvent>(_employeeSignUp);
@@ -103,254 +103,325 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   bool get isEmployee => employee != null && manager == null;
   bool get validateImages => faceImage != null && backImage != null;
 
-  ///
-
   FutureOr<void> _employeeSignIn(
-      EmployeeSignInEvent event, Emitter<AuthState> emit) async {
-    emit(AuthLoadingState());
+    EmployeeSignInEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(const AuthState.loading());
     try {
       final userRequest = await signInUC.call({
-        "email": emailCtrl.text,
-        "password": passwordCtrl.text,
+        'email': emailCtrl.text,
+        'password': passwordCtrl.text,
       });
-      userRequest.fold((l) {
-        if (l.message.contains(AppConsts.kVerifyEmail)) {
-          emit(ActivateAccountState(emailCtrl.text));
-        }
-        return emit(AuthFailureState(l.message));
-      }, (r) {
-        employee = r!;
-        emit(AuthSuccessState(employee: r));
-      });
+      userRequest.fold(
+        (l) {
+          if (l.message.contains(AppConstants.kVerifyEmail)) {
+            emit(AuthState.activateAccount(emailCtrl.text));
+          }
+          return emit(AuthState.failure(l.message));
+        },
+        (r) {
+          employee = r;
+          emit(AuthState.success(employee: r));
+        },
+      );
     } on Exception catch (e) {
-      emit(AuthFailureState(e.toString()));
+      emit(AuthState.failure(e.toString()));
     }
   }
 
   FutureOr<void> _employeeSignUp(
-      EmployeeSignUpEvent event, Emitter<AuthState> emit) async {
-    emit(AuthLoadingState());
+    EmployeeSignUpEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(const AuthState.loading());
     try {
-      final userRequest = await employeeSignUpUC.call(EmployeeRegisterParams(
-        name: nameCtrl.text,
-        email: emailCtrl.text,
-        password: passwordCtrl.text,
-        phone: phoneCtrl.text,
-        confirmPassword: confirmPasswordCtrl.text,
-        address: addressCtrl.text,
-        image: profileImage!,
-        managerPin: managerPin.text,
-        jobId: jobId!,
-        departmentId: departId!,
-        officeId: officeId!,
-      ));
+      final userRequest = await employeeSignUpUC.call(
+        EmployeeRegisterParams(
+          name: nameCtrl.text,
+          email: emailCtrl.text,
+          password: passwordCtrl.text,
+          phone: phoneCtrl.text,
+          confirmPassword: confirmPasswordCtrl.text,
+          address: addressCtrl.text,
+          image: profileImage!,
+          managerPin: managerPin.text,
+          jobId: jobId!,
+          departmentId: departId!,
+          officeId: officeId!,
+        ),
+      );
 
-      emit(userRequest.fold((l) {
-        return AuthFailureState(l.message);
-      }, (r) {
-        employee = r;
-        return EmailVerifiedState(employee: r);
-      }));
+      emit(
+        userRequest.fold(
+          (l) => AuthState.failure(l.message),
+          (r) {
+            employee = r;
+            return AuthState.emailVerified(employee: r);
+          },
+        ),
+      );
     } on Exception catch (e) {
-      emit(AuthFailureState(e.toString()));
+      emit(AuthState.failure(e.toString()));
     }
   }
 
   FutureOr<void> _managerSignIn(
-      ManagerSignInEvent event, Emitter<AuthState> emit) async {
-    emit(AuthLoadingState());
+    ManagerSignInEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(const AuthState.loading());
     try {
       final userRequest = await managerSignInUC.call({
-        "email": emailCtrl.text,
-        "password": passwordCtrl.text,
+        'email': emailCtrl.text,
+        'password': passwordCtrl.text,
       });
-      emit(userRequest.fold((l) {
-        if (l.message.contains(AppConsts.kVerifyEmail)) {
-          return ActivateAccountState(emailCtrl.text);
-        }
-        return AuthFailureState(l.message);
-      }, (r) {
-        manager = r!;
-        return AuthSuccessState(manager: r);
-      }));
+      emit(
+        userRequest.fold(
+          (l) {
+            if (l.message.contains(AppConstants.kVerifyEmail)) {
+              return AuthState.activateAccount(emailCtrl.text);
+            }
+            return AuthState.failure(l.message);
+          },
+          (r) {
+            manager = r;
+            return AuthState.success(manager: r);
+          },
+        ),
+      );
     } on Exception catch (e) {
-      emit(AuthFailureState(e.toString()));
+      emit(AuthState.failure(e.toString()));
     }
   }
 
   FutureOr<void> _managerSignUp(
-      ManagerSignUpEvent event, Emitter<AuthState> emit) async {
-    emit(AuthLoadingState());
-    // while (_locationData == null) {
-    //   await getLocation();
-    // }
+    ManagerSignUpEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(const AuthState.loading());
     try {
-      final userRequest = await managerSignUpUC.call(ManagerRegisterParams(
-        name: nameCtrl.text,
-        email: emailCtrl.text,
-        password: passwordCtrl.text,
-        passwordConfirmation: confirmPasswordCtrl.text,
-        companyName: companyCtrl.text,
-        phone: phoneCtrl.text,
-        image: profileImage!,
-      ));
+      final userRequest = await managerSignUpUC.call(
+        ManagerRegisterParams(
+          name: nameCtrl.text,
+          email: emailCtrl.text,
+          password: passwordCtrl.text,
+          passwordConfirmation: confirmPasswordCtrl.text,
+          companyName: companyCtrl.text,
+          phone: phoneCtrl.text,
+          image: profileImage!,
+        ),
+      );
 
-      emit(userRequest.fold((l) {
-        return AuthFailureState(l.message);
-      }, (r) {
-        manager = r;
-        return EmailVerifiedState(manager: r!);
-      }));
+      emit(
+        userRequest.fold(
+          (l) => AuthState.failure(l.message),
+          (r) {
+            manager = r;
+            return AuthState.emailVerified(manager: r);
+          },
+        ),
+      );
     } on Exception catch (e) {
-      emit(AuthFailureState(e.toString()));
+      emit(AuthState.failure(e.toString()));
     }
   }
 
   FutureOr<void> _signOut(SignOutEvent event, Emitter<AuthState> emit) async {
-    emit(AuthLoadingState());
+    emit(const AuthState.loading());
 
     try {
-      final admin = await signOutUC.call(NoParams());
+      final admin = await signOutUC.call(const NoParams());
 
-      emit(admin.fold((l) {
-        return AuthFailureState(l.message);
-      }, (r) {
-        return AuthInitial();
-      }));
+      emit(
+        admin.fold(
+          (l) => AuthState.failure(l.message),
+          (r) => const AuthState.initial(),
+        ),
+      );
     } on Exception catch (e) {
-      emit(AuthFailureState(e.toString()));
+      emit(AuthState.failure(e.toString()));
     }
   }
 
   FutureOr<void> _autoLogin(
-      AutoLoginEvent event, Emitter<AuthState> emit) async {
-    emit(AuthLoadingState());
+    AutoLoginEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(const AuthState.loading());
 
     try {
-      final userRequest = await autoLoginUC.call(NoParams());
-      emit(userRequest.fold((l) => AuthInitial(), (r) {
-        if (r!['isEmployee']) {
-          employee = EmployeeEntity.fromMap(r['data']);
-          return AuthSuccessState(employee: employee);
-        } else {
-          manager = ManagerEntity.fromJson(r['data']);
-          return AuthSuccessState(manager: manager);
-        }
-      }));
+      final userRequest = await autoLoginUC.call(const NoParams());
+      emit(
+        userRequest.fold((l) => const AuthState.initial(), (r) {
+          if (r == null) {
+            return const AuthState.initial();
+          }
+          final isEmployee = r['isEmployee'] == true;
+          final rawData = r['data'];
+          if (rawData is! Map<String, dynamic>) {
+            return const AuthState.initial();
+          }
+          if (isEmployee) {
+            employee = EmployeeEntity.fromMap(rawData);
+            return AuthState.success(employee: employee);
+          } else {
+            manager = ManagerEntity.fromJson(rawData);
+            return AuthState.success(manager: manager);
+          }
+        }),
+      );
     } on Exception catch (e) {
-      emit(AuthFailureState(e.toString()));
+      emit(AuthState.failure(e.toString()));
     }
   }
 
   FutureOr<void> _getDepartments(
-      GetDepartmentsEvent event, Emitter<AuthState> emit) async {
-    emit(AuthLoadingState());
+    GetDepartmentsEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(const AuthState.loading());
 
     try {
       final user = await getDepartmentsUC.call(managerPin.text);
 
-      emit(user.fold((l) {
-        print("Error: ${l.message}");
-        return AuthFailureState(l.message);
-      }, (r) {
-        info = r;
-        return ValidUIDState();
-      }));
+      emit(
+        user.fold(
+          (l) {
+            debugPrint('Error: ${l.message}');
+            return AuthState.failure(l.message);
+          },
+          (r) {
+            info = r;
+            return const AuthState.validUID();
+          },
+        ),
+      );
     } on Exception catch (e) {
-      print("Exception: $e"); // Log the exception
-      emit(AuthFailureState(e.toString()));
+      debugPrint('Exception: $e');
+      emit(AuthState.failure(e.toString()));
     }
   }
 
   FutureOr<void> _changePassword(
-      ChangePasswordEvent event, Emitter<AuthState> emit) async {
-    if (employee == null) emit(AuthFailureState('قم بتسجيل الدخول اولا'));
+    ChangePasswordEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    if (employee == null) {
+      emit(const AuthState.failure('قم بتسجيل الدخول اولا'));
+      return;
+    }
 
-    emit(AuthLoadingState());
+    emit(const AuthState.loading());
 
     try {
-      final user = await changePasswordUC.call(ChangePasswordParams(
+      final user = await changePasswordUC.call(
+        ChangePasswordParams(
           oldPassword: oldPassword.text,
           password: passwordCtrl.text,
           passwordConfirmation: confirmPasswordCtrl.text,
           isEmployee: event.isEmployee,
-          token: employee!.data!.token));
+          token: employee!.data!.token,
+        ),
+      );
 
-      emit(user.fold((l) {
-        return AuthFailureState(l.message);
-      }, (r) {
-        return PasswordChangedState(r!);
-      }));
+      emit(
+        user.fold(
+          (l) => AuthState.failure(l.message),
+          AuthState.passwordChanged,
+        ),
+      );
     } on Exception catch (e) {
-      emit(AuthFailureState(e.toString()));
+      emit(AuthState.failure(e.toString()));
     }
   }
 
   FutureOr<void> _verifyEmail(
-      VerifyEmailEvent event, Emitter<AuthState> emit) async {
-    emit(AuthLoadingState());
+    VerifyEmailEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(const AuthState.loading());
     try {
       final userRequest = await verifyEmailUC.call(event.params);
-      emit(userRequest.fold((l) {
-        return AuthFailureState(l.message);
-      }, (r) {
-        if (event.params.isEmployee) {
-          employee = EmployeeEntity.fromMap(r!);
-          return AuthSuccessState(employee: employee);
-        } else {
-          manager = ManagerEntity.fromJson(r!);
-          return AuthSuccessState(manager: manager);
-        }
-      }));
+      emit(
+        userRequest.fold(
+          (l) => AuthState.failure(l.message),
+          (r) {
+            if (event.params.isEmployee) {
+              employee = EmployeeEntity.fromMap(r!);
+              return AuthState.success(employee: employee);
+            } else {
+              manager = ManagerEntity.fromJson(r!);
+              return AuthState.success(manager: manager);
+            }
+          },
+        ),
+      );
     } on Exception catch (e) {
-      emit(AuthFailureState(e.toString()));
+      emit(AuthState.failure(e.toString()));
     }
   }
 
   FutureOr<void> _forgetPassword(
-      ForgetPasswordEvent event, Emitter<AuthState> emit) async {
-    emit(AuthLoadingState());
+    ForgetPasswordEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(const AuthState.loading());
     try {
-      final userRequest = await forgetPasswordUC.call(ForgetPasswordParams(
-          email: emailCtrl.text, isEmployee: event.isEmployee));
-      emit(userRequest.fold((l) {
-        return AuthFailureState(l.message);
-      }, (r) {
-        return ForgetPasswordState();
-      }));
+      final userRequest = await forgetPasswordUC.call(
+        ForgetPasswordParams(
+          email: emailCtrl.text,
+          isEmployee: event.isEmployee,
+        ),
+      );
+      emit(
+        userRequest.fold(
+          (l) => AuthState.failure(l.message),
+          (r) => const AuthState.forgetPassword(),
+        ),
+      );
     } on Exception catch (e) {
-      emit(AuthFailureState(e.toString()));
+      emit(AuthState.failure(e.toString()));
     }
   }
 
   FutureOr<void> _resetPassword(
-      ResetPasswordEvent event, Emitter<AuthState> emit) async {
-    emit(AuthLoadingState());
+    ResetPasswordEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(const AuthState.loading());
     try {
       final userRequest = await resetPasswordUC.call(event.params);
-      emit(userRequest.fold((l) {
-        return AuthFailureState(l.message);
-      }, (r) {
-        return PasswordResettedState(r!['message']);
-      }));
+      emit(
+        userRequest.fold(
+          (l) => AuthState.failure(l.message),
+          (r) => AuthState.passwordResetted(
+            (r?['message'] as String?) ?? '',
+          ),
+        ),
+      );
     } on Exception catch (e) {
-      emit(AuthFailureState(e.toString()));
+      emit(AuthState.failure(e.toString()));
     }
   }
 
   Future<void> _deleteAccount(
-      DeleteAccountEvent event, Emitter<AuthState> emit) async {
-    emit(AuthLoadingState());
+    DeleteAccountEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(const AuthState.loading());
 
     try {
       final userRequest = await deleteAccountUC.call(event.params);
 
-      emit(userRequest.fold(
-        (failure) => AuthFailureState(failure.message),
-        (_) => AuthInitial(),
-      ));
+      emit(
+        userRequest.fold(
+          (failure) => AuthState.failure(failure.message),
+          (_) => const AuthState.accountDeleted('تم حذف الحساب بنجاح'),
+        ),
+      );
     } on Exception catch (e) {
-      emit(AuthFailureState(e.toString()));
+      emit(AuthState.failure(e.toString()));
     }
   }
 }

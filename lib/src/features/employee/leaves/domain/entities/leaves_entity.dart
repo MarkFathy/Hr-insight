@@ -1,58 +1,70 @@
-import 'package:equatable/equatable.dart';
+import 'dart:convert';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class LeavesEntity extends Equatable {
-  final int? status;
-  final String? message;
-  final List<LeavesDataEntity>? data;
+part 'leaves_entity.freezed.dart';
+part 'leaves_entity.g.dart';
 
-  const LeavesEntity({this.status, this.message, this.data});
-
-  @override
-  List<Object?> get props => [status, message, data];
+List<LeavesDataEntity>? _leavesDataFromJson(dynamic json) {
+  if (json == null) return null;
+  if (json is List) {
+    return json
+        .map((e) => LeavesDataEntity.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+  if (json is Map) {
+    return [LeavesDataEntity.fromJson(json as Map<String, dynamic>)];
+  }
+  return null;
 }
 
-class LeavesDataEntity extends Equatable {
-  final int? id;
-  final int? employeeId;
-  final int? managerId;
-  final DateTime? dayDate;
-  final DateTime? from;
-  final DateTime? to;
-  final String? leaveType;
-  final String?
-      status; // Updated to String to represent status like "approved", "pending", etc.
-  final String? notes;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
+@freezed
+abstract class LeavesEntity with _$LeavesEntity {
+  const LeavesEntity._();
 
-  const LeavesDataEntity({
-    this.id,
-    this.employeeId,
-    this.managerId,
-    this.dayDate,
-    this.from,
-    this.to,
-    this.leaveType,
-    this.status,
-    this.notes,
-    this.createdAt,
-    this.updatedAt,
-  });
+  const factory LeavesEntity({
+    int? status,
+    String? message,
+    @JsonKey(fromJson: _leavesDataFromJson) List<LeavesDataEntity>? data,
+  }) = _LeavesEntity;
 
-  @override
-  List<Object?> get props {
-    return [
-      id,
-      employeeId,
-      managerId,
-      dayDate,
-      from,
-      to,
-      leaveType,
-      status,
-      notes,
-      createdAt,
-      updatedAt,
-    ];
-  }
+  factory LeavesEntity.fromJson(Map<String, dynamic> json) =>
+      _$LeavesEntityFromJson(json);
+
+  Map<String, dynamic> toMap() => toJson();
+
+  factory LeavesEntity.fromMap(Map<String, dynamic> map) =>
+      LeavesEntity.fromJson(map);
+
+  static LeavesEntity fromRawJson(String str) =>
+      LeavesEntity.fromJson(json.decode(str) as Map<String, dynamic>);
+}
+
+@freezed
+abstract class LeavesDataEntity with _$LeavesDataEntity {
+  const LeavesDataEntity._();
+
+  const factory LeavesDataEntity({
+    int? id,
+    @JsonKey(name: 'employee_id') int? employeeId,
+    @JsonKey(name: 'manager_id') int? managerId,
+    @JsonKey(name: 'day_date') DateTime? dayDate,
+    DateTime? from,
+    DateTime? to,
+    @JsonKey(name: 'leave_type') String? leaveType,
+    String? status,
+    String? notes,
+    @JsonKey(name: 'created_at') DateTime? createdAt,
+    @JsonKey(name: 'updated_at') DateTime? updatedAt,
+  }) = _LeavesDataEntity;
+
+  factory LeavesDataEntity.fromJson(Map<String, dynamic> json) =>
+      _$LeavesDataEntityFromJson(json);
+
+  Map<String, dynamic> toMap() => toJson();
+
+  factory LeavesDataEntity.fromMap(Map<String, dynamic> map) =>
+      LeavesDataEntity.fromJson(map);
+
+  static LeavesDataEntity fromRawJson(String str) =>
+      LeavesDataEntity.fromJson(json.decode(str) as Map<String, dynamic>);
 }

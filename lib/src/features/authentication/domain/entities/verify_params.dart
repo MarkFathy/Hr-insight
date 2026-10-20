@@ -1,30 +1,26 @@
-import 'dart:convert';
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class VerifyParams extends Equatable {
-  final String otp;
-  final String email;
-  final bool isEmployee;
+part 'verify_params.freezed.dart';
+part 'verify_params.g.dart';
 
-  const VerifyParams(
-      {required this.otp, required this.email, required this.isEmployee});
+@freezed
+abstract class VerifyParams with _$VerifyParams {
+  const VerifyParams._();
 
-  @override
-  List<Object> get props => [otp, email];
+  const factory VerifyParams({
+    required String otp,
+    required String email,
+    required bool isEmployee,
+  }) = _VerifyParams;
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{'otp': otp, 'email': email};
-  }
+  factory VerifyParams.fromJson(Map<String, dynamic> json) =>
+      _$VerifyParamsFromJson(json);
 
-  factory VerifyParams.fromMap(Map<String, dynamic> map) {
-    return VerifyParams(
-        otp: map['otp'] as String,
-        email: map['email'] as String,
-        isEmployee: false);
-  }
+  Map<String, dynamic> toMap() => {'otp': otp, 'email': email};
 
-  String toJson() => json.encode(toMap());
-
-  factory VerifyParams.fromJson(String source) =>
-      VerifyParams.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory VerifyParams.fromMap(Map<String, dynamic> map) => VerifyParams(
+    otp: map['otp'] as String,
+    email: map['email'] as String,
+    isEmployee: false,
+  );
 }

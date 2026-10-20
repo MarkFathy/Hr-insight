@@ -2,29 +2,27 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hr_app/src/core/shared_widgets/s_back_button.dart';
-import 'package:hr_app/src/core/utils/extentions.dart';
-import 'package:hr_app/src/core/utils/nav.dart';
+import 'package:hr_app/src/core/di/service_locator.dart';
+import 'package:hr_app/src/core/utils/extensions.dart';
+import 'package:hr_app/src/core/widgets/app_back_button.dart';
 import 'package:hr_app/src/features/authentication/domain/entities/employee_entity.dart';
 import 'package:hr_app/src/features/manager/employees/presentation/components/set_employee_dialog.dart';
-import 'package:hr_app/src/features/manager/manager_attendance/presenation/bloc/attendance_block.dart';
-import 'package:hr_app/src/features/manager/manager_attendance/presenation/components/monthly_signatures_calendar.dart';
-import 'package:hr_app/src/injector.dart';
+import 'package:hr_app/src/features/manager/manager_attendance/presentation/bloc/attendance_bloc.dart';
+import 'package:hr_app/src/features/manager/manager_attendance/presentation/components/monthly_signatures_calendar.dart';
 import 'package:intl/intl.dart';
 
 class EmployeeDetailsScreen extends StatelessWidget {
   final EmployeeDataEntity employee;
-  final Function() rebuild;
+  final VoidCallback rebuild;
+
+  static final DateFormat _joinedDateFormat = DateFormat.yMMMMd('ar');
 
   const EmployeeDetailsScreen({
-    super.key,
-    required this.rebuild,
-    required this.employee,
+    required this.rebuild, required this.employee, super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final validImageUrl = employee.image.toValidImageUrl;
 
     return Scaffold(
@@ -35,12 +33,12 @@ class EmployeeDetailsScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () async {
-              await showDialog(
+              await showDialog<void>(
                 context: context,
                 builder: (ctx) => SetEmployeeDialog(
                   rebuild: () {
                     rebuild();
-                    NV.pop(context);
+                    Navigator.pop(context);
                   },
                   employee: employee,
                 ),
@@ -49,7 +47,7 @@ class EmployeeDetailsScreen extends StatelessWidget {
             child: Text(
               'تعديل',
               style: TextStyle(
-                color: theme.primaryColor,
+                color: context.colors.primary,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -72,10 +70,10 @@ class EmployeeDetailsScreen extends StatelessWidget {
                     width: 110.r,
                     height: 110.r,
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.secondary,
-                      borderRadius: BorderRadius.circular(10),
+                      color: context.colors.surface,
+                      borderRadius: context.radius.smBorder,
                       border: Border.all(
-                        color: theme.primaryColor,
+                        color: context.colors.primary,
                         width: 1.5,
                       ),
                     ),
@@ -91,20 +89,24 @@ class EmployeeDetailsScreen extends StatelessWidget {
                                   height: 22.r,
                                   child: CircularProgressIndicator(
                                     strokeWidth: 2,
-                                    color: theme.primaryColor,
+                                    color: context.colors.primary,
                                   ),
                                 ),
                               ),
                               errorWidget: (context, url, error) => Icon(
                                 Icons.person,
                                 size: 55.r,
-                                color: theme.primaryColor.withValues(alpha: 0.5),
+                                color: context.colors.primary.withValues(
+                                  alpha: 0.5,
+                                ),
                               ),
                             )
                           : Icon(
                               Icons.person,
                               size: 55.r,
-                              color: theme.primaryColor.withValues(alpha: 0.5),
+                              color: context.colors.primary.withValues(
+                                alpha: 0.5,
+                              ),
                             ),
                     ),
                   ),
@@ -149,7 +151,9 @@ class EmployeeDetailsScreen extends StatelessWidget {
                 InfoCard(
                   title: 'تاريخ الإنضمام',
                   value: employee.createdAt != null
-                      ? DateFormat.yMMMMd('ar').format(DateTime.parse(employee.createdAt!))
+                      ? _joinedDateFormat.format(
+                          DateTime.parse(employee.createdAt!),
+                        )
                       : 'غير محدد',
                 ),
                 10.ph,
@@ -174,15 +178,13 @@ class EmployeeDetailsScreen extends StatelessWidget {
 class InfoCard extends StatelessWidget {
   final String title;
   final String? value;
-  const InfoCard({super.key, required this.title, required this.value});
+  const InfoCard({required this.title, required this.value, super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Padding(
+  Widget build(BuildContext context) => Padding(
       padding: const EdgeInsets.symmetric(vertical: 3.0, horizontal: 8.0),
       child: Material(
-        color: theme.colorScheme.secondary,
+        color: context.colors.surface,
         borderRadius: BorderRadius.circular(8),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
@@ -191,8 +193,8 @@ class InfoCard extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: theme.textTheme.labelLarge!.copyWith(
-                  color: theme.primaryColor,
+                style: context.typography.labelLarge.copyWith(
+                  color: context.colors.primary,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -200,7 +202,7 @@ class InfoCard extends StatelessWidget {
               Flexible(
                 child: Text(
                   value != null && value!.isNotEmpty ? value! : 'فارغ',
-                  style: theme.textTheme.labelMedium!.copyWith(
+                  style: context.typography.labelMedium.copyWith(
                     color: Colors.white,
                   ),
                   overflow: TextOverflow.ellipsis,
@@ -212,5 +214,4 @@ class InfoCard extends StatelessWidget {
         ),
       ),
     );
-  }
 }

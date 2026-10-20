@@ -1,67 +1,51 @@
 import 'dart:convert';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hr_app/src/features/authentication/domain/entities/manager_entity.dart';
 import 'package:hr_app/src/features/manager/departments/domain/entities/departments_entity.dart';
 import 'package:hr_app/src/features/manager/offices/domain/entities/offices_entity.dart';
 
-class ManagerInfoEntity {
-  int? status;
-  String? message;
-  ManageInfoDataEntity? data;
+part 'manager_info_entity.freezed.dart';
+part 'manager_info_entity.g.dart';
 
-  ManagerInfoEntity({this.status, this.message, this.data});
+@freezed
+abstract class ManagerInfoEntity with _$ManagerInfoEntity {
+  const ManagerInfoEntity._();
 
-  ManagerInfoEntity.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
-    message = json['message'];
-    data = ManageInfoDataEntity.fromMap(json['data']);
-  }
+  const factory ManagerInfoEntity({
+    int? status,
+    String? message,
+    ManageInfoDataEntity? data,
+  }) = _ManagerInfoEntity;
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> map = {};
-    map['status'] = status;
-    map['message'] = message;
-    map['data'] = data!.toMap();
-    return map;
-  }
+  factory ManagerInfoEntity.fromJson(Map<String, dynamic> json) =>
+      _$ManagerInfoEntityFromJson(json);
+
+  Map<String, dynamic> toMap() => toJson();
+
+  factory ManagerInfoEntity.fromMap(Map<String, dynamic> map) =>
+      ManagerInfoEntity.fromJson(map);
+
+  static ManagerInfoEntity fromRawJson(String str) =>
+      ManagerInfoEntity.fromJson(json.decode(str) as Map<String, dynamic>);
 }
 
-class ManageInfoDataEntity {
-  final List<DepartmentDataEntity> departments;
-  final List<OfficeDataEntity> offices;
-  final ManagerDataEntity manager;
+@freezed
+abstract class ManageInfoDataEntity with _$ManageInfoDataEntity {
+  const ManageInfoDataEntity._();
 
-  ManageInfoDataEntity(
-      {required this.departments,
-      required this.offices,
-      required this.manager});
+  const factory ManageInfoDataEntity({
+    required ManagerDataEntity manager, @Default([]) List<DepartmentDataEntity> departments,
+    @Default([]) List<OfficeDataEntity> offices,
+  }) = _ManageInfoDataEntity;
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'departments': departments.map((x) => x.toMap()).toList(),
-      'offices': offices.map((x) => x.toMap()).toList(),
-      'manager': manager.toJson(),
-    };
-  }
+  factory ManageInfoDataEntity.fromJson(Map<String, dynamic> json) =>
+      _$ManageInfoDataEntityFromJson(json);
 
-  factory ManageInfoDataEntity.fromMap(Map<String, dynamic> map) {
-    return ManageInfoDataEntity(
-      departments: List<DepartmentDataEntity>.from(
-        (map['departments'] as List).map<DepartmentDataEntity>(
-          (x) => DepartmentDataEntity.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
-      offices: List<OfficeDataEntity>.from(
-        (map['offices'] as List).map<OfficeDataEntity>(
-          (x) => OfficeDataEntity.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
-      manager:
-          ManagerDataEntity.fromJson(map['manager'] as Map<String, dynamic>),
-    );
-  }
+  Map<String, dynamic> toMap() => toJson();
 
-  String toJson() => json.encode(toMap());
+  factory ManageInfoDataEntity.fromMap(Map<String, dynamic> map) =>
+      ManageInfoDataEntity.fromJson(map);
 
-  factory ManageInfoDataEntity.fromJson(String source) =>
-      ManageInfoDataEntity.fromMap(json.decode(source) as Map<String, dynamic>);
+  static ManageInfoDataEntity fromRawJson(String str) =>
+      ManageInfoDataEntity.fromJson(json.decode(str) as Map<String, dynamic>);
 }

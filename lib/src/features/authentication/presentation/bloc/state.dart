@@ -1,72 +1,37 @@
-part of "bloc.dart";
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hr_app/src/features/authentication/domain/entities/employee_entity.dart';
+import 'package:hr_app/src/features/authentication/domain/entities/manager_entity.dart';
 
-abstract class AuthState extends Equatable {
-  @override
-  List<Object> get props => [];
-}
+part 'state.freezed.dart';
 
-class AuthInitial extends AuthState {}
+@freezed
+sealed class AuthState with _$AuthState {
+  const AuthState._();
 
-class AuthLoadingState extends AuthState {}
+  const factory AuthState.initial() = AuthInitial;
+  const factory AuthState.loading() = AuthLoadingState;
+  const factory AuthState.validUID() = ValidUIDState;
+  const factory AuthState.departmentSelected() = DepartmentSelectedState;
+  const factory AuthState.passwordChanged(String message) =
+      PasswordChangedState;
+  const factory AuthState.forgetPassword() = ForgetPasswordState;
+  const factory AuthState.passwordResetted(String message) =
+      PasswordResettedState;
+  const factory AuthState.activateAccount(String email) = ActivateAccountState;
+  const factory AuthState.emailVerified({
+    ManagerEntity? manager,
+    EmployeeEntity? employee,
+  }) = EmailVerifiedState;
+  const factory AuthState.success({
+    EmployeeEntity? employee,
+    ManagerEntity? manager,
+  }) = AuthSuccessState;
+  const factory AuthState.failure(String error) = AuthFailureState;
+  const factory AuthState.accountDeleted(String message) = AccountDeletedState;
 
-class ValidUIDState extends AuthState {
-  ValidUIDState();
-}
-
-class DepartmentSelectedState extends AuthState {
-  DepartmentSelectedState();
-}
-
-class PasswordChangedState extends AuthState {
-  final String message;
-
-  PasswordChangedState(this.message);
-}
-
-class ForgetPasswordState extends AuthState {
-  ForgetPasswordState();
-}
-
-class PasswordResettedState extends AuthState {
-  final String message;
-
-  PasswordResettedState(this.message);
-}
-
-class ActivateAccountState extends AuthState {
-  final String email;
-
-  ActivateAccountState(this.email);
-}
-
-class EmailVerifiedState extends AuthState {
-  final ManagerEntity? manager;
-  final EmployeeEntity? employee;
-  EmailVerifiedState({this.manager, this.employee});
-}
-
-class AuthSuccessState extends AuthState {
-  final EmployeeEntity? employee;
-  final ManagerEntity? manager;
-
-  AuthSuccessState({this.employee, this.manager});
-  bool get isEmployee => (employee != null) && (manager == null);
-}
-
-class AuthFailureState extends AuthState {
-  final String error;
-
-  AuthFailureState(this.error);
-
-  @override
-  List<Object> get props => [error];
-}
-
-class AccountDeletedState extends AuthState {
-  final String message;
-
-  AccountDeletedState(this.message);
-
-  @override
-  List<Object> get props => [message];
+  bool get isEmployee => switch (this) {
+    AuthSuccessState(:final employee, :final manager) =>
+      employee != null && manager == null,
+    _ => false,
+  };
 }

@@ -1,11 +1,11 @@
 import 'dart:convert';
-import 'package:hr_app/src/core/consts/consts.dart';
-import 'package:hr_app/src/core/error/exceptions.dart';
-import 'package:hr_app/src/core/public_models/token.dart';
+import 'package:dio/dio.dart';
+import 'package:hr_app/src/core/errors/exceptions.dart';
+import 'package:hr_app/src/core/network/dio_client.dart';
+import 'package:hr_app/src/core/network/dio_error_handler.dart';
 import 'package:hr_app/src/features/manager/departments/domain/entities/departments_entity.dart';
 import 'package:hr_app/src/features/manager/departments/domain/entities/departments_params.dart';
 import 'package:hr_app/src/features/manager/departments/domain/entities/job_param.dart';
-import 'package:http/http.dart' as http;
 
 abstract class DepartmentsAndJobRemoteSrc {
   Future<DepartmentsEntity> fetchDepartments();
@@ -18,135 +18,142 @@ abstract class DepartmentsAndJobRemoteSrc {
 }
 
 class DepartmentsAndJobsRemoteSrcImpl implements DepartmentsAndJobRemoteSrc {
-  final Token token;
-  final http.Client client;
+  final DioClient dioClient;
 
-  DepartmentsAndJobsRemoteSrcImpl({required this.client, required this.token});
+  DepartmentsAndJobsRemoteSrcImpl({
+    required this.dioClient,
+  });
+
+  Map<String, dynamic> _extractData(dynamic data) {
+    if (data is Map<String, dynamic>) return data;
+    if (data is Map) return Map<String, dynamic>.from(data);
+    if (data is String) return jsonDecode(data) as Map<String, dynamic>;
+    throw ServerException('Invalid response data from server');
+  }
+
+  Never _handleDioError(DioException e) => DioErrorHandler.handle(e);
+
   @override
   Future<DepartmentsEntity> fetchDepartments() async {
-    final response = await client.get(
-      Uri.parse("${AppConsts.baseUrl}/manager/departments"),
-      headers: {
-        "Accept": "application/json",
-        "Authorization": 'Bearer ${token.getToken}'
-      },
-    );
-
-    if (response.statusCode < 400) {
-      return DepartmentsEntity.fromJson(response.body);
-    } else {
-      throw ServerException(json.decode(response.body)['message']);
+    try {
+      final response = await dioClient.get('/manager/departments');
+      final data = _extractData(response.data);
+      if (data['status'] == 0) {
+        throw ServerException(
+          data['message']?.toString() ?? 'Failed to fetch departments',
+        );
+      }
+      return DepartmentsEntity.fromJson(data);
+    } on DioException catch (e) {
+      _handleDioError(e);
     }
   }
 
   @override
   Future<DepartmentsEntity> addDepartment(String params) async {
-    final response = await client.post(
-        Uri.parse("${AppConsts.baseUrl}/manager/createDepartment"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": 'Bearer ${token.getToken}'
-        },
-        body: {
-          'name': params
-        });
-    if (response.statusCode < 400) {
-      if (jsonDecode(response.body)['status'] == 0) {
-        throw ServerException(json.decode(response.body)['message']);
-      } else {
-        return DepartmentsEntity.fromJson(response.body);
+    try {
+      final response = await dioClient.post(
+        '/manager/createDepartment',
+        data: {'name': params},
+      );
+      final data = _extractData(response.data);
+      if (data['status'] == 0) {
+        throw ServerException(
+          data['message']?.toString() ?? 'Failed to add department',
+        );
       }
-    } else {
-      throw ServerException(json.decode(response.body)['message']);
+      return DepartmentsEntity.fromJson(data);
+    } on DioException catch (e) {
+      _handleDioError(e);
     }
   }
 
   @override
   Future<DepartmentsEntity> deleteDepartment(int id) async {
-    final response = await client.get(
-      Uri.parse("${AppConsts.baseUrl}/manager/deleteDepartment/$id"),
-      headers: {"Authorization": 'Bearer ${token.getToken}'},
-    );
-
-    if (response.statusCode < 400) {
-      return DepartmentsEntity.fromJson(response.body);
-    } else {
-      throw ServerException(json.decode(response.body)['message']);
+    try {
+      final response = await dioClient.get('/manager/deleteDepartment/$id');
+      final data = _extractData(response.data);
+      if (data['status'] == 0) {
+        throw ServerException(
+          data['message']?.toString() ?? 'Failed to delete department',
+        );
+      }
+      return DepartmentsEntity.fromJson(data);
+    } on DioException catch (e) {
+      _handleDioError(e);
     }
   }
 
   @override
   Future<DepartmentsEntity> editDepartment(DepartmentsParams params) async {
-    final response = await client.post(
-        Uri.parse("${AppConsts.baseUrl}/manager/updateDepartment"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": 'Bearer ${token.getToken}'
-        },
-        body: {
-          'name': params.name,
-          'department_id': params.id.toString()
-        });
-
-    if (response.statusCode < 400) {
-      if (jsonDecode(response.body)['status'] == 0) {
-        throw ServerException(json.decode(response.body)['message']);
-      } else {
-        return DepartmentsEntity.fromJson(response.body);
+    try {
+      final response = await dioClient.post(
+        '/manager/updateDepartment',
+        data: {'name': params.name, 'department_id': params.id.toString()},
+      );
+      final data = _extractData(response.data);
+      if (data['status'] == 0) {
+        throw ServerException(
+          data['message']?.toString() ?? 'Failed to edit department',
+        );
       }
-    } else {
-      throw ServerException(json.decode(response.body)['message']);
+      return DepartmentsEntity.fromJson(data);
+    } on DioException catch (e) {
+      _handleDioError(e);
     }
   }
 
   @override
   Future<DepartmentsEntity> addJob(DepartmentsParams params) async {
-    final response = await client
-        .post(Uri.parse("${AppConsts.baseUrl}/manager/createJob"), headers: {
-      "Accept": "application/json",
-      "Authorization": 'Bearer ${token.getToken}'
-    }, body: {
-      'department_id': params.id.toString(),
-      'title': params.name
-    });
-    if (response.statusCode < 400) {
-      if (jsonDecode(response.body)['status'] == 0) {
-        throw ServerException(json.decode(response.body)['message']);
-      } else {
-        return DepartmentsEntity.fromJson(response.body);
+    try {
+      final response = await dioClient.post(
+        '/manager/createJob',
+        data: {'department_id': params.id.toString(), 'title': params.name},
+      );
+      final data = _extractData(response.data);
+      if (data['status'] == 0) {
+        throw ServerException(
+          data['message']?.toString() ?? 'Failed to add job',
+        );
       }
-    } else {
-      throw ServerException(json.decode(response.body)['message']);
+      return DepartmentsEntity.fromJson(data);
+    } on DioException catch (e) {
+      _handleDioError(e);
     }
   }
 
   @override
   Future<DepartmentsEntity> deleteJob(int id) async {
-    final response = await client.get(
-      Uri.parse("${AppConsts.baseUrl}/manager/deleteJob/$id"),
-      headers: {"Authorization": 'Bearer ${token.getToken}'},
-    );
-    if (response.statusCode < 400) {
-      return DepartmentsEntity.fromJson(response.body);
-    } else {
-      throw ServerException(json.decode(response.body)['message']);
+    try {
+      final response = await dioClient.get('/manager/deleteJob/$id');
+      final data = _extractData(response.data);
+      if (data['status'] == 0) {
+        throw ServerException(
+          data['message']?.toString() ?? 'Failed to delete job',
+        );
+      }
+      return DepartmentsEntity.fromJson(data);
+    } on DioException catch (e) {
+      _handleDioError(e);
     }
   }
 
   @override
   Future<DepartmentsEntity> editJob(JobParams params) async {
-    final response = await client.post(
-        Uri.parse("${AppConsts.baseUrl}/manager/updateJob"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": 'Bearer ${token.getToken}'
-        },
-        body: params.toMap());
-
-    if (response.statusCode < 400) {
-      return DepartmentsEntity.fromJson(response.body);
-    } else {
-      throw ServerException(json.decode(response.body)['message']);
+    try {
+      final response = await dioClient.post(
+        '/manager/updateJob',
+        data: params.toMap(),
+      );
+      final data = _extractData(response.data);
+      if (data['status'] == 0) {
+        throw ServerException(
+          data['message']?.toString() ?? 'Failed to edit job',
+        );
+      }
+      return DepartmentsEntity.fromJson(data);
+    } on DioException catch (e) {
+      _handleDioError(e);
     }
   }
 }

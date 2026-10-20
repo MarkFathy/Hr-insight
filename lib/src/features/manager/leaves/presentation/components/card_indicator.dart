@@ -1,73 +1,88 @@
 import 'package:flutter/material.dart';
-import 'package:hr_app/src/core/consts/app_images.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hr_app/src/core/utils/extensions.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ListIndicator extends StatelessWidget {
-  const ListIndicator({
-    super.key,
-  });
+  const ListIndicator({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final colors = context.colors;
+    final baseColor = colors.surfaceContainer;
+    final highlightColor = colors.primary.withValues(alpha: 0.18);
+
     return Padding(
-      padding: const EdgeInsets.only(left: 30.0, right: 8, top: 8, bottom: 8),
-      child: Stack(
-        // alignment: Alignment.center,
-        clipBehavior: Clip.none,
-        children: [
-          Shimmer.fromColors(
-            baseColor: theme.colorScheme.secondary,
-            highlightColor: theme.primaryColor,
-            child: Material(
-                borderOnForeground: true,
-                shape: RoundedRectangleBorder(
-                    side: BorderSide(
-                      color: theme.primaryColor,
-                      width: 3,
-                    ),
-                    borderRadius: BorderRadius.circular(15)),
-                // color: theme.colorScheme.secondary,
-                child: ListTile(
-                  contentPadding: const EdgeInsets.symmetric(vertical: 5),
-                  leading: Image.asset(
-                    AppImages.leave,
-                  ),
-                  subtitle: const Material(
-                    color: Colors.grey,
-                    child: SizedBox(
-                      height: 15,
-                    ),
-                  ),
-                  title: const Material(
-                    color: Colors.grey,
-                    child: SizedBox(
-                      height: 10,
-                    ),
-                  ),
-                )),
+      padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
+      child: Container(
+        decoration: BoxDecoration(
+          color: colors.surface,
+          borderRadius: BorderRadius.circular(16.r),
+          border: Border.all(
+            color: colors.primary.withValues(alpha: 0.18),
           ),
-          Positioned(
-            left: -23,
-            top: 0,
-            bottom: 0,
-            child: Shimmer.fromColors(
-              baseColor: theme.cardColor,
-              highlightColor: theme.primaryColor,
-              child: Container(
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: theme.cardColor,
-                    border: Border.all(width: 3, color: theme.primaryColor)),
-                padding: const EdgeInsets.all(12),
-                child:
-                    Icon(Icons.pending_actions_sharp, color: theme.primaryColor
-                        // color: Colors.red,
-                        ),
-              ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.25),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
             ),
-          )
-        ],
+          ],
+        ),
+        padding: EdgeInsets.all(14.r),
+        child: Shimmer.fromColors(
+          baseColor: baseColor,
+          highlightColor: highlightColor,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Header row: Icon + Title and Status chip
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        width: 28.r,
+                        height: 28.r,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10.r),
+                        ),
+                      ),
+                      8.pw,
+                      Container(
+                        width: 85.w,
+                        height: 14.h,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(6.r),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    width: 76.w,
+                    height: 24.h,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20.r),
+                    ),
+                  ),
+                ],
+              ),
+              12.ph,
+              // Duration strip
+              Container(
+                height: 38.h,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

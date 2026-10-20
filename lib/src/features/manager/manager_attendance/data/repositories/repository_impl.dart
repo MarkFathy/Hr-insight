@@ -1,27 +1,30 @@
-import 'package:dartz/dartz.dart';
-import 'package:hr_app/src/core/error/exceptions.dart';
-import 'package:hr_app/src/core/error/failures.dart';
-import 'package:hr_app/src/core/network/network_info.dart';
+import 'package:fpdart/fpdart.dart';
+import 'package:hr_app/src/core/errors/app_failure.dart';
+import 'package:hr_app/src/core/errors/exceptions.dart';
+import 'package:hr_app/src/core/functional/typedefs.dart';
 import 'package:hr_app/src/features/manager/manager_attendance/data/data_sources/remote_src.dart';
-import 'package:hr_app/src/features/manager/manager_attendance/data/models/attendance_model.dart';
 import 'package:hr_app/src/features/manager/manager_attendance/data/models/attendance_params.dart';
-import '../../domain/repositories/repository.dart';
+import 'package:hr_app/src/features/manager/manager_attendance/domain/entities/manager_attendance_entity.dart';
+import 'package:hr_app/src/features/manager/manager_attendance/domain/repositories/repository.dart';
 
 class ManagerAttendanceRepoImpl implements ManagerAttendanceRepo {
   final ManagerAttendanceRemoteDataSrc remoteDataSource;
-  final NetworkInfo networkInfo;
 
-  ManagerAttendanceRepoImpl(
-      {required this.remoteDataSource, required this.networkInfo});
+  ManagerAttendanceRepoImpl({
+    required this.remoteDataSource,
+  });
 
   @override
-  Future<Either<Failure, ManagerAttendanceModel>> getManagerAttendance(
-      ManagerAttendanceParams params) async {
+  ResultFuture<ManagerAttendanceEntity> getManagerAttendance(
+    ManagerAttendanceParams params,
+  ) async {
     try {
       final remoteSections = await remoteDataSource.fetchAttendance(params);
       return Right(remoteSections);
     } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
+      return Left(AppFailure.server(message: e.message));
+    } on Exception catch (e) {
+      return Left(AppFailure.unexpected(message: e.toString()));
     }
   }
 }

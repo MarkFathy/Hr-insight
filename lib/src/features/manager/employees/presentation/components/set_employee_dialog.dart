@@ -1,239 +1,311 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hr_app/src/core/consts/consts.dart';
-import 'package:hr_app/src/core/shared_widgets/s_button.dart';
-import 'package:hr_app/src/core/shared_widgets/snake_bar.dart';
-import 'package:hr_app/src/core/utils/extentions.dart';
-import 'package:hr_app/src/core/utils/nav.dart';
+import 'package:hr_app/src/core/di/service_locator.dart';
+import 'package:hr_app/src/core/utils/extensions.dart';
+import 'package:hr_app/src/core/widgets/app_button.dart';
+import 'package:hr_app/src/core/widgets/app_snack_bar.dart';
 import 'package:hr_app/src/features/authentication/domain/entities/employee_entity.dart';
 import 'package:hr_app/src/features/manager/departments/presentation/bloc/bloc.dart';
 import 'package:hr_app/src/features/manager/offices/domain/entities/set_employee_params.dart';
 import 'package:hr_app/src/features/manager/offices/presentation/bloc/bloc.dart';
-import 'package:hr_app/src/injector.dart';
 import 'package:shimmer/shimmer.dart';
 
-class SetEmployeeDialog extends StatelessWidget {
+class SetEmployeeDialog extends StatefulWidget {
   final EmployeeDataEntity employee;
-  final Function() rebuild;
-  const SetEmployeeDialog(
-      {super.key, required this.rebuild, required this.employee});
+  final VoidCallback rebuild;
+
+  const SetEmployeeDialog({
+    required this.rebuild, required this.employee, super.key,
+  });
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    String? error;
-    int? selectedOffice = employee.office?.id;
-    int? selectedDepartment = employee.department?.id;
-    int? selectedJob = employee.job?.id;
+  State<SetEmployeeDialog> createState() => _SetEmployeeDialogState();
+}
 
-    return BlocProvider(
-      create: (context) => sl<OfficesBloc>()..add(const GetOfficesEvent()),
-      child: BlocConsumer<OfficesBloc, OfficesState>(
+class _SetEmployeeDialogState extends State<SetEmployeeDialog> {
+  String? _error;
+  int? _selectedOffice;
+  int? _selectedDepartment;
+  int? _selectedJob;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedOffice = widget.employee.office?.id;
+    _selectedDepartment = widget.employee.department?.id;
+    _selectedJob = widget.employee.job?.id;
+  }
+
+  @override
+  Widget build(BuildContext context) => MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => sl<OfficesBloc>()..add(const GetOfficesEvent()),
+        ),
+        BlocProvider(
+          create: (_) =>
+              sl<DepartmentsAndJobsBloc>()
+                ..add(const GetDepartmentsAndJobsEvent()),
+        ),
+      ],
+      child: BlocListener<OfficesBloc, OfficesState>(
         listener: (context, state) {
-          if (state is OfficesErrorState) showBar(state.message, context);
-          if (state is OfficesModifiedState) {
-            rebuild();
-            NV.pop(context);
+          if (state is OfficesErrorState) {
+            showBar(state.message, context);
+          } else if (state is OfficesModifiedState) {
+            widget.rebuild();
+            Navigator.pop(context);
           }
         },
-        builder: (context, state) {
-          return BlocProvider(
-            create: (context) => sl<DepartmentsAndJobsBloc>()
-              ..add(const GetDepartmentsAndJobsEvent()),
-            child: Dialog(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (state is OfficesLoadingState)
-                    Shimmer.fromColors(
-                        baseColor: theme.cardColor,
-                        highlightColor: theme.primaryColor,
-                        child: DropdownButton(
-                            hint: const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 18.0),
-                              child: Text('جارى التحميل المكاتب'),
-                            ),
-                            isExpanded: true,
-                            items: const [],
-                            onChanged: (val) {})),
-                  StatefulBuilder(builder: (context, changeState) {
-                    return Column(
-                      children: [
-                        if (state is OfficesLoadedState)
-                          DropdownButton(
-                            dropdownColor: MyColors.greyColor,
-                              hint: const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 18.0),
-                                child: Text('اختر المكتب'),
-                              ),
-                              isExpanded: true,
-                              value: selectedOffice,
-                              items: [
-                                if (state.offices.data!.isEmpty)
-                                  const DropdownMenuItem(
-                                      child: Text('لا يوجد مكاتب')),
-                                if (state.offices.data!.isNotEmpty)
-                                  ...state.offices.data!
-                                      .map((e) => DropdownMenuItem<int>(
-                                            value: e.id,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 18.0),
-                                              child: Text(e.name!),
-                                            ),
-                                          ))
-                              ],
-                              onChanged: (value) =>
-                                  changeState(() => selectedOffice = value)),
-                        BlocBuilder<DepartmentsAndJobsBloc,
-                            DepartmentsAndJobsState>(
-                          builder: (context, state) {
-                            return Column(
-                              children: [
-                                if (state is DepartmentsLoadingState) ...[
-                                  Shimmer.fromColors(
-                                      baseColor: theme.cardColor,
-                                      highlightColor: theme.primaryColor,
-                                      child: DropdownButton(
-                                          hint: const Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 18.0),
-                                            child: Text('جارى تحميل الأقسام'),
-                                          ),
-                                          isExpanded: true,
-                                          items: const [],
-                                          onChanged: (val) {})),
-                                  Shimmer.fromColors(
-                                      baseColor: theme.cardColor,
-                                      highlightColor: theme.primaryColor,
-                                      child: DropdownButton(
-                                          hint: const Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 18.0),
-                                            child: Text('جارى تحميل الوظائف'),
-                                          ),
-                                          isExpanded: true,
-                                          items: const [],
-                                          onChanged: (val) {})),
-                                ],
-                                if (state is DepartmentsLoadedState) ...[
-                                  DropdownButton(
-                                      dropdownColor: MyColors.greyColor,
-                                      hint: const Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 18.0),
-                                        child: Text('اختر القسم'),
-                                      ),
-                                      isExpanded: true,
-                                      value: selectedDepartment,
-                                      items: [
-                                        if (state.departments.data!.isEmpty)
-                                          const DropdownMenuItem(
-                                              child: Text('لا يوجد اقسام')),
-                                        if (state.departments.data!.isNotEmpty)
-                                          ...state.departments.data!
-                                              .map((e) => DropdownMenuItem<int>(
-                                                    value: e.id,
-                                                    child: Padding(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                          horizontal: 18.0),
-                                                      child: Text(e.name!),
-                                                    ),
-                                                  ))
-                                      ],
-                                      onChanged: (value) => changeState(() {
-                                            selectedDepartment = value;
-                                            selectedJob = null;
-                                          })),
-                                  //
-                                  if (selectedDepartment != null)
-                                    DropdownButton(
-                                        dropdownColor: MyColors.greyColor,
-
-                                        hint: const Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 18.0),
-                                          child: Text('اختر المسمى الوظيفى'),
-                                        ),
-                                        isExpanded: true,
-                                        value: selectedJob,
-                                        items: [
-                                          if (state.departments.data!
-                                              .firstWhere((element) =>
-                                                  element.id ==
-                                                  selectedDepartment)
-                                              .jobs!
-                                              .isEmpty)
-                                            const DropdownMenuItem(
-                                                child: Text('لا يوجد وظائف')),
-                                          ...state.departments.data!
-                                              .firstWhere((element) =>
-                                                  element.id ==
-                                                  selectedDepartment)
-                                              .jobs!
-                                              .map((e) => DropdownMenuItem<int>(
-                                                    value: e.id,
-                                                    child: Padding(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                          horizontal: 18.0),
-                                                      child: Text(e.title!),
-                                                    ),
-                                                  ))
-                                        ],
-                                        onChanged: (value) => changeState(
-                                            () => selectedJob = value)),
-                                ],
-                              ],
-                            );
-                          },
-                        ),
-                        if (error != null)
-                          Text(error!,
-                              style: theme.textTheme.labelMedium!
-                                  .copyWith(color: Colors.red)),
-                        10.ph,
-                        Row(
-                          children: [
-                            Expanded(
-                              child: SButton(
-                                  title: 'حفظ',
-                                  onTap: () {
-                                    if (selectedOffice == null) {
-                                      error = 'اختر المكتب';
-                                      changeState(() {});
-                                      return;
-                                    }
-                                    context.read<OfficesBloc>().add(
-                                        SetEmployeeEvent(
-                                            params: SetEmployeeParams(
-                                                employeeId: employee.id!,
-                                                officeId: selectedOffice,
-                                                jobId: selectedJob)));
-                                  }),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 18.0),
-                              child: TextButton(
-                                  child: const Text('إلغاء'),
-                                  onPressed: () {
-                                    NV.pop(context);
-                                  }),
-                            ),
-                          ],
-                        ),
-                      ],
-                    );
-                  })
+        child: Dialog(
+          shape: RoundedRectangleBorder(borderRadius: context.radius.mdBorder),
+          backgroundColor: context.colors.surface,
+          child: Padding(
+            padding: EdgeInsets.all(context.spacing.md),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  'تعيين الموظف',
+                  style: context.typography.titleMedium.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: context.colors.primary,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: context.spacing.md),
+                _buildOfficesSection(),
+                SizedBox(height: context.spacing.sm),
+                _buildDepartmentsAndJobsSection(),
+                if (_error != null) ...[
+                  SizedBox(height: context.spacing.xs),
+                  Text(
+                    _error!,
+                    style: context.typography.bodySmall.copyWith(
+                      color: context.colors.error,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ],
-              ),
+                SizedBox(height: context.spacing.md),
+                _buildActionButtons(),
+              ],
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
-  }
+
+  Widget _buildOfficesSection() => BlocBuilder<OfficesBloc, OfficesState>(
+      buildWhen: (prev, curr) =>
+          curr is OfficesLoadingState ||
+          curr is OfficesLoadedState ||
+          curr is OfficesErrorState,
+      builder: (context, state) {
+        if (state is OfficesLoadingState) {
+          return Shimmer.fromColors(
+            baseColor: context.colors.surface,
+            highlightColor: context.colors.primary,
+            child: DropdownButton<int>(
+              hint: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 18.0),
+                child: Text('جارى تحميل المكاتب'),
+              ),
+              isExpanded: true,
+              items: const [],
+              onChanged: null,
+            ),
+          );
+        }
+
+        if (state is OfficesLoadedState) {
+          final offices = state.offices.data ?? [];
+          return DropdownButton<int>(
+            dropdownColor: context.colors.surface,
+            hint: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 18.0),
+              child: Text('اختر المكتب'),
+            ),
+            isExpanded: true,
+            value: _selectedOffice,
+            items: offices.isEmpty
+                ? const [DropdownMenuItem(child: Text('لا يوجد مكاتب'))]
+                : offices
+                      .map(
+                        (e) => DropdownMenuItem<int>(
+                          value: e.id,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 18.0,
+                            ),
+                            child: Text(e.name ?? ''),
+                          ),
+                        ),
+                      )
+                      .toList(),
+            onChanged: (value) {
+              setState(() {
+                _selectedOffice = value;
+                _error = null;
+              });
+            },
+          );
+        }
+
+        return const SizedBox.shrink();
+      },
+    );
+
+  Widget _buildDepartmentsAndJobsSection() => BlocBuilder<DepartmentsAndJobsBloc, DepartmentsAndJobsState>(
+      buildWhen: (prev, curr) =>
+          curr is DepartmentsLoadingState ||
+          curr is DepartmentsLoadedState ||
+          curr is DepartmentsErrorState,
+      builder: (context, state) {
+        if (state is DepartmentsLoadingState) {
+          return Column(
+            children: [
+              Shimmer.fromColors(
+                baseColor: context.colors.surface,
+                highlightColor: context.colors.primary,
+                child: DropdownButton<int>(
+                  hint: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 18.0),
+                    child: Text('جارى تحميل الأقسام'),
+                  ),
+                  isExpanded: true,
+                  items: const [],
+                  onChanged: null,
+                ),
+              ),
+              Shimmer.fromColors(
+                baseColor: context.colors.surface,
+                highlightColor: context.colors.primary,
+                child: DropdownButton<int>(
+                  hint: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 18.0),
+                    child: Text('جارى تحميل الوظائف'),
+                  ),
+                  isExpanded: true,
+                  items: const [],
+                  onChanged: null,
+                ),
+              ),
+            ],
+          );
+        }
+
+        if (state is DepartmentsLoadedState) {
+          final departments = state.departments.data ?? [];
+          final currentDept = departments
+              .where((d) => d.id == _selectedDepartment)
+              .firstOrNull;
+          final jobs = currentDept?.jobs ?? [];
+
+          return Column(
+            children: [
+              DropdownButton<int>(
+                dropdownColor: context.colors.surface,
+                hint: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 18.0),
+                  child: Text('اختر القسم'),
+                ),
+                isExpanded: true,
+                value: _selectedDepartment,
+                items: departments.isEmpty
+                    ? const [DropdownMenuItem(child: Text('لا يوجد أقسام'))]
+                    : departments
+                          .map(
+                            (e) => DropdownMenuItem<int>(
+                              value: e.id,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 18.0,
+                                ),
+                                child: Text(e.name ?? ''),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedDepartment = value;
+                    _selectedJob = null;
+                  });
+                },
+              ),
+              if (_selectedDepartment != null)
+                DropdownButton<int>(
+                  dropdownColor: context.colors.surface,
+                  hint: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 18.0),
+                    child: Text('اختر المسمى الوظيفى'),
+                  ),
+                  isExpanded: true,
+                  value: _selectedJob,
+                  items: jobs.isEmpty
+                      ? const [DropdownMenuItem(child: Text('لا يوجد وظائف'))]
+                      : jobs
+                            .map(
+                              (e) => DropdownMenuItem<int>(
+                                value: e.id,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 18.0,
+                                  ),
+                                  child: Text(e.title ?? ''),
+                                ),
+                              ),
+                            )
+                            .toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedJob = value;
+                    });
+                  },
+                ),
+            ],
+          );
+        }
+
+        return const SizedBox.shrink();
+      },
+    );
+
+  Widget _buildActionButtons() => Builder(
+      builder: (btnContext) => Row(
+        children: [
+          Expanded(
+            child: SButton(
+              title: 'حفظ',
+              onTap: () {
+                if (_selectedOffice == null) {
+                  setState(() {
+                    _error = 'اختر المكتب';
+                  });
+                  return;
+                }
+                btnContext.read<OfficesBloc>().add(
+                  SetEmployeeEvent(
+                    params: SetEmployeeParams(
+                      employeeId: widget.employee.id!,
+                      officeId: _selectedOffice,
+                      jobId: _selectedJob,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18.0),
+            child: TextButton(
+              child: const Text('إلغاء'),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ),
+        ],
+      ),
+    );
 }

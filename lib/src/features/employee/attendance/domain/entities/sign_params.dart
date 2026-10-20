@@ -1,31 +1,23 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class SignParams {
-  final bool isAttend;
-  final double lat;
-  final double lng;
+part 'sign_params.freezed.dart';
+part 'sign_params.g.dart';
 
-  SignParams({required this.isAttend, required this.lat, required this.lng});
+@freezed
+abstract class SignParams with _$SignParams {
+  const SignParams._();
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'isAttend': isAttend,
-      'lat': lat,
-      'lng': lng,
-    };
-  }
+  const factory SignParams({
+    required bool isAttend,
+    required double lat,
+    required double lng,
+  }) = _SignParams;
 
-  factory SignParams.fromMap(Map<String, dynamic> map) {
-    return SignParams(
-      isAttend: map['isAttend'] as bool,
-      lat: map['lat'] as double,
-      lng: map['lng'] as double,
-    );
-  }
+  factory SignParams.fromJson(Map<String, dynamic> json) =>
+      _$SignParamsFromJson(json);
 
-  String toJson() => json.encode(toMap());
+  Map<String, dynamic> toMap() => toJson();
 
-  factory SignParams.fromJson(String source) =>
-      SignParams.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory SignParams.fromMap(Map<String, dynamic> map) =>
+      SignParams.fromJson(map);
 }

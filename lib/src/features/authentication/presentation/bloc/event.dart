@@ -1,60 +1,27 @@
-part of "bloc.dart";
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hr_app/src/features/authentication/domain/entities/account_delete_params.dart';
+import 'package:hr_app/src/features/authentication/domain/entities/reset_password_params.dart';
+import 'package:hr_app/src/features/authentication/domain/entities/verify_params.dart';
 
-abstract class AuthEvent extends Equatable {
-  @override
-  List<Object> get props => [];
-}
+part 'event.freezed.dart';
 
-class AutoLoginEvent extends AuthEvent {}
-
-class EmployeeSignInEvent extends AuthEvent {
-  EmployeeSignInEvent();
-}
-
-class ManagerSignInEvent extends AuthEvent {
-  ManagerSignInEvent();
-}
-
-class GetDepartmentsEvent extends AuthEvent {
-  GetDepartmentsEvent();
-}
-
-class GetJobTitlesEvent extends AuthEvent {
-  final int departmentId;
-
-  GetJobTitlesEvent(this.departmentId);
-}
-
-class ChangePasswordEvent extends AuthEvent {
-  final bool isEmployee;
-
-  ChangePasswordEvent({required this.isEmployee});
-}
-
-class ManagerSignUpEvent extends AuthEvent {
-  ManagerSignUpEvent();
-}
-
-class EmployeeSignUpEvent extends AuthEvent {}
-
-class SignOutEvent extends AuthEvent {}
-
-class VerifyEmailEvent extends AuthEvent {
-  final VerifyParams params;
-  VerifyEmailEvent(this.params);
-}
-
-class ForgetPasswordEvent extends AuthEvent {
-  final bool isEmployee;
-  ForgetPasswordEvent(this.isEmployee);
-}
-
-class ResetPasswordEvent extends AuthEvent {
-  final ResetPasswordParams params;
-  ResetPasswordEvent(this.params);
-}
-
-class DeleteAccountEvent extends AuthEvent {
-  final AccountDeleteParams params;
-  DeleteAccountEvent(this.params);
+@freezed
+sealed class AuthEvent with _$AuthEvent {
+  const factory AuthEvent.autoLogin() = AutoLoginEvent;
+  const factory AuthEvent.employeeSignIn() = EmployeeSignInEvent;
+  const factory AuthEvent.managerSignIn() = ManagerSignInEvent;
+  const factory AuthEvent.getDepartments() = GetDepartmentsEvent;
+  const factory AuthEvent.getJobTitles(int departmentId) = GetJobTitlesEvent;
+  const factory AuthEvent.changePassword({required bool isEmployee}) =
+      ChangePasswordEvent;
+  const factory AuthEvent.managerSignUp() = ManagerSignUpEvent;
+  const factory AuthEvent.employeeSignUp() = EmployeeSignUpEvent;
+  const factory AuthEvent.signOut() = SignOutEvent;
+  const factory AuthEvent.verifyEmail(VerifyParams params) = VerifyEmailEvent;
+  const factory AuthEvent.forgetPassword({required bool isEmployee}) =
+      ForgetPasswordEvent;
+  const factory AuthEvent.resetPassword(ResetPasswordParams params) =
+      ResetPasswordEvent;
+  const factory AuthEvent.deleteAccount(AccountDeleteParams params) =
+      DeleteAccountEvent;
 }

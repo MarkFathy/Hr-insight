@@ -1,41 +1,23 @@
-import 'dart:convert';
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class ChangePasswordParams extends Equatable {
-  final bool? isEmployee;
-  final String oldPassword;
-  final String password;
-  final String passwordConfirmation;
-  final String? token;
+part 'change_password_params.freezed.dart';
+part 'change_password_params.g.dart';
 
-  const ChangePasswordParams(
-      {required this.oldPassword,
-      this.isEmployee,
-      this.token,
-      required this.password,
-      required this.passwordConfirmation});
+@freezed
+abstract class ChangePasswordParams with _$ChangePasswordParams {
+  const ChangePasswordParams._();
 
-  @override
-  List<Object> get props => [oldPassword, password, passwordConfirmation];
+  const factory ChangePasswordParams({
+    @JsonKey(name: 'old_password') required String oldPassword, required String password, @JsonKey(name: 'password_confirmation')
+    required String passwordConfirmation, bool? isEmployee,
+    String? token,
+  }) = _ChangePasswordParams;
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'old_password': oldPassword,
-      'password': password.toString(),
-      'password_confirmation': passwordConfirmation.toString(),
-    };
-  }
+  factory ChangePasswordParams.fromJson(Map<String, dynamic> json) =>
+      _$ChangePasswordParamsFromJson(json);
 
-  factory ChangePasswordParams.fromMap(Map<String, dynamic> map) {
-    return ChangePasswordParams(
-      oldPassword: map['old_password'] as String,
-      password: map['password'] as String,
-      passwordConfirmation: map['password_confirmation'] as String,
-    );
-  }
+  Map<String, dynamic> toMap() => toJson();
 
-  String toJson() => json.encode(toMap());
-
-  factory ChangePasswordParams.fromJson(String source) =>
-      ChangePasswordParams.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory ChangePasswordParams.fromMap(Map<String, dynamic> map) =>
+      ChangePasswordParams.fromJson(map);
 }

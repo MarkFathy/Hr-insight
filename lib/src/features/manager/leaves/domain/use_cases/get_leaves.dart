@@ -1,14 +1,10 @@
-import 'package:dartz/dartz.dart';
-import 'package:hr_app/src/core/error/failures.dart';
-import 'package:hr_app/src/core/usecases/usecase.dart';
-import 'package:hr_app/src/features/employee/leaves/data/models/leave_model.dart';
-import '../repositories/repository.dart';
+import 'package:hr_app/src/core/functional/typedefs.dart';
+import 'package:hr_app/src/features/employee/leaves/domain/entities/leaves_entity.dart';
+import 'package:hr_app/src/features/manager/leaves/domain/repositories/repository.dart';
 
-class GetManagerLeavesUC extends UseCase<LeavesModel, NoParams> {
+class GetManagerLeavesUC {
   final ManagerLeavesRepo repository;
   GetManagerLeavesUC(this.repository);
-  @override
-  Future<Either<Failure, LeavesModel>> call(NoParams params) async {
-    return await repository.getLeaves();
-  }
+
+  ResultFuture<LeavesEntity> call() async => repository.getLeaves();
 }

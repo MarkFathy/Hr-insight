@@ -1,95 +1,58 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:hr_app/src/core/consts/consts.dart';
-import 'package:hr_app/src/core/error/exceptions.dart';
-import 'package:hr_app/src/core/public_models/token.dart';
+import 'package:dio/dio.dart';
+import 'package:hr_app/src/core/errors/exceptions.dart';
+import 'package:hr_app/src/core/network/dio_client.dart';
+import 'package:hr_app/src/core/network/dio_error_handler.dart';
 import 'package:hr_app/src/features/manager/employees/domain/entities/employees_entity.dart';
-
-import 'package:http/http.dart' as http;
 
 abstract class EmployeesRemoteSrc {
   Future<EmployeesEntity> fetchEmployees();
-
   Future<EmployeesEntity> deleteEmployee(int id);
 }
 
 class EmployeesRemoteSrcImpl implements EmployeesRemoteSrc {
-  final Token token;
-  final http.Client client;
+  final DioClient dioClient;
 
-  EmployeesRemoteSrcImpl({required this.client, required this.token});
-  @override
-  Future<EmployeesEntity> fetchEmployees() async {
-    final response = await client.get(
-      Uri.parse("${AppConsts.baseUrl}/manager/employees"),
-      headers: {
-        "Accept": "application/json",
-        "Authorization": 'Bearer ${token.getToken}'
-      },
-    );
+  EmployeesRemoteSrcImpl({required this.dioClient});
 
-    if (response.statusCode < 400) {
-      debugPrint(
-          EmployeesEntity.fromJson(response.body).data!.length.toString(),
-          wrapWidth: 100000);
-      return EmployeesEntity.fromJson(response.body);
-    } else {
-      throw ServerException(json.decode(response.body)['message']);
-    }
+  Map<String, dynamic> _extractData(dynamic data) {
+    if (data is Map<String, dynamic>) return data;
+    if (data is Map) return Map<String, dynamic>.from(data);
+    if (data is String) return jsonDecode(data) as Map<String, dynamic>;
+    throw ServerException('Invalid response data from server');
   }
 
-  // @override
-  // Future<OfficesEntity> addOffice(OfficeParams params) async {
-  //   final response = await client.post(
-  //       Uri.parse("${AppConsts.baseUrl}/manager/add-office"),
-  //       headers: {
-  //         "Accept": "application/json",
-  //         "Authorization": 'Bearer ${token.getToken}'
-  //       },
-  //       body: params.toMap());
-  //   print(response.statusCode);
+  Never _handleDioError(DioException e) => DioErrorHandler.handle(e);
 
-  //   if (response.statusCode < 400) {
-  //     print(response.body);
-  //     return OfficesEntity.fromJson(response.body);
-  //   } else {
-  //     throw ServerException(json.decode(response.body)['message']);
-  //   }
-  // }
+  @override
+  Future<EmployeesEntity> fetchEmployees() async {
+    try {
+      final response = await dioClient.get('/manager/employees');
+      final data = _extractData(response.data);
+      if (data['status'] == 0) {
+        throw ServerException(
+          data['message']?.toString() ?? 'Failed to fetch employees',
+        );
+      }
+      return EmployeesEntity.fromJson(data);
+    } on DioException catch (e) {
+      _handleDioError(e);
+    }
+  }
 
   @override
   Future<EmployeesEntity> deleteEmployee(int id) async {
-    final response = await client.delete(
-      Uri.parse("${AppConsts.baseUrl}/manager/deleteEmployee/$id"),
-      headers: {
-        "Accept": "application/json",
-        "Authorization": 'Bearer ${token.getToken}'
-      },
-    );
-
-    if (response.statusCode < 400) {
-      return EmployeesEntity.fromJson(response.body);
-    } else {
-      throw ServerException(json.decode(response.body)['message']);
+    try {
+      final response = await dioClient.delete('/manager/deleteEmployee/$id');
+      final data = _extractData(response.data);
+      if (data['status'] == 0) {
+        throw ServerException(
+          data['message']?.toString() ?? 'Failed to delete employee',
+        );
+      }
+      return EmployeesEntity.fromJson(data);
+    } on DioException catch (e) {
+      _handleDioError(e);
     }
   }
-
-  // @override
-  // Future<OfficeDetailsEntity> getOfficeDetails(int id) async {
-  //   final response = await client.get(
-  //     Uri.parse("${AppConsts.baseUrl}/manager/offices/$id"),
-  //     headers: {
-  //       "Accept": "application/json",
-  //       "Content-Type": "application/json",
-  //       "Authorization": 'Bearer ${token.getToken}'
-  //     },
-  //   );
-
-  //   if (response.statusCode < 400) {
-  //     print(response.body);
-  //     return OfficeDetailsEntity.fromJson(response.body);
-  //   } else {
-  //     throw ServerException(json.decode(response.body)['message']);
-  //   }
-  // }
 }

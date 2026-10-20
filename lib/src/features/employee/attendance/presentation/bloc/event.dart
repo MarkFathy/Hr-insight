@@ -1,21 +1,9 @@
-part of 'bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-abstract class AttendanceEvent extends Equatable {
-  const AttendanceEvent();
+part 'event.freezed.dart';
 
-  @override
-  List<Object> get props => [];
-}
-
-class GetAttendanceEvent extends AttendanceEvent {
-  @override
-  List<Object> get props => [];
-}
-
-class SignEvent extends AttendanceEvent {
-  final bool isAttend;
-
-  const SignEvent({required this.isAttend});
-  @override
-  List<Object> get props => [isAttend];
+@freezed
+sealed class AttendanceEvent with _$AttendanceEvent {
+  const factory AttendanceEvent.getAttendance() = GetAttendanceEvent;
+  const factory AttendanceEvent.sign({required bool isAttend}) = SignEvent;
 }

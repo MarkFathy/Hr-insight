@@ -1,9 +1,9 @@
-import 'package:dartz/dartz.dart';
-import 'package:hr_app/src/core/error/failures.dart';
-import 'package:hr_app/src/features/manager/manager_attendance/data/models/attendance_model.dart';
+import 'package:hr_app/src/core/functional/typedefs.dart';
 import 'package:hr_app/src/features/manager/manager_attendance/data/models/attendance_params.dart';
+import 'package:hr_app/src/features/manager/manager_attendance/domain/entities/manager_attendance_entity.dart';
 
-abstract class ManagerAttendanceRepo {
-  Future<Either<Failure, ManagerAttendanceModel>> getManagerAttendance(
-      ManagerAttendanceParams params);
+abstract interface class ManagerAttendanceRepo {
+  ResultFuture<ManagerAttendanceEntity> getManagerAttendance(
+    ManagerAttendanceParams params,
+  );
 }

@@ -1,10 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gif/gif.dart';
-import 'package:hr_app/src/core/consts/app_images.dart';
-import 'package:hr_app/src/core/utils/extentions.dart';
-import 'package:hr_app/src/core/utils/nav.dart';
+import 'package:hr_app/src/core/constants/app_images.dart';
+import 'package:hr_app/src/core/utils/extensions.dart';
+import 'package:hr_app/src/core/utils/navigation_helper.dart';
 import 'package:hr_app/src/features/manager/offices/domain/entities/offices_entity.dart';
 import 'package:hr_app/src/features/manager/offices/presentation/bloc/bloc.dart';
 import 'package:hr_app/src/features/manager/offices/presentation/components/office_details.dart';
@@ -12,18 +13,15 @@ import 'package:shimmer/shimmer.dart';
 
 class OfficeCard extends StatelessWidget {
   final OfficeDataEntity office;
-  const OfficeCard({super.key, required this.office});
+  const OfficeCard({required this.office, super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Material(
-      color: theme.colorScheme.secondary,
+  Widget build(BuildContext context) => Material(
+      color: context.colors.surface,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.r),
         side: BorderSide(
-          color: theme.primaryColor.withValues(alpha: 0.35),
+          color: context.colors.primary.withValues(alpha: 0.35),
           width: 1.3,
         ),
       ),
@@ -31,12 +29,14 @@ class OfficeCard extends StatelessWidget {
       shadowColor: Colors.black.withValues(alpha: 0.25),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: () => NV.nextScreen(
-          context,
-          OfficeDetailsScreen(
-            office: office,
-            rebuild: () =>
-                context.read<OfficesBloc>().add(const GetOfficesEvent()),
+        onTap: () => unawaited(
+          NavigationHelper.nextScreen<void>(
+            context,
+            OfficeDetailsScreen(
+              office: office,
+              rebuild: () =>
+                  context.read<OfficesBloc>().add(const GetOfficesEvent()),
+            ),
           ),
         ),
         child: Padding(
@@ -50,14 +50,14 @@ class OfficeCard extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.location_city_rounded,
-                    color: theme.primaryColor,
+                    color: context.colors.primary,
                     size: 16.r,
                   ),
                   6.pw,
                   Flexible(
                     child: Text(
                       office.name ?? 'بدون اسم',
-                      style: theme.textTheme.titleSmall?.copyWith(
+                      style: context.typography.titleSmall.copyWith(
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                         fontSize: 13.r,
@@ -75,15 +75,13 @@ class OfficeCard extends StatelessWidget {
                   margin: EdgeInsets.symmetric(vertical: 6.r),
                   padding: EdgeInsets.all(6.r),
                   decoration: BoxDecoration(
-                    color: theme.scaffoldBackgroundColor.withValues(alpha: 0.4),
+                    color: context.colors.background.withValues(alpha: 0.4),
                     borderRadius: BorderRadius.circular(12.r),
                   ),
                   child: Center(
-                    child: Gif(
-                      image: AssetImage(AppImages.office),
-                      autostart: Autostart.once,
+                    child: Image.asset(
+                      AppImages.office,
                       fit: BoxFit.contain,
-                      fps: 30,
                     ),
                   ),
                 ),
@@ -95,9 +93,12 @@ class OfficeCard extends StatelessWidget {
                 children: [
                   // Radius Chip
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 6.r, vertical: 3.r),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 6.r,
+                      vertical: 3.r,
+                    ),
                     decoration: BoxDecoration(
-                      color: theme.primaryColor.withValues(alpha: 0.12),
+                      color: context.colors.primary.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(8.r),
                     ),
                     child: Row(
@@ -106,13 +107,13 @@ class OfficeCard extends StatelessWidget {
                         Icon(
                           Icons.radar_rounded,
                           size: 12.r,
-                          color: theme.primaryColor,
+                          color: context.colors.primary,
                         ),
                         4.pw,
                         Text(
                           '${office.radius.formatRadius} م',
                           style: TextStyle(
-                            color: theme.primaryColor,
+                            color: context.colors.primary,
                             fontSize: 10.r,
                             fontWeight: FontWeight.w600,
                           ),
@@ -123,7 +124,10 @@ class OfficeCard extends StatelessWidget {
 
                   // Employee Count Chip
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 6.r, vertical: 3.r),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 6.r,
+                      vertical: 3.r,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.cyanAccent.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(8.r),
@@ -139,9 +143,9 @@ class OfficeCard extends StatelessWidget {
                         4.pw,
                         Text(
                           '${office.employeeCount ?? 0} موظف',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.cyanAccent,
-                            fontSize: 10.r,
+                            fontSize: 10,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -155,22 +159,17 @@ class OfficeCard extends StatelessWidget {
         ),
       ),
     );
-  }
 }
 
 class OfficesIndicator extends StatelessWidget {
   const OfficesIndicator({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Material(
-      color: theme.colorScheme.secondary,
+  Widget build(BuildContext context) => Material(
+      color: context.colors.surface,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.r),
-        side: BorderSide(
-          color: theme.primaryColor.withValues(alpha: 0.2),
-        ),
+        side: BorderSide(color: context.colors.primary.withValues(alpha: 0.2)),
       ),
       child: Padding(
         padding: EdgeInsets.all(12.r),
@@ -181,11 +180,11 @@ class OfficesIndicator extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                width: 80.r,
-                height: 12.r,
+                width: 80.w,
+                height: 12.h,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(4),
+                  borderRadius: BorderRadius.circular(4.r),
                 ),
               ),
               Container(
@@ -193,26 +192,26 @@ class OfficesIndicator extends StatelessWidget {
                 height: 65.r,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(10.r),
                 ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    width: 45.r,
-                    height: 14.r,
+                    width: 45.w,
+                    height: 14.h,
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(4),
+                      borderRadius: BorderRadius.circular(4.r),
                     ),
                   ),
                   Container(
-                    width: 45.r,
-                    height: 14.r,
+                    width: 45.w,
+                    height: 14.h,
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(4),
+                      borderRadius: BorderRadius.circular(4.r),
                     ),
                   ),
                 ],
@@ -222,5 +221,4 @@ class OfficesIndicator extends StatelessWidget {
         ),
       ),
     );
-  }
 }

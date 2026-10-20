@@ -1,32 +1,14 @@
-part of 'bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hr_app/src/features/employee/leaves/domain/entities/leaves_entity.dart';
 
-abstract class LeavesState extends Equatable {
-  const LeavesState();
+part 'state.freezed.dart';
 
-  @override
-  List<Object> get props => [];
-}
-
-class LeavesInitialState extends LeavesState {}
-
-class LeavesLoadingState extends LeavesState {}
-
-class LeavesLoadedState extends LeavesState {
-  final LeavesModel leaves;
-
-  const LeavesLoadedState({required this.leaves});
-
-  @override
-  List<Object> get props => [leaves];
-}
-
-class LeaveSentState extends LeavesState {}
-
-class LeavesErrorState extends LeavesState {
-  final String message;
-
-  const LeavesErrorState({required this.message});
-
-  @override
-  List<Object> get props => [message];
+@freezed
+sealed class LeavesState with _$LeavesState {
+  const factory LeavesState.initial() = LeavesInitialState;
+  const factory LeavesState.loading() = LeavesLoadingState;
+  const factory LeavesState.loaded({required LeavesEntity leaves}) =
+      LeavesLoadedState;
+  const factory LeavesState.sent() = LeaveSentState;
+  const factory LeavesState.error({required String message}) = LeavesErrorState;
 }

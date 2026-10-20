@@ -1,60 +1,64 @@
 import 'dart:convert';
-import 'package:hr_app/src/core/consts/consts.dart';
-import 'package:hr_app/src/core/error/exceptions.dart';
-import 'package:hr_app/src/core/public_models/token.dart';
-import 'package:hr_app/src/features/employee/leaves/data/models/leave_model.dart';
+import 'package:dio/dio.dart';
+import 'package:hr_app/src/core/errors/exceptions.dart';
+import 'package:hr_app/src/core/network/dio_client.dart';
+import 'package:hr_app/src/core/network/dio_error_handler.dart';
+import 'package:hr_app/src/features/employee/leaves/domain/entities/leaves_entity.dart';
 import 'package:hr_app/src/features/manager/leaves/domain/entities/set_leave_param.dart';
-import 'package:http/http.dart' as http;
 
 abstract class ManagerLeavesRemoteDataSrc {
-  Future<LeavesModel> fetchLeaves();
-  Future<LeavesModel> setLeave(SetLeaveParams params);
+  Future<LeavesEntity> fetchLeaves();
+  Future<LeavesEntity> setLeave(SetLeaveParams params);
 }
 
 class ManagerLeavesRemoteDataSrcImpl implements ManagerLeavesRemoteDataSrc {
-  final Token token;
-  final http.Client client;
+  final DioClient dioClient;
 
-  ManagerLeavesRemoteDataSrcImpl({required this.client, required this.token});
+  ManagerLeavesRemoteDataSrcImpl({
+    required this.dioClient,
+  });
+
+  Map<String, dynamic> _extractData(dynamic data) {
+    if (data is Map<String, dynamic>) return data;
+    if (data is Map) return Map<String, dynamic>.from(data);
+    if (data is String) return jsonDecode(data) as Map<String, dynamic>;
+    throw ServerException('Invalid response data from server');
+  }
+
+  Never _handleDioError(DioException e) => DioErrorHandler.handle(e);
+
   @override
-  Future<LeavesModel> fetchLeaves() async {
-    final response = await client.get(
-      Uri.parse("${AppConsts.baseUrl}/manager/leaves"),
-      headers: {
-        "Accept": "application/json",
-        "Authorization": 'Bearer ${token.getToken}'
-      },
-    );
-    if (response.statusCode < 400) {
-      if (jsonDecode(response.body)['status'] == 0) {
-        throw ServerException(jsonDecode(response.body)['message']);
+  Future<LeavesEntity> fetchLeaves() async {
+    try {
+      final response = await dioClient.get('/manager/leaves');
+      final data = _extractData(response.data);
+      if (data['status'] == 0) {
+        throw ServerException(
+          data['message']?.toString() ?? 'Failed to fetch manager leaves',
+        );
       }
-      return LeavesModel.fromJson(response.body);
-    } else {
-      throw ServerException(json.decode(response.body)['message']);
+      return LeavesEntity.fromJson(data);
+    } on DioException catch (e) {
+      _handleDioError(e);
     }
   }
 
   @override
-  Future<LeavesModel> setLeave(SetLeaveParams params) async {
-    final response = await client.post(
-        Uri.parse("${AppConsts.baseUrl}/manager/acceptRejectLeave"),
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json",
-          "Authorization": 'Bearer ${token.getToken}',
-          "Connection": "keep-alive",
-        },
-        body: jsonEncode(params.toMap()));
-    // print(response.body);
-    // print(response.statusCode);
-    if (response.statusCode < 400) {
-      if (jsonDecode(response.body)['status'] == 0) {
-        throw ServerException(jsonDecode(response.body)['message']);
+  Future<LeavesEntity> setLeave(SetLeaveParams params) async {
+    try {
+      final response = await dioClient.post(
+        '/manager/acceptRejectLeave',
+        data: params.toMap(),
+      );
+      final data = _extractData(response.data);
+      if (data['status'] == 0) {
+        throw ServerException(
+          data['message']?.toString() ?? 'Failed to update leave',
+        );
       }
-      return LeavesModel.fromJson(response.body);
-    } else {
-      throw ServerException(json.decode(response.body)['message']);
+      return LeavesEntity.fromJson(data);
+    } on DioException catch (e) {
+      _handleDioError(e);
     }
   }
 }

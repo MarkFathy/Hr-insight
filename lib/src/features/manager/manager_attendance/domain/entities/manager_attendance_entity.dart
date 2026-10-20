@@ -1,81 +1,59 @@
-import 'package:equatable/equatable.dart';
+import 'dart:convert';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class ManagerAttendanceEntity extends Equatable {
-  final int? status;
-  final String? message;
-  final List<ManagerAttendanceDataEntity>? data;
-  const ManagerAttendanceEntity({this.status, this.message, this.data});
+part 'manager_attendance_entity.freezed.dart';
+part 'manager_attendance_entity.g.dart';
 
-  @override
-  List<Object?> get props => [status, message, data];
+@freezed
+abstract class ManagerAttendanceEntity with _$ManagerAttendanceEntity {
+  const ManagerAttendanceEntity._();
+
+  const factory ManagerAttendanceEntity({
+    int? status,
+    String? message,
+    List<ManagerAttendanceDataEntity>? data,
+  }) = _ManagerAttendanceEntity;
+
+  factory ManagerAttendanceEntity.fromJson(Map<String, dynamic> json) =>
+      _$ManagerAttendanceEntityFromJson(json);
+
+  Map<String, dynamic> toMap() => toJson();
+
+  factory ManagerAttendanceEntity.fromMap(Map<String, dynamic> map) =>
+      ManagerAttendanceEntity.fromJson(map);
+
+  static ManagerAttendanceEntity fromRawJson(String str) =>
+      ManagerAttendanceEntity.fromJson(
+        json.decode(str) as Map<String, dynamic>,
+      );
 }
 
-// class AttendanceDataEntity extends Equatable {
-//   final int? id;
-//   final int? employeeId;
-//   final String? attendanceTime;
-//   final double? lat;
-//   final double? lng;
-//   final String? createdAt;
-//   final String? updatedAt;
+@freezed
+abstract class ManagerAttendanceDataEntity with _$ManagerAttendanceDataEntity {
+  const ManagerAttendanceDataEntity._();
 
-//   const AttendanceDataEntity(
-//       {this.id,
-//       this.employeeId,
-//       this.attendanceTime,
-//       this.lat,
-//       this.lng,
-//       this.createdAt,
-//       this.updatedAt});
+  const factory ManagerAttendanceDataEntity({
+    int? id,
+    String? date,
+    @JsonKey(name: 'employee_id') int? employeeId,
+    @JsonKey(name: 'attendance_time') String? attendanceTime,
+    @JsonKey(name: 'departure_time') String? departureTime,
+    double? lat,
+    double? lng,
+    @JsonKey(name: 'created_at') String? createdAt,
+    @JsonKey(name: 'updated_at') String? updatedAt,
+  }) = _ManagerAttendanceDataEntity;
 
-//   @override
-//   List<Object?> get props {
-//     return [
-//       id,
-//       employeeId,
-//       attendanceTime,
-//       lat,
-//       lng,
-//       createdAt,
-//       updatedAt,
-//     ];
-//   }
-// }
+  factory ManagerAttendanceDataEntity.fromJson(Map<String, dynamic> json) =>
+      _$ManagerAttendanceDataEntityFromJson(json);
 
-class ManagerAttendanceDataEntity extends Equatable {
-  final int? id;
-  final String? date;
-  final int? employeeId;
-  final String? attendanceTime;
-  final String? departureTime;
-  final double? lat;
-  final double? lng;
-  final String? createdAt;
-  final String? updatedAt;
+  Map<String, dynamic> toMap() => toJson();
 
-  const ManagerAttendanceDataEntity(
-      {this.id,
-      this.date,
-      this.employeeId,
-      this.attendanceTime,
-      this.departureTime,
-      this.lat,
-      this.lng,
-      this.createdAt,
-      this.updatedAt});
+  factory ManagerAttendanceDataEntity.fromMap(Map<String, dynamic> map) =>
+      ManagerAttendanceDataEntity.fromJson(map);
 
-  @override
-  List<Object?> get props {
-    return [
-      id,
-      date,
-      employeeId,
-      attendanceTime,
-      departureTime,
-      lat,
-      lng,
-      createdAt,
-      updatedAt,
-    ];
-  }
+  static ManagerAttendanceDataEntity fromRawJson(String str) =>
+      ManagerAttendanceDataEntity.fromJson(
+        json.decode(str) as Map<String, dynamic>,
+      );
 }

@@ -1,45 +1,31 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'package:equatable/equatable.dart';
+part 'office_params.freezed.dart';
+part 'office_params.g.dart';
 
-class OfficeParams extends Equatable {
-  final int? id;
-  final String? name;
-  final double? radius;
-  final double? lat;
-  final double? lng;
+@freezed
+abstract class OfficeParams with _$OfficeParams {
+  const OfficeParams._();
 
-  const OfficeParams(
-      {required this.name,
-      required this.radius,
-      required this.lat,
-      required this.lng,
-      this.id});
+  const factory OfficeParams({
+    required String? name, required double? radius, required double? lat, required double? lng, int? id,
+  }) = _OfficeParams;
 
-  @override
-  List<Object?> get props => [name, radius, lat, lng, id];
+  factory OfficeParams.fromJson(Map<String, dynamic> json) =>
+      _$OfficeParamsFromJson(json);
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'name': name,
-      'radius': radius.toString(),
-      'lat': lat.toString(),
-      'lng': lng.toString(),
-    };
-  }
+  Map<String, dynamic> toMap() => {
+    'name': name,
+    'radius': radius?.toString(),
+    'lat': lat?.toString(),
+    'lng': lng?.toString(),
+  };
 
-  factory OfficeParams.fromMap(Map<String, dynamic> map) {
-    return OfficeParams(
-      name: map['name'] as String,
-      radius: map['radius'] as double,
-      lat: map['lat'] as double,
-      lng: map['lng'] as double,
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory OfficeParams.fromJson(String source) =>
-      OfficeParams.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory OfficeParams.fromMap(Map<String, dynamic> map) => OfficeParams(
+    name: map['name'] as String?,
+    radius: (map['radius'] as num?)?.toDouble(),
+    lat: (map['lat'] as num?)?.toDouble(),
+    lng: (map['lng'] as num?)?.toDouble(),
+    id: map['id'] as int?,
+  );
 }

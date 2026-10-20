@@ -1,17 +1,13 @@
-import 'package:dartz/dartz.dart';
-import 'package:hr_app/src/core/error/failures.dart';
-import 'package:hr_app/src/core/usecases/usecase.dart';
-import 'package:hr_app/src/features/manager/manager_attendance/data/models/attendance_model.dart';
+import 'package:hr_app/src/core/functional/typedefs.dart';
 import 'package:hr_app/src/features/manager/manager_attendance/data/models/attendance_params.dart';
-import '../repositories/repository.dart';
+import 'package:hr_app/src/features/manager/manager_attendance/domain/entities/manager_attendance_entity.dart';
+import 'package:hr_app/src/features/manager/manager_attendance/domain/repositories/repository.dart';
 
-class GetManagerAttendanceUC
-    extends UseCase<ManagerAttendanceModel, ManagerAttendanceParams> {
+class GetManagerAttendanceUC {
   final ManagerAttendanceRepo repository;
   GetManagerAttendanceUC(this.repository);
-  @override
-  Future<Either<Failure, ManagerAttendanceModel>> call(
-      ManagerAttendanceParams params) async {
-    return await repository.getManagerAttendance(params);
-  }
+
+  ResultFuture<ManagerAttendanceEntity> call(
+    ManagerAttendanceParams params,
+  ) async => repository.getManagerAttendance(params);
 }

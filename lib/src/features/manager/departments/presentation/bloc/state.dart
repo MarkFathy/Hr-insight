@@ -1,36 +1,17 @@
-part of 'bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hr_app/src/features/manager/departments/domain/entities/departments_entity.dart';
 
-abstract class DepartmentsAndJobsState extends Equatable {
-  const DepartmentsAndJobsState();
+part 'state.freezed.dart';
 
-  @override
-  List<Object> get props => [];
-}
-
-class DepartmentsInitialState extends DepartmentsAndJobsState {}
-
-class DepartmentsLoadingState extends DepartmentsAndJobsState {}
-
-class DepartmentsLoadedState extends DepartmentsAndJobsState {
-  final DepartmentsEntity departments;
-
-  const DepartmentsLoadedState({required this.departments});
-
-  @override
-  List<Object> get props => [departments];
-}
-
-class DepartmentsModifiedState extends DepartmentsAndJobsState {
-  final String? message;
-
-  const DepartmentsModifiedState({this.message});
-}
-
-class DepartmentsErrorState extends DepartmentsAndJobsState {
-  final String message;
-
-  const DepartmentsErrorState({required this.message});
-
-  @override
-  List<Object> get props => [message];
+@freezed
+sealed class DepartmentsAndJobsState with _$DepartmentsAndJobsState {
+  const factory DepartmentsAndJobsState.initial() = DepartmentsInitialState;
+  const factory DepartmentsAndJobsState.loading() = DepartmentsLoadingState;
+  const factory DepartmentsAndJobsState.loaded({
+    required DepartmentsEntity departments,
+  }) = DepartmentsLoadedState;
+  const factory DepartmentsAndJobsState.modified({String? message}) =
+      DepartmentsModifiedState;
+  const factory DepartmentsAndJobsState.error({required String message}) =
+      DepartmentsErrorState;
 }

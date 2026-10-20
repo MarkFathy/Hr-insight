@@ -5,16 +5,12 @@ import 'package:latlong2/latlong.dart';
 class MapViewScreen extends StatelessWidget {
   final LatLng location;
 
-  const MapViewScreen({super.key, required this.location});
+  const MapViewScreen({required this.location, super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       body: FlutterMap(
-        options: MapOptions(
-          initialCenter: location,
-          initialZoom: 15,
-        ),
+        options: MapOptions(initialCenter: location, initialZoom: 15),
         children: [
           TileLayer(
             urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -26,12 +22,15 @@ class MapViewScreen extends StatelessWidget {
                 point: location,
                 width: 80,
                 height: 80,
-                child: const Icon(Icons.location_on, color: Colors.red, size: 40),
+                child: const Icon(
+                  Icons.location_on,
+                  color: Colors.red,
+                  size: 40,
+                ),
               ),
             ],
           ),
         ],
       ),
     );
-  }
 }

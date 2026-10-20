@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hr_app/src/core/utils/extentions.dart';
+import 'package:hr_app/src/core/utils/extensions.dart';
 import 'package:hr_app/src/features/authentication/domain/entities/employee_entity.dart';
 import 'package:hr_app/src/features/employee/leaves/domain/entities/leaves_entity.dart';
+import 'package:hr_app/src/features/employee/leaves/presentation/bloc/bloc.dart';
 import 'package:hr_app/src/features/manager/leaves/presentation/components/manager_leave_dialog.dart';
 import 'package:intl/intl.dart';
 
@@ -10,243 +11,237 @@ class LeaveCard extends StatelessWidget {
   final LeavesDataEntity leave;
   final EmployeeDataEntity? employeeDataEntity;
 
-  const LeaveCard({super.key, required this.leave, this.employeeDataEntity});
+  static final DateFormat _fullDateFormat = DateFormat.yMMMMd('ar');
+  static final DateFormat _shortDateFormat = DateFormat.yMMMd('ar');
+
+  const LeaveCard({required this.leave, super.key, this.employeeDataEntity});
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(10.r),
-        onTap: employeeDataEntity == null
-            ? null
-            : () => showDialog(
-                  context: context,
-                  builder: (ctx) => ManagerLeaveDialog(
-                    leave: leave,
-                    employeeDataEntity: employeeDataEntity,
-                    ctx: context,
-                  ),
-                ),
-        child: Material(
-          color: theme.colorScheme.secondary,
-          elevation: 4,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.r),
-            side: BorderSide(
-              color: theme.primaryColor.withValues(alpha: 0.25),
+  Widget build(BuildContext context) => Padding(
+        padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
+        child: Container(
+          decoration: BoxDecoration(
+            color: context.colors.surface,
+            borderRadius: BorderRadius.circular(16.r),
+            border: Border.all(
+              color: context.colors.primary.withValues(alpha: 0.18),
             ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.25),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // Top Header: Employee Name + Department & Status
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          clipBehavior: Clip.antiAlias,
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: employeeDataEntity == null
+                  ? null
+                  : () => showDialog<void>(
+                        context: context,
+                        builder: (ctx) => ManagerLeaveDialog(
+                          leave: leave,
+                          employeeDataEntity: employeeDataEntity,
+                          ctx: context,
+                        ),
+                      ),
+              child: Padding(
+                padding: EdgeInsets.all(14.r),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    if (employeeDataEntity != null)
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.person_outline_rounded,
-                              size: 16.r,
-                              color: theme.primaryColor,
-                            ),
-                            6.pw,
-                            Flexible(
-                              child: Text(
-                                employeeDataEntity!.name ?? '',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 13.r,
-                                  color: theme.primaryColor,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            if (employeeDataEntity!.department?.name != null) ...[
-                              Text(
-                                ' • القسم: ',
-                                style: TextStyle(
-                                  color: theme.primaryColor,
-                                  fontSize: 12.r,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              Flexible(
-                                child: Text(
-                                  employeeDataEntity!.department!.name!,
-                                  style: TextStyle(
-                                    color: Colors.white.withValues(alpha: 0.85),
-                                    fontSize: 12.r,
+                    // Header Row: Type / Employee & Status Chip
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        if (employeeDataEntity != null)
+                          Expanded(
+                            child: Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(6.r),
+                                  decoration: BoxDecoration(
+                                    color: context.colors.primary
+                                        .withValues(alpha: 0.15),
+                                    shape: BoxShape.circle,
                                   ),
-                                  overflow: TextOverflow.ellipsis,
+                                  child: Icon(
+                                    Icons.person_rounded,
+                                    size: 16.r,
+                                    color: context.colors.primary,
+                                  ),
+                                ),
+                                8.pw,
+                                Flexible(
+                                  child: Text(
+                                    employeeDataEntity!.name ?? '',
+                                    style: context.typography.titleSmall.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      fontSize: 14.sp,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                if (employeeDataEntity!.department?.name !=
+                                    null) ...[
+                                  Text(
+                                    ' • ',
+                                    style: TextStyle(
+                                      color: context.colors.textSecondary,
+                                      fontSize: 12.sp,
+                                    ),
+                                  ),
+                                  Flexible(
+                                    child: Text(
+                                      employeeDataEntity!.department!.name!,
+                                      style: TextStyle(
+                                        color: context.colors.primary,
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ],
+                            ),
+                          )
+                        else
+                          Row(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(6.r),
+                                decoration: BoxDecoration(
+                                  color: context.colors.primary
+                                      .withValues(alpha: 0.15),
+                                  borderRadius: BorderRadius.circular(10.r),
+                                ),
+                                child: Icon(
+                                  Icons.beach_access_rounded,
+                                  size: 16.r,
+                                  color: context.colors.primary,
+                                ),
+                              ),
+                              8.pw,
+                              Text(
+                                LeaveType.toArabic(leave.leaveType),
+                                style: context.typography.titleSmall.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 14.sp,
                                 ),
                               ),
                             ],
-                          ],
-                        ),
-                      )
-                    else
-                      Text(
-                        'نوع الإجازة: ${leave.leaveType ?? ''}',
-                        style: TextStyle(
-                          color: theme.primaryColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12.r,
-                        ),
-                      ),
-                    _buildStatusText(leave.status),
-                  ],
-                ),
-
-                const Divider(height: 14),
-
-                // Middle Info: Dates & Type
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              'تاريخ الطلب: ',
-                              style: TextStyle(
-                                color: theme.primaryColor,
-                                fontSize: 11.r,
-                              ),
-                            ),
-                            Text(
-                              leave.dayDate != null
-                                  ? DateFormat.yMMMMd('ar').format(leave.dayDate!)
-                                  : '',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 11.r,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                        4.ph,
-                        Row(
-                          children: [
-                            Text(
-                              'من: ',
-                              style: TextStyle(
-                                color: theme.primaryColor,
-                                fontSize: 11.r,
-                              ),
-                            ),
-                            Text(
-                              leave.from != null
-                                  ? DateFormat.yMMMd('ar').format(leave.from!)
-                                  : '',
-                              style: TextStyle(
-                                color: Colors.white.withValues(alpha: 0.8),
-                                fontSize: 11.r,
-                              ),
-                            ),
-                          ],
-                        ),
-                        4.ph,
-                        Row(
-                          children: [
-                            Text(
-                              'إلى: ',
-                              style: TextStyle(
-                                color: theme.primaryColor,
-                                fontSize: 11.r,
-                              ),
-                            ),
-                            Text(
-                              leave.to != null
-                                  ? DateFormat.yMMMd('ar').format(leave.to!)
-                                  : '',
-                              style: TextStyle(
-                                color: Colors.white.withValues(alpha: 0.8),
-                                fontSize: 11.r,
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        _buildStatusBadge(context, leave.status),
                       ],
                     ),
-                    if (employeeDataEntity != null)
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                    12.ph,
+                    // Duration strip container
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12.w,
+                        vertical: 10.h,
+                      ),
+                      decoration: BoxDecoration(
+                        color: context.colors.surfaceContainer,
+                        borderRadius: BorderRadius.circular(12.r),
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.05),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            'نوع الإجازة',
-                            style: TextStyle(
-                              color: theme.primaryColor,
-                              fontSize: 11.r,
-                            ),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.date_range_rounded,
+                                size: 16.r,
+                                color: context.colors.primary,
+                              ),
+                              8.pw,
+                              Text(
+                                'الفترة: ',
+                                style: context.typography.caption.copyWith(
+                                  color: context.colors.textSecondary,
+                                ),
+                              ),
+                              Text(
+                                '${leave.from != null ? _shortDateFormat.format(leave.from!) : ''} - ${leave.to != null ? _shortDateFormat.format(leave.to!) : ''}',
+                                style: context.typography.bodySmall.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
-                          4.ph,
-                          Text(
-                            leave.leaveType ?? '',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12.r,
-                              fontWeight: FontWeight.bold,
+                          if (leave.dayDate != null)
+                            Text(
+                              _fullDateFormat.format(leave.dayDate!),
+                              style: context.typography.caption.copyWith(
+                                color: context.colors.textSecondary,
+                                fontSize: 10.sp,
+                              ),
                             ),
-                          ),
                         ],
                       ),
+                    ),
                   ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 
-  Widget _buildStatusText(String? status) {
-    Color color;
-    String text;
-    IconData icon;
-
-    switch (status) {
-      case 'approved':
-        color = Colors.green;
-        text = 'تم القبول';
-        icon = Icons.check_circle_outline_rounded;
-        break;
-      case 'rejected':
-        color = Colors.red;
-        text = 'تم الرفض';
-        icon = Icons.cancel_outlined;
-        break;
-      default:
-        color = Colors.orange;
-        text = 'قيد المراجعة';
-        icon = Icons.hourglass_empty_rounded;
-    }
-
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(icon, size: 14.r, color: color),
-        4.pw,
-        Text(
-          text,
-          style: TextStyle(
-            color: color,
-            fontWeight: FontWeight.bold,
-            fontSize: 11.r,
-          ),
+  Widget _buildStatusBadge(BuildContext context, String? status) {
+    final (Color color, String text, IconData icon) = switch (status) {
+      'approved' => (
+          context.colors.success,
+          'تم القبول',
+          Icons.check_circle_rounded,
         ),
-      ],
+      'rejected' => (
+          context.colors.error,
+          'تم الرفض',
+          Icons.cancel_rounded,
+        ),
+      _ => (
+          context.colors.warning,
+          'قيد المراجعة',
+          Icons.hourglass_empty_rounded,
+        ),
+    };
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.15),
+        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(
+          color: color.withValues(alpha: 0.35),
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 13.r, color: color),
+          4.pw,
+          Text(
+            text,
+            style: context.typography.labelSmall.copyWith(
+              color: color,
+              fontWeight: FontWeight.bold,
+              fontSize: 11.sp,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

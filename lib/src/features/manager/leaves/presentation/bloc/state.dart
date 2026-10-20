@@ -1,32 +1,15 @@
-part of 'bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hr_app/src/features/employee/leaves/domain/entities/leaves_entity.dart';
 
-abstract class ManagerLeavesState extends Equatable {
-  const ManagerLeavesState();
+part 'state.freezed.dart';
 
-  @override
-  List<Object> get props => [];
-}
-
-class ManagerLeavesInitialState extends ManagerLeavesState {}
-
-class ManagerLeavesLoadingState extends ManagerLeavesState {}
-
-class ManagerLeavesLoadedState extends ManagerLeavesState {
-  final LeavesModel leaves;
-
-  const ManagerLeavesLoadedState({required this.leaves});
-
-  @override
-  List<Object> get props => [leaves];
-}
-
-class ManagerLeaveSentState extends ManagerLeavesState {}
-
-class LeavesErrorState extends ManagerLeavesState {
-  final String message;
-
-  const LeavesErrorState({required this.message});
-
-  @override
-  List<Object> get props => [message];
+@freezed
+sealed class ManagerLeavesState with _$ManagerLeavesState {
+  const factory ManagerLeavesState.initial() = ManagerLeavesInitialState;
+  const factory ManagerLeavesState.loading() = ManagerLeavesLoadingState;
+  const factory ManagerLeavesState.loaded({required LeavesEntity leaves}) =
+      ManagerLeavesLoadedState;
+  const factory ManagerLeavesState.sent() = ManagerLeaveSentState;
+  const factory ManagerLeavesState.error({required String message}) =
+      LeavesErrorState;
 }

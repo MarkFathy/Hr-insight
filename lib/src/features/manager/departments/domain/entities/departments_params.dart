@@ -1,29 +1,20 @@
-import 'dart:convert';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'package:equatable/equatable.dart';
+part 'departments_params.freezed.dart';
+part 'departments_params.g.dart';
 
-class DepartmentsParams extends Equatable {
-  final int? id;
-  final String? name;
+@freezed
+abstract class DepartmentsParams with _$DepartmentsParams {
+  const DepartmentsParams._();
 
-  const DepartmentsParams({required this.name, this.id});
+  const factory DepartmentsParams({required String? name, int? id}) =
+      _DepartmentsParams;
 
-  @override
-  List<Object?> get props => [name, id];
+  factory DepartmentsParams.fromJson(Map<String, dynamic> json) =>
+      _$DepartmentsParamsFromJson(json);
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
-      'name': name,
-    };
-  }
+  Map<String, dynamic> toMap() => {'id': id, 'name': name};
 
-  factory DepartmentsParams.fromMap(Map<String, dynamic> map) {
-    return DepartmentsParams(name: map['name'] as String, id: map['id'] as int);
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory DepartmentsParams.fromJson(String source) =>
-      DepartmentsParams.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory DepartmentsParams.fromMap(Map<String, dynamic> map) =>
+      DepartmentsParams(name: map['name'] as String?, id: map['id'] as int?);
 }

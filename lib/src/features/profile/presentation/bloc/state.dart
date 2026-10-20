@@ -1,29 +1,18 @@
-part of 'bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hr_app/src/features/profile/data/models/employee_profile_model.dart';
+import 'package:hr_app/src/features/profile/data/models/manager_profile_model.dart';
 
-abstract class ProfileState extends Equatable {
-  const ProfileState();
+part 'state.freezed.dart';
 
-  @override
-  List<Object> get props => [];
-}
-
-class ProfileInitialState extends ProfileState {}
-
-class ProfileLoadingState extends ProfileState {}
-
-class ProfileLoadedState extends ProfileState {
-  final EmployeeProfileModel? employeeProfile;
-  final ManagerProfileModel? managerProfile;
-  const ProfileLoadedState({this.employeeProfile, this.managerProfile});
-}
-
-class ManagerLeaveSentState extends ProfileState {}
-
-class ProfileErrorState extends ProfileState {
-  final String message;
-
-  const ProfileErrorState({required this.message});
-
-  @override
-  List<Object> get props => [message];
+@freezed
+sealed class ProfileState with _$ProfileState {
+  const factory ProfileState.initial() = ProfileInitialState;
+  const factory ProfileState.loading() = ProfileLoadingState;
+  const factory ProfileState.loaded({
+    EmployeeProfileModel? employeeProfile,
+    ManagerProfileModel? managerProfile,
+  }) = ProfileLoadedState;
+  const factory ProfileState.managerLeaveSent() = ManagerLeaveSentState;
+  const factory ProfileState.error({required String message}) =
+      ProfileErrorState;
 }

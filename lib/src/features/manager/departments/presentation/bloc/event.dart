@@ -1,58 +1,20 @@
-part of 'bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-abstract class DepartmentsAndJobsEvent extends Equatable {
-  const DepartmentsAndJobsEvent();
+part 'event.freezed.dart';
 
-  @override
-  List<Object> get props => [];
-}
-
-class GetDepartmentsAndJobsEvent extends DepartmentsAndJobsEvent {
-  const GetDepartmentsAndJobsEvent();
-  @override
-  List<Object> get props => [];
-}
-
-class AddDepartmentEvent extends DepartmentsAndJobsEvent {
-  const AddDepartmentEvent();
-  @override
-  List<Object> get props => [];
-}
-
-class EditDepartmentEvent extends DepartmentsAndJobsEvent {
-  final int id;
-
-  const EditDepartmentEvent({required this.id});
-  @override
-  List<Object> get props => [id];
-}
-
-class DeleteDepartmentsEvent extends DepartmentsAndJobsEvent {
-  final int id;
-  const DeleteDepartmentsEvent(this.id);
-  @override
-  List<Object> get props => [id];
-}
-
-class AddJobEvent extends DepartmentsAndJobsEvent {
-  final int departmentId;
-  const AddJobEvent(this.departmentId);
-  @override
-  List<Object> get props => [departmentId];
-}
-
-class EditJobEvent extends DepartmentsAndJobsEvent {
-  final int jobId;
-  final int departmentId;
-
-  const EditJobEvent({required this.jobId, required this.departmentId});
-  @override
-  List<Object> get props => [jobId, departmentId];
-}
-
-class DeleteJobEvent extends DepartmentsAndJobsEvent {
-  final int id;
-  const DeleteJobEvent(this.id);
-  @override
-  List<Object> get props => [id];
+@freezed
+sealed class DepartmentsAndJobsEvent with _$DepartmentsAndJobsEvent {
+  const factory DepartmentsAndJobsEvent.getDepartmentsAndJobs() =
+      GetDepartmentsAndJobsEvent;
+  const factory DepartmentsAndJobsEvent.addDepartment() = AddDepartmentEvent;
+  const factory DepartmentsAndJobsEvent.editDepartment({required int id}) =
+      EditDepartmentEvent;
+  const factory DepartmentsAndJobsEvent.deleteDepartments(int id) =
+      DeleteDepartmentsEvent;
+  const factory DepartmentsAndJobsEvent.addJob(int departmentId) = AddJobEvent;
+  const factory DepartmentsAndJobsEvent.editJob({
+    required int jobId,
+    required int departmentId,
+  }) = EditJobEvent;
+  const factory DepartmentsAndJobsEvent.deleteJob(int id) = DeleteJobEvent;
 }

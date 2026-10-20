@@ -1,14 +1,11 @@
-import 'package:dartz/dartz.dart';
-import 'package:hr_app/src/core/error/failures.dart';
+import 'package:hr_app/src/core/functional/typedefs.dart';
 import 'package:hr_app/src/core/usecases/usecase.dart';
-import 'package:hr_app/src/features/authentication/domain/repositories/repository.dart';
+import 'package:hr_app/src/features/authentication/domain/repositories/auth_repository.dart';
 
-class AutoLoginUC implements UseCase<Map?, NoParams> {
+class AutoLoginUC {
   final AuthRepository repository;
   AutoLoginUC(this.repository);
 
-  @override
-  Future<Either<Failure, Map?>> call(NoParams noParams) async {
-    return await repository.autoLogin();
-  }
+  ResultFuture<Map<String, dynamic>?> call(NoParams noParams) async =>
+      repository.autoLogin();
 }

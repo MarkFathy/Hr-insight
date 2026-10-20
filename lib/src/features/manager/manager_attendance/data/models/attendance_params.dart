@@ -1,35 +1,29 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:intl/intl.dart';
 
-class ManagerAttendanceParams extends Equatable {
-  final String employeeId;
-  final DateTime date;
+part 'attendance_params.freezed.dart';
+part 'attendance_params.g.dart';
 
-  const ManagerAttendanceParams({required this.employeeId, required this.date});
+@freezed
+abstract class ManagerAttendanceParams with _$ManagerAttendanceParams {
+  const ManagerAttendanceParams._();
 
-  @override
-  List<Object?> get props => [employeeId, date];
+  const factory ManagerAttendanceParams({
+    @JsonKey(name: 'employee_id') required String employeeId,
+    required DateTime date,
+  }) = _ManagerAttendanceParams;
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'employee_id': employeeId,
-      'date': DateFormat('yyyy-MM-dd').format(date),
-    };
-  }
+  factory ManagerAttendanceParams.fromJson(Map<String, dynamic> json) =>
+      _$ManagerAttendanceParamsFromJson(json);
 
-  factory ManagerAttendanceParams.fromMap(Map<String, dynamic> map) {
-    return ManagerAttendanceParams(
-      employeeId: map['employee_id'] as String,
-      date: DateTime.fromMillisecondsSinceEpoch(map['date']),
-    );
-  }
+  Map<String, dynamic> toMap() => {
+    'employee_id': employeeId,
+    'date': DateFormat('yyyy-MM-dd').format(date),
+  };
 
-  String toJson() => json.encode(toMap());
-
-  factory ManagerAttendanceParams.fromJson(String source) =>
-      ManagerAttendanceParams.fromMap(
-          json.decode(source) as Map<String, dynamic>);
+  factory ManagerAttendanceParams.fromMap(Map<String, dynamic> map) =>
+      ManagerAttendanceParams(
+        employeeId: map['employee_id'] as String,
+        date: DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
+      );
 }

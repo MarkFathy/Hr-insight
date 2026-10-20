@@ -1,16 +1,14 @@
-import 'package:dartz/dartz.dart';
-import 'package:hr_app/src/core/error/failures.dart';
-import 'package:hr_app/src/core/usecases/usecase.dart';
+import 'package:hr_app/src/core/functional/typedefs.dart';
 import 'package:hr_app/src/features/authentication/domain/entities/employee_entity.dart';
-import 'package:hr_app/src/features/authentication/domain/repositories/repository.dart';
+import 'package:hr_app/src/features/authentication/domain/repositories/auth_repository.dart';
 
-class EmployeeSignInUC implements UseCase<EmployeeEntity?, Map> {
+class EmployeeSignInUC {
   final AuthRepository repository;
   EmployeeSignInUC(this.repository);
 
-  @override
-  Future<Either<Failure, EmployeeEntity?>> call(Map params) async {
-    return await repository.employeeSignIn(
-        email: params['email'], password: params['password']);
-  }
+  ResultFuture<EmployeeEntity?> call(Map<String, dynamic> params) async =>
+      repository.employeeSignIn(
+        email: params['email'] as String,
+        password: params['password'] as String,
+      );
 }

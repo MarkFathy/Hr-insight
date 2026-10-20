@@ -1,15 +1,10 @@
-import 'package:dartz/dartz.dart';
-import 'package:hr_app/src/core/error/failures.dart';
-import 'package:hr_app/src/core/usecases/usecase.dart';
+import 'package:hr_app/src/core/functional/typedefs.dart';
 import 'package:hr_app/src/features/authentication/domain/entities/change_password_params.dart';
-import 'package:hr_app/src/features/authentication/domain/repositories/repository.dart';
+import 'package:hr_app/src/features/authentication/domain/repositories/auth_repository.dart';
 
-class ChangePasswordUC implements UseCase<String?, ChangePasswordParams> {
+class ChangePasswordUC {
   final AuthRepository repository;
   ChangePasswordUC(this.repository);
 
-  @override
-  Future<Either<Failure, String?>> call(ChangePasswordParams params) async {
-    return await repository.changePassword(params);
-  }
+  ResultFuture<String> call(ChangePasswordParams params) async => repository.changePassword(params);
 }

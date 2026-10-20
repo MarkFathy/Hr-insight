@@ -1,36 +1,28 @@
 import 'dart:convert';
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hr_app/src/features/authentication/domain/entities/employee_entity.dart';
 
-class EmployeeProfileModel extends Equatable {
-  final int? status;
-  final String? message;
-  final EmployeeDataEntity? data;
-  const EmployeeProfileModel({this.status, this.message, this.data});
+part 'employee_profile_model.freezed.dart';
+part 'employee_profile_model.g.dart';
 
-  @override
-  List<Object?> get props => [status, message, data];
+@freezed
+abstract class EmployeeProfileModel with _$EmployeeProfileModel {
+  const EmployeeProfileModel._();
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'status': status,
-      'message': message,
-      'data': data?.toMap(),
-    };
-  }
+  const factory EmployeeProfileModel({
+    int? status,
+    String? message,
+    EmployeeDataEntity? data,
+  }) = _EmployeeProfileModel;
 
-  factory EmployeeProfileModel.fromMap(Map<String, dynamic> map) {
-    return EmployeeProfileModel(
-      status: map['status'] != null ? map['status'] as int : null,
-      message: map['message'] != null ? map['message'] as String : null,
-      data: map['data'] != null
-          ? EmployeeDataEntity.fromMap(map['data'] as Map<String, dynamic>)
-          : null,
-    );
-  }
+  factory EmployeeProfileModel.fromJson(Map<String, dynamic> json) =>
+      _$EmployeeProfileModelFromJson(json);
 
-  String toJson() => json.encode(toMap());
+  Map<String, dynamic> toMap() => toJson();
 
-  factory EmployeeProfileModel.fromJson(String source) =>
-      EmployeeProfileModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory EmployeeProfileModel.fromMap(Map<String, dynamic> map) =>
+      EmployeeProfileModel.fromJson(map);
+
+  static EmployeeProfileModel fromRawJson(String str) =>
+      EmployeeProfileModel.fromJson(json.decode(str) as Map<String, dynamic>);
 }

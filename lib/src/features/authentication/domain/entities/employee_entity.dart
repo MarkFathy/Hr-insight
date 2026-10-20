@@ -1,218 +1,107 @@
 import 'dart:convert';
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hr_app/src/features/authentication/domain/entities/manager_entity.dart';
 import 'package:hr_app/src/features/manager/departments/domain/entities/departments_entity.dart';
 import 'package:hr_app/src/features/manager/offices/domain/entities/offices_entity.dart';
 
-class EmployeeEntity extends Equatable {
-  final int? status;
-  final String? message;
-  final UserDataEntity? data;
+part 'employee_entity.freezed.dart';
+part 'employee_entity.g.dart';
 
-  const EmployeeEntity({this.status, this.message, this.data});
+@freezed
+abstract class EmployeeEntity with _$EmployeeEntity {
+  const EmployeeEntity._();
 
-  @override
-  List<Object?> get props => [status, message, data];
+  const factory EmployeeEntity({
+    int? status,
+    String? message,
+    UserDataEntity? data,
+  }) = _EmployeeEntity;
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'status': status,
-      'message': message,
-      'data': data?.toMap(),
-    };
-  }
+  factory EmployeeEntity.fromJson(Map<String, dynamic> json) =>
+      _$EmployeeEntityFromJson(json);
 
-  factory EmployeeEntity.fromMap(Map<String, dynamic> map) {
-    return EmployeeEntity(
-      status: map['status'] != null ? map['status'] as int : null,
-      message: map['message'] != null ? map['message'] as String : null,
-      data: map['data'] != null
-          ? UserDataEntity.fromMap(map['data'] as Map<String, dynamic>)
-          : null,
-    );
-  }
+  Map<String, dynamic> toMap() => toJson();
 
-  String toJson() => json.encode(toMap());
+  factory EmployeeEntity.fromMap(Map<String, dynamic> map) =>
+      EmployeeEntity.fromJson(map);
 
-  factory EmployeeEntity.fromJson(String source) =>
-      EmployeeEntity.fromMap(json.decode(source) as Map<String, dynamic>);
+  static EmployeeEntity fromRawJson(String str) =>
+      EmployeeEntity.fromJson(json.decode(str) as Map<String, dynamic>);
 }
 
-class UserDataEntity extends Equatable {
-  final String? token;
-  final EmployeeDataEntity? employee;
+@freezed
+abstract class UserDataEntity with _$UserDataEntity {
+  const UserDataEntity._();
 
-  const UserDataEntity({this.token, this.employee});
+  const factory UserDataEntity({
+    String? token,
+    @JsonKey(name: 'data') EmployeeDataEntity? employee,
+  }) = _UserDataEntity;
 
-  @override
-  List<Object?> get props => [token, employee];
+  factory UserDataEntity.fromJson(Map<String, dynamic> json) =>
+      _$UserDataEntityFromJson(json);
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'token': token,
-      'data': employee?.toMap(),
-    };
-  }
+  Map<String, dynamic> toMap() => toJson();
 
-  factory UserDataEntity.fromMap(Map<String, dynamic> map) {
-    return UserDataEntity(
-      token: map['token'] != null ? map['token'] as String : null,
-      employee: map['data'] != null
-          ? EmployeeDataEntity.fromMap(map['data'] as Map<String, dynamic>)
-          : null,
-    );
-  }
+  factory UserDataEntity.fromMap(Map<String, dynamic> map) =>
+      UserDataEntity.fromJson(map);
 
-  String toJson() => json.encode(toMap());
-
-  factory UserDataEntity.fromJson(String source) =>
-      UserDataEntity.fromMap(json.decode(source) as Map<String, dynamic>);
+  static UserDataEntity fromRawJson(String str) =>
+      UserDataEntity.fromJson(json.decode(str) as Map<String, dynamic>);
 }
 
-class EmployeeDataEntity extends Equatable {
-  final String? name;
-  final String? email;
-  final String? phone;
-  final String? address;
-  final String? image;
-  final String? uID;
-  final String? updatedAt;
-  final String? createdAt;
-  final int? id;
-  final ManagerDataEntity? manager;
-  final JobEntity? job;
-  final DepartmentDataEntity? department;
-  final OfficeDataEntity? office;
+@freezed
+abstract class EmployeeDataEntity with _$EmployeeDataEntity {
+  const EmployeeDataEntity._();
 
-  const EmployeeDataEntity(
-      {this.name,
-      this.email,
-      this.phone,
-      this.address,
-      this.uID,
-      this.updatedAt,
-      this.createdAt,
-      this.id,
-      this.manager,
-      this.job,
-      this.department,
-      this.office,
-      this.image});
+  const factory EmployeeDataEntity({
+    String? name,
+    String? email,
+    String? phone,
+    String? address,
+    String? image,
+    @JsonKey(name: 'UID') String? uID,
+    @JsonKey(name: 'updated_at') String? updatedAt,
+    @JsonKey(name: 'created_at') String? createdAt,
+    int? id,
+    ManagerDataEntity? manager,
+    JobEntity? job,
+    DepartmentDataEntity? department,
+    OfficeDataEntity? office,
+  }) = _EmployeeDataEntity;
 
-  @override
-  List<Object?> get props {
-    return [
-      name,
-      email,
-      phone,
-      address,
-      uID,
-      updatedAt,
-      createdAt,
-      id,
-      manager,
-      job,
-      department,
-      office,
-      image
-    ];
-  }
+  factory EmployeeDataEntity.fromJson(Map<String, dynamic> json) =>
+      _$EmployeeDataEntityFromJson(json);
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'name': name,
-      'email': email,
-      'phone': phone,
-      'address': address,
-      'UID': uID,
-      'updated_at': updatedAt,
-      'created_at': createdAt,
-      'id': id,
-      'manager': manager?.toJson(),
-      'job': job?.toMap(),
-      'department': department?.toMap(),
-      'office': office?.toMap(),
-      'image': image
-    };
-  }
+  Map<String, dynamic> toMap() => toJson();
 
-  factory EmployeeDataEntity.fromMap(Map<String, dynamic> map) {
-    return EmployeeDataEntity(
-      name: map['name'] != null ? map['name'] as String : null,
-      email: map['email'] != null ? map['email'] as String : null,
-      phone: map['phone'] != null ? map['phone'] as String : null,
-      address: map['address'] != null ? map['address'] as String : null,
-      uID: map['UID'] != null ? map['UID'] as String : null,
-      updatedAt: map['updated_at'] != null ? map['updated_at'] as String : null,
-      createdAt: map['created_at'] != null ? map['created_at'] as String : null,
-      id: map['id'] != null ? map['id'] as int : null,
-      image: map['image'] != null ? map['image'] as String : null,
-      manager: map['manager'] != null
-          ? ManagerDataEntity.fromJson(map['manager'] as Map<String, dynamic>)
-          : null,
-      job: map['job'] != null
-          ? JobEntity.fromMap(map['job'] as Map<String, dynamic>)
-          : null,
-      department: map['department'] != null
-          ? DepartmentDataEntity.fromMap(
-              map['department'] as Map<String, dynamic>)
-          : null,
-      office: map['office'] != null
-          ? OfficeDataEntity.fromMap(map['office'] as Map<String, dynamic>)
-          : null,
-    );
-  }
+  factory EmployeeDataEntity.fromMap(Map<String, dynamic> map) =>
+      EmployeeDataEntity.fromJson(map);
 
-  String toJson() => json.encode(toMap());
-
-  factory EmployeeDataEntity.fromJson(String source) =>
-      EmployeeDataEntity.fromMap(json.decode(source) as Map<String, dynamic>);
+  static EmployeeDataEntity fromRawJson(String str) =>
+      EmployeeDataEntity.fromJson(json.decode(str) as Map<String, dynamic>);
 }
 
-class JobEntity extends Equatable {
-  final int? id;
-  final String? title;
-  final int? departmentId;
-  final String? createdAt;
-  final String? updatedAt;
+@freezed
+abstract class JobEntity with _$JobEntity {
+  const JobEntity._();
 
-  const JobEntity(
-      {this.id, this.title, this.departmentId, this.createdAt, this.updatedAt});
+  const factory JobEntity({
+    int? id,
+    String? title,
+    @JsonKey(name: 'department_id') int? departmentId,
+    @JsonKey(name: 'created_at') String? createdAt,
+    @JsonKey(name: 'updated_at') String? updatedAt,
+  }) = _JobEntity;
 
-  @override
-  List<Object?> get props {
-    return [
-      id,
-      title,
-      departmentId,
-      createdAt,
-      updatedAt,
-    ];
-  }
+  factory JobEntity.fromJson(Map<String, dynamic> json) =>
+      _$JobEntityFromJson(json);
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
-      'title': title,
-      'department_id': departmentId,
-      'created_at': createdAt,
-      'updated_at': updatedAt,
-    };
-  }
+  Map<String, dynamic> toMap() => toJson();
 
-  factory JobEntity.fromMap(Map<String, dynamic> map) {
-    return JobEntity(
-      id: map['id'] != null ? map['id'] as int : null,
-      title: map['title'] != null ? map['title'] as String : null,
-      departmentId:
-          map['department_id'] != null ? map['department_id'] as int : null,
-      createdAt: map['created_at'] != null ? map['created_at'] as String : null,
-      updatedAt: map['updated_at'] != null ? map['updated_at'] as String : null,
-    );
-  }
+  factory JobEntity.fromMap(Map<String, dynamic> map) =>
+      JobEntity.fromJson(map);
 
-  String toJson() => json.encode(toMap());
-
-  factory JobEntity.fromJson(String source) =>
-      JobEntity.fromMap(json.decode(source) as Map<String, dynamic>);
+  static JobEntity fromRawJson(String str) =>
+      JobEntity.fromJson(json.decode(str) as Map<String, dynamic>);
 }

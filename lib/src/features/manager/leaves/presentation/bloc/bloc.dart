@@ -1,41 +1,54 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:hr_app/src/core/usecases/usecase.dart';
-import 'package:hr_app/src/features/employee/leaves/data/models/leave_model.dart';
-import 'package:hr_app/src/features/manager/leaves/domain/entities/set_leave_param.dart';
+import 'package:hr_app/src/features/employee/leaves/domain/entities/leaves_entity.dart';
 import 'package:hr_app/src/features/manager/leaves/domain/use_cases/get_leaves.dart';
 import 'package:hr_app/src/features/manager/leaves/domain/use_cases/set_leave.dart';
-part 'event.dart';
-part 'state.dart';
+import 'package:hr_app/src/features/manager/leaves/presentation/bloc/event.dart';
+import 'package:hr_app/src/features/manager/leaves/presentation/bloc/state.dart';
 
-enum LeaveType { medical, annual, casual }
+export 'event.dart';
+export 'state.dart';
 
 class ManagerLeavesBloc extends Bloc<ManagerLeavesEvent, ManagerLeavesState> {
   final GetManagerLeavesUC getLeavesUC;
   final SetLeaveUC setLeaveStateUC;
+
   ManagerLeavesBloc({required this.getLeavesUC, required this.setLeaveStateUC})
-      : super(ManagerLeavesInitialState()) {
+    : super(const ManagerLeavesState.initial()) {
     on<GetManagerLeavesEvent>(_getLeaves);
     on<SetLeaveEvent>(_setLeaveState);
   }
-  LeavesModel? leaves;
+
+  LeavesEntity? leaves;
+
   FutureOr<void> _getLeaves(
-      GetManagerLeavesEvent event, Emitter<ManagerLeavesState> emit) async {
-    emit(ManagerLeavesLoadingState());
-    final failureOrSections = await getLeavesUC.call(NoParams());
-    emit(failureOrSections.fold((l) => LeavesErrorState(message: l.message),
-        (r) {
-      leaves = r;
-      return ManagerLeavesLoadedState(leaves: r);
-    }));
+    GetManagerLeavesEvent event,
+    Emitter<ManagerLeavesState> emit,
+  ) async {
+    emit(const ManagerLeavesState.loading());
+    final failureOrSections = await getLeavesUC.call();
+    emit(
+      failureOrSections.fold(
+        (failure) => ManagerLeavesState.error(message: failure.message),
+        (result) {
+          leaves = result;
+          return ManagerLeavesState.loaded(leaves: result);
+        },
+      ),
+    );
   }
 
   FutureOr<void> _setLeaveState(
-      SetLeaveEvent event, Emitter<ManagerLeavesState> emit) async {
-    emit(ManagerLeavesLoadingState());
+    SetLeaveEvent event,
+    Emitter<ManagerLeavesState> emit,
+  ) async {
+    emit(const ManagerLeavesState.loading());
     final failureOrSections = await setLeaveStateUC.call(event.params);
-    emit(failureOrSections.fold((l) => LeavesErrorState(message: l.message),
-        (r) => ManagerLeavesLoadedState(leaves: r)));
+    emit(
+      failureOrSections.fold(
+        (failure) => ManagerLeavesState.error(message: failure.message),
+        (result) => ManagerLeavesState.loaded(leaves: result),
+      ),
+    );
   }
 }

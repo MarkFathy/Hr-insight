@@ -1,34 +1,30 @@
-import 'dart:convert';
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class SetEmployeeParams extends Equatable {
-  final int? officeId;
-  final int? jobId;
-  final int employeeId;
-  const SetEmployeeParams(
-      {required this.employeeId, this.officeId, this.jobId});
+part 'set_employee_params.freezed.dart';
+part 'set_employee_params.g.dart';
 
-  @override
-  List<Object?> get props => [officeId, employeeId];
+@freezed
+abstract class SetEmployeeParams with _$SetEmployeeParams {
+  const SetEmployeeParams._();
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'office_id': officeId.toString(),
-      'employee_id': employeeId.toString(),
-      'job_id': jobId.toString()
-    };
-  }
+  const factory SetEmployeeParams({
+    @JsonKey(name: 'employee_id') required int employeeId, @JsonKey(name: 'office_id') int? officeId,
+    @JsonKey(name: 'job_id') int? jobId,
+  }) = _SetEmployeeParams;
 
-  factory SetEmployeeParams.fromMap(Map<String, dynamic> map) {
-    return SetEmployeeParams(
-      officeId: map['office_id'] as int?,
-      employeeId: map['employee_id'] as int,
-      jobId: map['job_id'] as int?,
-    );
-  }
+  factory SetEmployeeParams.fromJson(Map<String, dynamic> json) =>
+      _$SetEmployeeParamsFromJson(json);
 
-  String toJson() => json.encode(toMap());
+  Map<String, dynamic> toMap() => {
+    'office_id': officeId?.toString(),
+    'employee_id': employeeId.toString(),
+    'job_id': jobId?.toString(),
+  };
 
-  factory SetEmployeeParams.fromJson(String source) =>
-      SetEmployeeParams.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory SetEmployeeParams.fromMap(Map<String, dynamic> map) =>
+      SetEmployeeParams(
+        officeId: map['office_id'] as int?,
+        employeeId: map['employee_id'] as int,
+        jobId: map['job_id'] as int?,
+      );
 }

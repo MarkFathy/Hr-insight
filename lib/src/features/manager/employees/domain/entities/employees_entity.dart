@@ -1,42 +1,38 @@
 import 'dart:convert';
-
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hr_app/src/features/authentication/domain/entities/employee_entity.dart';
 
-class EmployeesEntity extends Equatable {
-  final int? status;
-  final String? message;
-  final List<EmployeeDataEntity>? data;
+part 'employees_entity.freezed.dart';
+part 'employees_entity.g.dart';
 
-  const EmployeesEntity({this.status, this.message, this.data});
-
-  @override
-  List<Object?> get props => [status, message, data];
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'status': status,
-      'message': message,
-      'data': data?.map((x) => x.toMap()).toList(),
-    };
+List<EmployeeDataEntity>? _employeesDataFromJson(dynamic json) {
+  if (json == null) return null;
+  if (json is List) {
+    return json
+        .map((e) => EmployeeDataEntity.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
+  return [];
+}
 
-  factory EmployeesEntity.fromMap(Map<String, dynamic> map) {
-    return EmployeesEntity(
-      status: map['status'] != null ? map['status'] as int : null,
-      message: map['message'] != null ? map['message'] as String : null,
-      data: map['data'] is List
-          ? List<EmployeeDataEntity>.from(
-              (map['data'] as List).map<EmployeeDataEntity>(
-                (x) => EmployeeDataEntity.fromMap(x as Map<String, dynamic>),
-              ),
-            )
-          : [],
-    );
-  }
+@freezed
+abstract class EmployeesEntity with _$EmployeesEntity {
+  const EmployeesEntity._();
 
-  String toJson() => json.encode(toMap());
+  const factory EmployeesEntity({
+    int? status,
+    String? message,
+    @JsonKey(fromJson: _employeesDataFromJson) List<EmployeeDataEntity>? data,
+  }) = _EmployeesEntity;
 
-  factory EmployeesEntity.fromJson(String source) =>
-      EmployeesEntity.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory EmployeesEntity.fromJson(Map<String, dynamic> json) =>
+      _$EmployeesEntityFromJson(json);
+
+  Map<String, dynamic> toMap() => toJson();
+
+  factory EmployeesEntity.fromMap(Map<String, dynamic> map) =>
+      EmployeesEntity.fromJson(map);
+
+  static EmployeesEntity fromRawJson(String str) =>
+      EmployeesEntity.fromJson(json.decode(str) as Map<String, dynamic>);
 }

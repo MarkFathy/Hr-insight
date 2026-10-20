@@ -1,50 +1,15 @@
-part of 'bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hr_app/src/features/manager/offices/domain/entities/set_employee_params.dart';
 
-abstract class OfficesEvent extends Equatable {
-  const OfficesEvent();
+part 'event.freezed.dart';
 
-  @override
-  List<Object> get props => [];
-}
-
-class GetOfficesEvent extends OfficesEvent {
-  const GetOfficesEvent();
-  @override
-  List<Object> get props => [];
-}
-
-class AddOfficeEvent extends OfficesEvent {
-  const AddOfficeEvent();
-  @override
-  List<Object> get props => [];
-}
-
-class SetEmployeeEvent extends OfficesEvent {
-  final SetEmployeeParams params;
-
-  const SetEmployeeEvent({required this.params});
-  @override
-  List<Object> get props => [params];
-}
-
-class EditOfficeEvent extends OfficesEvent {
-  final int id;
-
-  const EditOfficeEvent({required this.id});
-  @override
-  List<Object> get props => [id];
-}
-
-class DeleteOfficesEvent extends OfficesEvent {
-  final int id;
-  const DeleteOfficesEvent(this.id);
-  @override
-  List<Object> get props => [id];
-}
-
-class GetOfficeDetailsEvent extends OfficesEvent {
-  final int id;
-  const GetOfficeDetailsEvent(this.id);
-  @override
-  List<Object> get props => [id];
+@freezed
+sealed class OfficesEvent with _$OfficesEvent {
+  const factory OfficesEvent.getOffices() = GetOfficesEvent;
+  const factory OfficesEvent.addOffice() = AddOfficeEvent;
+  const factory OfficesEvent.setEmployee({required SetEmployeeParams params}) =
+      SetEmployeeEvent;
+  const factory OfficesEvent.editOffice({required int id}) = EditOfficeEvent;
+  const factory OfficesEvent.deleteOffices(int id) = DeleteOfficesEvent;
+  const factory OfficesEvent.getOfficeDetails(int id) = GetOfficeDetailsEvent;
 }

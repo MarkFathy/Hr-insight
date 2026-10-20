@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hr_app/src/core/utils/extentions.dart';
+import 'package:hr_app/src/core/utils/extensions.dart';
 import 'package:hr_app/src/features/authentication/domain/entities/employee_entity.dart';
 
 class EmployeePickerSheet extends StatefulWidget {
@@ -11,10 +11,7 @@ class EmployeePickerSheet extends StatefulWidget {
   final ValueChanged<EmployeeDataEntity?> onSelected;
 
   const EmployeePickerSheet({
-    super.key,
-    required this.employees,
-    required this.selectedId,
-    required this.onSelected,
+    required this.employees, required this.selectedId, required this.onSelected, super.key,
     this.showAllOption = true,
   });
 
@@ -24,8 +21,7 @@ class EmployeePickerSheet extends StatefulWidget {
     required int? selectedId,
     required ValueChanged<EmployeeDataEntity?> onSelected,
     bool showAllOption = true,
-  }) {
-    return showModalBottomSheet(
+  }) => showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
@@ -36,7 +32,6 @@ class EmployeePickerSheet extends StatefulWidget {
         showAllOption: showAllOption,
       ),
     );
-  }
 
   @override
   State<EmployeePickerSheet> createState() => _EmployeePickerSheetState();
@@ -54,22 +49,26 @@ class _EmployeePickerSheetState extends State<EmployeePickerSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final filteredEmployees = widget.employees.where((e) {
       if (_searchQuery.trim().isEmpty) return true;
       final name = e.name?.toLowerCase() ?? '';
       final job = e.job?.title?.toLowerCase() ?? '';
       final dept = e.department?.name?.toLowerCase() ?? '';
       final query = _searchQuery.toLowerCase().trim();
-      return name.contains(query) || job.contains(query) || dept.contains(query);
+      return name.contains(query) ||
+          job.contains(query) ||
+          dept.contains(query);
     }).toList();
+
+    final showAllTile = widget.showAllOption && _searchQuery.isEmpty;
+    final totalCount = (showAllTile ? 1 : 0) + filteredEmployees.length;
 
     return Container(
       constraints: BoxConstraints(
         maxHeight: MediaQuery.of(context).size.height * 0.8,
       ),
       decoration: BoxDecoration(
-        color: theme.scaffoldBackgroundColor,
+        color: context.colors.background,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
         boxShadow: [
           BoxShadow(
@@ -106,19 +105,19 @@ class _EmployeePickerSheetState extends State<EmployeePickerSheet> {
                     Container(
                       padding: EdgeInsets.all(8.r),
                       decoration: BoxDecoration(
-                        color: theme.primaryColor.withValues(alpha: 0.12),
-                        borderRadius: BorderRadius.circular(12),
+                        color: context.colors.primary.withValues(alpha: 0.12),
+                        borderRadius: context.radius.smBorder,
                       ),
                       child: Icon(
                         Icons.people_alt_rounded,
-                        color: theme.primaryColor,
+                        color: context.colors.primary,
                         size: 20.r,
                       ),
                     ),
                     10.pw,
                     Text(
                       'اختر الموظف',
-                      style: theme.textTheme.titleMedium?.copyWith(
+                      style: context.typography.titleMedium.copyWith(
                         fontWeight: FontWeight.bold,
                         fontSize: 16.r,
                       ),
@@ -126,15 +125,18 @@ class _EmployeePickerSheetState extends State<EmployeePickerSheet> {
                   ],
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10.r, vertical: 4.r),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 10.r,
+                    vertical: 4.r,
+                  ),
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.secondary,
+                    color: context.colors.surface,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
                     '${widget.employees.length} موظف',
-                    style: theme.textTheme.labelSmall?.copyWith(
-                      color: theme.primaryColor,
+                    style: context.typography.labelSmall.copyWith(
+                      color: context.colors.primary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -160,7 +162,7 @@ class _EmployeePickerSheetState extends State<EmployeePickerSheet> {
               ),
               decoration: InputDecoration(
                 filled: true,
-                fillColor: theme.colorScheme.secondary.withValues(alpha: 0.6),
+                fillColor: context.colors.surface.withValues(alpha: 0.6),
                 hintText: 'بحث باسم الموظف أو القسم...',
                 hintStyle: TextStyle(
                   color: Colors.white.withValues(alpha: 0.6),
@@ -172,7 +174,7 @@ class _EmployeePickerSheetState extends State<EmployeePickerSheet> {
                 ),
                 prefixIcon: Icon(
                   Icons.search_rounded,
-                  color: theme.primaryColor,
+                  color: context.colors.primary,
                   size: 20.r,
                 ),
                 suffixIcon: _searchQuery.isNotEmpty
@@ -193,21 +195,21 @@ class _EmployeePickerSheetState extends State<EmployeePickerSheet> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(25.r),
                   borderSide: BorderSide(
-                    color: theme.primaryColor,
+                    color: context.colors.primary,
                     width: 1.5,
                   ),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(25.r),
                   borderSide: BorderSide(
-                    color: theme.primaryColor,
+                    color: context.colors.primary,
                     width: 1.5,
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(25.r),
                   borderSide: BorderSide(
-                    color: theme.primaryColor,
+                    color: context.colors.primary,
                     width: 2.0,
                   ),
                 ),
@@ -217,52 +219,13 @@ class _EmployeePickerSheetState extends State<EmployeePickerSheet> {
 
           const Divider(height: 1),
 
-          // Employees List
+          // Employees List (Virtualized with ListView.builder)
           Flexible(
-            child: ListView(
-              shrinkWrap: true,
-              padding: EdgeInsets.symmetric(horizontal: 16.r, vertical: 8.r),
-              children: [
-                // "All Employees" option
-                if (widget.showAllOption && _searchQuery.isEmpty)
-                  _buildEmployeeTile(
-                    context: context,
-                    theme: theme,
-                    isSelected: widget.selectedId == null,
-                    name: 'جميع الموظفين',
-                    subtitle: 'عرض كافة طلبات وبيانات الموظفين',
-                    icon: Icons.groups_rounded,
-                    onTap: () {
-                      widget.onSelected(null);
-                      Navigator.pop(context);
-                    },
-                  ),
-
-                ...filteredEmployees.map((emp) {
-                  final isSelected = widget.selectedId == emp.id;
-                  final deptOrJob = [
-                    if (emp.department?.name != null) emp.department!.name!,
-                    if (emp.job?.title != null) emp.job!.title!,
-                  ].join(' • ');
-
-                  return _buildEmployeeTile(
-                    context: context,
-                    theme: theme,
-                    isSelected: isSelected,
-                    name: emp.name ?? 'بدون اسم',
-                    subtitle: deptOrJob.isNotEmpty ? deptOrJob : 'موظف',
-                    imageUrl: emp.image,
-                    onTap: () {
-                      widget.onSelected(emp);
-                      Navigator.pop(context);
-                    },
-                  );
-                }),
-
-                if (filteredEmployees.isEmpty)
-                  Padding(
+            child: filteredEmployees.isEmpty && !showAllTile
+                ? Padding(
                     padding: EdgeInsets.symmetric(vertical: 40.r),
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(
                           Icons.person_search_rounded,
@@ -279,9 +242,50 @@ class _EmployeePickerSheetState extends State<EmployeePickerSheet> {
                         ),
                       ],
                     ),
+                  )
+                : ListView.builder(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.r,
+                      vertical: 8.r,
+                    ),
+                    itemCount: totalCount,
+                    itemBuilder: (context, index) {
+                      if (showAllTile && index == 0) {
+                        return _buildEmployeeTile(
+                          context: context,
+                          isSelected: widget.selectedId == null,
+                          name: 'جميع الموظفين',
+                          subtitle: 'عرض كافة طلبات وبيانات الموظفين',
+                          icon: Icons.groups_rounded,
+                          onTap: () {
+                            widget.onSelected(null);
+                            Navigator.pop(context);
+                          },
+                        );
+                      }
+
+                      final empIndex = showAllTile ? index - 1 : index;
+                      final emp = filteredEmployees[empIndex];
+                      final isSelected = widget.selectedId == emp.id;
+                      final deptOrJob = [
+                        if (emp.department?.name != null) emp.department!.name!,
+                        if (emp.job?.title != null) emp.job!.title!,
+                      ].join(' • ');
+
+                      return _buildEmployeeTile(
+                        context: context,
+                        isSelected: isSelected,
+                        name: emp.name ?? 'بدون اسم',
+                        subtitle: deptOrJob.isNotEmpty ? deptOrJob : 'موظف',
+                        imageUrl: emp.image,
+                        onTap: () {
+                          widget.onSelected(emp);
+                          Navigator.pop(context);
+                        },
+                      );
+                    },
                   ),
-              ],
-            ),
           ),
           16.ph,
         ],
@@ -291,24 +295,24 @@ class _EmployeePickerSheetState extends State<EmployeePickerSheet> {
 
   Widget _buildEmployeeTile({
     required BuildContext context,
-    required ThemeData theme,
     required bool isSelected,
     required String name,
     required String subtitle,
-    String? imageUrl,
+    required VoidCallback onTap, String? imageUrl,
     IconData? icon,
-    required VoidCallback onTap,
   }) {
+    final validImageUrl = imageUrl.toValidImageUrl;
+
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 4.r),
       child: Material(
         color: isSelected
-            ? theme.primaryColor.withValues(alpha: 0.12)
-            : theme.colorScheme.secondary.withValues(alpha: 0.5),
+            ? context.colors.primary.withValues(alpha: 0.12)
+            : context.colors.surface.withValues(alpha: 0.5),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(14.r),
           side: BorderSide(
-            color: isSelected ? theme.primaryColor : Colors.transparent,
+            color: isSelected ? context.colors.primary : Colors.transparent,
             width: 1.5,
           ),
         ),
@@ -321,56 +325,56 @@ class _EmployeePickerSheetState extends State<EmployeePickerSheet> {
             height: 44.r,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: theme.primaryColor.withValues(alpha: 0.15),
+              color: context.colors.primary.withValues(alpha: 0.15),
               border: Border.all(
                 color: isSelected
-                    ? theme.primaryColor
-                    : theme.primaryColor.withValues(alpha: 0.4),
+                    ? context.colors.primary
+                    : context.colors.primary.withValues(alpha: 0.4),
                 width: 1.5,
               ),
             ),
             child: ClipOval(
-              child: imageUrl.toValidImageUrl.isNotEmpty
+              child: validImageUrl.isNotEmpty
                   ? CachedNetworkImage(
-                      imageUrl: imageUrl.toValidImageUrl,
+                      imageUrl: validImageUrl,
                       fit: BoxFit.cover,
-                      placeholder: (context, url) => Container(
-                        color: theme.colorScheme.secondary,
+                      placeholder: (context, url) => ColoredBox(
+                        color: context.colors.surface,
                         child: Center(
                           child: SizedBox(
                             width: 16.r,
                             height: 16.r,
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
-                              color: theme.primaryColor,
+                              color: context.colors.primary,
                             ),
                           ),
                         ),
                       ),
-                      errorWidget: (_, __, ___) => Icon(
+                      errorWidget: (_, _, _) => Icon(
                         Icons.person_rounded,
-                        color: theme.primaryColor,
+                        color: context.colors.primary,
                         size: 24.r,
                       ),
                     )
                   : Icon(
                       icon ?? Icons.person_rounded,
-                      color: theme.primaryColor,
+                      color: context.colors.primary,
                       size: 24.r,
                     ),
             ),
           ),
           title: Text(
             name,
-            style: theme.textTheme.titleSmall?.copyWith(
+            style: context.typography.titleSmall.copyWith(
               fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
-              color: isSelected ? theme.primaryColor : Colors.white,
+              color: isSelected ? context.colors.primary : Colors.white,
               fontSize: 14.r,
             ),
           ),
           subtitle: Text(
             subtitle,
-            style: theme.textTheme.bodySmall?.copyWith(
+            style: context.typography.bodySmall.copyWith(
               color: Colors.white.withValues(alpha: 0.6),
               fontSize: 11.r,
             ),
@@ -380,20 +384,16 @@ class _EmployeePickerSheetState extends State<EmployeePickerSheet> {
             height: 24.r,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: isSelected ? theme.primaryColor : Colors.transparent,
+              color: isSelected ? context.colors.primary : Colors.transparent,
               border: Border.all(
                 color: isSelected
-                    ? theme.primaryColor
+                    ? context.colors.primary
                     : Colors.white.withValues(alpha: 0.3),
                 width: 2,
               ),
             ),
             child: isSelected
-                ? const Icon(
-                    Icons.check_rounded,
-                    size: 16,
-                    color: Colors.black,
-                  )
+                ? const Icon(Icons.check_rounded, size: 16, color: Colors.black)
                 : null,
           ),
         ),

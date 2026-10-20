@@ -1,35 +1,24 @@
-import "dart:convert";
-import "package:equatable/equatable.dart";
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class SetLeaveParams extends Equatable {
-  final int? id;
-  final String? status;
+part 'set_leave_param.freezed.dart';
+part 'set_leave_param.g.dart';
 
-  const SetLeaveParams({required this.id, required this.status});
+@freezed
+abstract class SetLeaveParams with _$SetLeaveParams {
+  const SetLeaveParams._();
 
-  @override
-  List<Object?> get props => [id, status];
+  const factory SetLeaveParams({
+    @JsonKey(name: 'leave_id') required int? id,
+    required String? status,
+  }) = _SetLeaveParams;
 
-  // Convert object to map
-  Map<String, dynamic> toMap() {
-    return {
-      "leave_id": id,
-      "status": status,
-    };
-  }
+  factory SetLeaveParams.fromJson(Map<String, dynamic> json) =>
+      _$SetLeaveParamsFromJson(json);
 
-  // Create object from map
-  factory SetLeaveParams.fromMap(Map<String, dynamic> map) {
-    return SetLeaveParams(
-      id: map["leave_id"] != null ? map["leave_id"] as int : null,
-      status: map["status"] != null ? map["status"] as String : null,
-    );
-  }
+  Map<String, dynamic> toMap() => {'leave_id': id, 'status': status};
 
-  // Convert object to JSON string
-  String toJson() => json.encode(toMap());
-
-  // Create object from JSON string
-  factory SetLeaveParams.fromJson(String source) =>
-      SetLeaveParams.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory SetLeaveParams.fromMap(Map<String, dynamic> map) => SetLeaveParams(
+    id: map['leave_id'] as int?,
+    status: map['status'] as String?,
+  );
 }

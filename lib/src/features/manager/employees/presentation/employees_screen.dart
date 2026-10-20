@@ -1,130 +1,192 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hr_app/src/core/shared_widgets/s_back_button.dart';
-import 'package:hr_app/src/core/shared_widgets/s_text.dart';
+import 'package:hr_app/src/core/di/service_locator.dart';
+import 'package:hr_app/src/core/utils/extensions.dart';
+import 'package:hr_app/src/core/widgets/app_back_button.dart';
+import 'package:hr_app/src/core/widgets/app_empty_state.dart';
+import 'package:hr_app/src/core/widgets/app_error_state.dart';
+import 'package:hr_app/src/core/widgets/search_field.dart';
 import 'package:hr_app/src/features/manager/employees/presentation/bloc/bloc.dart';
-import 'package:hr_app/src/features/manager/employees/presentation/components/emplyee_card.dart';
-import 'package:hr_app/src/injector.dart';
+import 'package:hr_app/src/features/manager/employees/presentation/components/employee_card.dart';
 
-class EmployeesScreen extends StatelessWidget {
+class EmployeesScreen extends StatefulWidget {
   static const routeName = '/employees';
   const EmployeesScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+  State<EmployeesScreen> createState() => _EmployeesScreenState();
+}
 
-    return BlocProvider(
-      create: (context) => sl<EmployeesBloc>()..add(const GetEmployeesEvent()),
-      child: BlocConsumer<EmployeesBloc, EmployeesState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          final bloc = context.read<EmployeesBloc>();
-          String query = '';
-          return StatefulBuilder(builder: (context, changeState) {
-            return Scaffold(
-              appBar: AppBar(
-                title: const SText('الموظفين'),
-                leading: const SBackButton(),
-                centerTitle: true,
-                actions: const [],
-                bottom: PreferredSize(
-                  preferredSize: Size.fromHeight(58.r),
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(16.r, 0, 16.r, 10.r),
-                    child: TextField(
-                      onChanged: (value) {
-                        changeState(() => query = value);
-                      },
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 13.r,
-                        fontWeight: FontWeight.w600,
+class _EmployeesScreenState extends State<EmployeesScreen> {
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => BlocProvider(
+    create: (context) => sl<EmployeesBloc>()..add(const GetEmployeesEvent()),
+    child: Builder(
+      builder: (screenCtx) => Scaffold(
+        appBar: AppBar(
+          title: const Text('الموظفين'),
+          leading: const AppBackButton(),
+          leadingWidth: 64.w,
+          centerTitle: true,
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(60.h),
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 12.h),
+              child: SearchField(
+                controller: _searchController,
+                hintText: 'بحث باسم الموظف أو البريد...',
+                onChanged: (value) {
+                  setState(
+                    () => _searchQuery = (value ?? '').trim().toLowerCase(),
+                  );
+                },
+                onClear: () {
+                  setState(() => _searchQuery = '');
+                },
+              ),
+            ),
+          ),
+        ),
+        body: RefreshIndicator(
+          color: screenCtx.colors.primary,
+          backgroundColor: screenCtx.colors.surface,
+          onRefresh: () async {
+            screenCtx.read<EmployeesBloc>().add(const GetEmployeesEvent());
+          },
+          child: BlocBuilder<EmployeesBloc, EmployeesState>(
+            buildWhen: (prev, curr) =>
+                curr is EmployeesLoadingState ||
+                curr is EmployeesLoadedState ||
+                curr is EmployeesErrorState,
+            builder: (context, state) {
+              if (state is EmployeesLoadingState) {
+                return GridView.builder(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.95,
+                    mainAxisSpacing: 12.h,
+                    crossAxisSpacing: 12.w,
+                  ),
+                  itemCount: 8,
+                  itemBuilder: (context, index) => const EmployeeIndicator(),
+                );
+              }
+
+              if (state is EmployeesLoadedState) {
+                final allEmployees = state.employees.data ?? [];
+                if (allEmployees.isEmpty) {
+                  return LayoutBuilder(
+                    builder: (context, constraints) => SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: constraints.maxHeight,
+                        ),
+                        child: const AppEmptyState(
+                          icon: Icons.people_outline_rounded,
+                          title: 'لم يتم إضافة موظفين بعد',
+                          subtitle:
+                              'يمكن للموظفين الانضمام باستخدام كود التسجيل الخاص بالمؤسسة',
+                        ),
                       ),
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: theme.colorScheme.secondary,
-                        hintText: 'بحث باسم الموظف...',
-                        hintStyle: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.6),
-                          fontSize: 13.r,
+                    ),
+                  );
+                }
+
+                final filteredEmployees = _searchQuery.isEmpty
+                    ? allEmployees
+                    : allEmployees
+                          .where(
+                            (e) =>
+                                (e.name != null &&
+                                    e.name!.toLowerCase().contains(
+                                      _searchQuery,
+                                    )) ||
+                                (e.email != null &&
+                                    e.email!.toLowerCase().contains(
+                                      _searchQuery,
+                                    )),
+                          )
+                          .toList();
+
+                if (filteredEmployees.isEmpty) {
+                  return LayoutBuilder(
+                    builder: (context, constraints) => SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: constraints.maxHeight,
                         ),
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 16.r,
-                          vertical: 12.r,
+                        child: AppEmptyState(
+                          icon: Icons.search_off_rounded,
+                          title: 'لا توجد نتائج مطابقة',
+                          subtitle:
+                              'لم نتمكن من العثور على أي موظف مطابق للبحث "$_searchQuery"',
+                          actionLabel: 'مسح البحث',
+                          actionIcon: Icons.clear_rounded,
+                          onAction: () {
+                            _searchController.clear();
+                            setState(() => _searchQuery = '');
+                          },
                         ),
-                        prefixIcon: Icon(
-                          Icons.search_rounded,
-                          color: theme.primaryColor,
-                          size: 20.r,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(25.r),
-                          borderSide: BorderSide(
-                            color: theme.primaryColor,
-                            width: 1.5,
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(25.r),
-                          borderSide: BorderSide(
-                            color: theme.primaryColor,
-                            width: 1.5,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(25.r),
-                          borderSide: BorderSide(
-                            color: theme.primaryColor,
-                            width: 2.0,
-                          ),
+                      ),
+                    ),
+                  );
+                }
+
+                return GridView.builder(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: EdgeInsets.fromLTRB(12.w, 8.h, 12.w, 20.h),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.95,
+                    mainAxisSpacing: 12.h,
+                    crossAxisSpacing: 12.w,
+                  ),
+                  itemCount: filteredEmployees.length,
+                  itemBuilder: (context, index) {
+                    final employee = filteredEmployees[index];
+                    return EmployeeCard(employee: employee);
+                  },
+                );
+              }
+
+              if (state is EmployeesErrorState) {
+                return LayoutBuilder(
+                  builder: (context, constraints) => SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: constraints.maxHeight,
+                      ),
+                      child: AppErrorState(
+                        message: state.message,
+                        onRetry: () => screenCtx.read<EmployeesBloc>().add(
+                          const GetEmployeesEvent(),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ),
-              body: (state is EmployeesLoadedState &&
-                      bloc.employees!.data!.isEmpty)
-                  ? Center(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 58.r),
-                        child: const Text('لم يتم اضافة موظفين بعد'),
-                      ),
-                    )
-                  : GridView(
-                      padding: const EdgeInsets.all(10),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: 1.05.r,
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 10,
-                      ),
-                      children: [
-                        if (state is EmployeesLoadingState)
-                          ...List.generate(
-                            10,
-                            (index) => const EmployeeIndicator(),
-                          ).toList(),
-                        if (state is EmployeesLoadedState) ...[
-                          if (state.employees.data!.isNotEmpty)
-                            ...state.employees.data!
-                                .where((element) =>
-                                    element.name != null &&
-                                    element.name!
-                                        .toLowerCase()
-                                        .contains(query.toLowerCase()))
-                                .map((e) => GestureDetector(
-                                      child: EmployeeCard(employee: e),
-                                    )),
-                        ],
-                      ],
-                    ),
-            );
-          });
-        },
+                );
+              }
+
+              return const SizedBox.shrink();
+            },
+          ),
+        ),
       ),
-    );
-  }
+    ),
+  );
 }

@@ -1,13 +1,15 @@
-import 'package:dartz/dartz.dart';
-import 'package:equatable/equatable.dart';
+import 'package:hr_app/src/core/functional/typedefs.dart';
 
-import '../error/failures.dart';
-
-abstract class UseCase<Type, Params> {
-  Future<Either<Failure, Type>> call(Params params);
+abstract class UseCase<T, Params> {
+  ResultFuture<T> call(Params params);
 }
 
-class NoParams extends Equatable {
+class NoParams {
+  const NoParams();
+
   @override
-  List<Object> get props => [];
+  bool operator ==(Object other) => identical(this, other) || other is NoParams;
+
+  @override
+  int get hashCode => 0;
 }

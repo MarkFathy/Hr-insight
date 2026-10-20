@@ -1,94 +1,63 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:equatable/equatable.dart';
+import 'dart:convert';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:intl/intl.dart' as intl;
 
-class AttendanceEntity extends Equatable {
-  final int? status;
-  final String? message;
-  final List<AttendanceDataEntity>? data;
+part 'attendance_entity.freezed.dart';
+part 'attendance_entity.g.dart';
 
-  const AttendanceEntity({this.status, this.message, this.data});
+@freezed
+abstract class AttendanceEntity with _$AttendanceEntity {
+  const AttendanceEntity._();
 
-  @override
-  List<Object?> get props => [status, message, data];
+  const factory AttendanceEntity({
+    int? status,
+    String? message,
+    List<AttendanceDataEntity>? data,
+  }) = _AttendanceEntity;
+
+  factory AttendanceEntity.fromJson(Map<String, dynamic> json) =>
+      _$AttendanceEntityFromJson(json);
+
+  Map<String, dynamic> toMap() => toJson();
+
+  factory AttendanceEntity.fromMap(Map<String, dynamic> map) =>
+      AttendanceEntity.fromJson(map);
+
+  static AttendanceEntity fromRawJson(String str) =>
+      AttendanceEntity.fromJson(json.decode(str) as Map<String, dynamic>);
 }
 
-// class AttendanceDataEntity extends Equatable {
-//   final int? id;
-//   final int? employeeId;
-//   final String? attendanceTime;
-//   final double? lat;
-//   final double? lng;
-//   final String? createdAt;
-//   final String? updatedAt;
+@freezed
+abstract class AttendanceDataEntity with _$AttendanceDataEntity {
+  const AttendanceDataEntity._();
 
-//   const AttendanceDataEntity(
-//       {this.id,
-//       this.employeeId,
-//       this.attendanceTime,
-//       this.lat,
-//       this.lng,
-//       this.createdAt,
-//       this.updatedAt});
+  const factory AttendanceDataEntity({
+    int? id,
+    String? date,
+    @JsonKey(name: 'employee_id') int? employeeId,
+    @JsonKey(name: 'attendance_time') String? attendanceTime,
+    @JsonKey(name: 'departure_time') String? departureTime,
+    double? lat,
+    double? lng,
+    @JsonKey(name: 'created_at') String? createdAt,
+    @JsonKey(name: 'updated_at') String? updatedAt,
+  }) = _AttendanceDataEntity;
 
-//   @override
-//   List<Object?> get props {
-//     return [
-//       id,
-//       employeeId,
-//       attendanceTime,
-//       lat,
-//       lng,
-//       createdAt,
-//       updatedAt,
-//     ];
-//   }
-// }
+  factory AttendanceDataEntity.fromJson(Map<String, dynamic> json) =>
+      _$AttendanceDataEntityFromJson(json);
 
-class AttendanceDataEntity extends Equatable {
-  final int? id;
-  final String? date;
-  final int? employeeId;
-  final String? attendanceTime;
-  final String? departureTime;
-  final double? lat;
-  final double? lng;
-  final String? createdAt;
-  final String? updatedAt;
+  Map<String, dynamic> toMap() => toJson();
 
-  const AttendanceDataEntity(
-      {this.id,
-      this.date,
-      this.employeeId,
-      this.attendanceTime,
-      this.departureTime,
-      this.lat,
-      this.lng,
-      this.createdAt,
-      this.updatedAt});
+  factory AttendanceDataEntity.fromMap(Map<String, dynamic> map) =>
+      AttendanceDataEntity.fromJson(map);
 
-  @override
-  List<Object?> get props {
-    return [
-      id,
-      date,
-      employeeId,
-      attendanceTime,
-      departureTime,
-      lat,
-      lng,
-      createdAt,
-      updatedAt,
-    ];
-  }
-
+  static AttendanceDataEntity fromRawJson(String str) =>
+      AttendanceDataEntity.fromJson(json.decode(str) as Map<String, dynamic>);
 
   String? getAdjustedAttendanceTime() {
     if (attendanceTime != null) {
-      DateTime parsedTime = intl.DateFormat('HH:mm:ss').parse(attendanceTime!);
-
-      DateTime adjustedTime = parsedTime.add(Duration(hours: 3));
-
+      final parsedTime = intl.DateFormat('HH:mm:ss').parse(attendanceTime!);
+      final adjustedTime = parsedTime.add(const Duration(hours: 3));
       return intl.DateFormat('HH:mm:ss').format(adjustedTime);
     }
     return null;

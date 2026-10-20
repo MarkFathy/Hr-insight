@@ -1,39 +1,16 @@
-part of 'bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hr_app/src/features/employee/attendance/domain/entities/attendance_entity.dart';
 
-abstract class AttendanceState extends Equatable {
-  const AttendanceState();
+part 'state.freezed.dart';
 
-  @override
-  List<Object> get props => [];
-}
-
-class AttendanceInitialState extends AttendanceState {}
-
-class AttendanceLoadingState extends AttendanceState {}
-
-class AttendanceLoadedState extends AttendanceState {
-  final AttendanceModel attendance;
-
-  const AttendanceLoadedState({required this.attendance});
-
-  @override
-  List<Object> get props => [attendance];
-}
-
-class AttendanceSignedState extends AttendanceState {
-  final String message;
-
-  const AttendanceSignedState({required this.message});
-
-  @override
-  List<Object> get props => [message];
-}
-
-class AttendanceErrorState extends AttendanceState {
-  final String message;
-
-  const AttendanceErrorState({required this.message});
-
-  @override
-  List<Object> get props => [message];
+@freezed
+sealed class AttendanceState with _$AttendanceState {
+  const factory AttendanceState.initial() = AttendanceInitialState;
+  const factory AttendanceState.loading() = AttendanceLoadingState;
+  const factory AttendanceState.loaded({required AttendanceEntity attendance}) =
+      AttendanceLoadedState;
+  const factory AttendanceState.signed({required String message}) =
+      AttendanceSignedState;
+  const factory AttendanceState.error({required String message}) =
+      AttendanceErrorState;
 }

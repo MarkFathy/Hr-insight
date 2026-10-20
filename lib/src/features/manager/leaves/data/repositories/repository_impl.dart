@@ -1,36 +1,40 @@
-import 'package:dartz/dartz.dart';
-import 'package:hr_app/src/core/error/exceptions.dart';
-import 'package:hr_app/src/core/error/failures.dart';
-import 'package:hr_app/src/core/network/network_info.dart';
-import 'package:hr_app/src/features/employee/leaves/data/models/leave_model.dart';
+import 'package:fpdart/fpdart.dart';
+import 'package:hr_app/src/core/errors/app_failure.dart';
+import 'package:hr_app/src/core/errors/exceptions.dart';
+import 'package:hr_app/src/core/functional/typedefs.dart';
+import 'package:hr_app/src/features/employee/leaves/domain/entities/leaves_entity.dart';
 import 'package:hr_app/src/features/manager/leaves/data/data_sources/remote_src.dart';
 import 'package:hr_app/src/features/manager/leaves/domain/entities/set_leave_param.dart';
-import '../../domain/repositories/repository.dart';
+import 'package:hr_app/src/features/manager/leaves/domain/repositories/repository.dart';
 
 class ManagerLeavesRepoImpl implements ManagerLeavesRepo {
   final ManagerLeavesRemoteDataSrc remoteDataSource;
-  final NetworkInfo networkInfo;
 
-  ManagerLeavesRepoImpl(
-      {required this.remoteDataSource, required this.networkInfo});
+  ManagerLeavesRepoImpl({
+    required this.remoteDataSource,
+  });
 
   @override
-  Future<Either<Failure, LeavesModel>> getLeaves() async {
+  ResultFuture<LeavesEntity> getLeaves() async {
     try {
       final remoteSections = await remoteDataSource.fetchLeaves();
       return Right(remoteSections);
     } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
+      return Left(AppFailure.server(message: e.message));
+    } on Exception catch (e) {
+      return Left(AppFailure.unexpected(message: e.toString()));
     }
   }
 
   @override
-  Future<Either<Failure, LeavesModel>> setLeave(SetLeaveParams params) async {
+  ResultFuture<LeavesEntity> setLeave(SetLeaveParams params) async {
     try {
       final remoteSections = await remoteDataSource.setLeave(params);
       return Right(remoteSections);
     } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
+      return Left(AppFailure.server(message: e.message));
+    } on Exception catch (e) {
+      return Left(AppFailure.unexpected(message: e.toString()));
     }
   }
 }

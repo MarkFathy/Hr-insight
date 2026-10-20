@@ -1,45 +1,16 @@
-part of 'bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hr_app/src/features/manager/employees/domain/entities/employees_entity.dart';
 
-abstract class EmployeesState extends Equatable {
-  const EmployeesState();
+part 'state.freezed.dart';
 
-  @override
-  List<Object> get props => [];
-}
-
-class EmployeesInitialState extends EmployeesState {}
-
-class EmployeesLoadingState extends EmployeesState {}
-
-class EmployeesLoadedState extends EmployeesState {
-  final EmployeesEntity employees;
-
-  const EmployeesLoadedState({required this.employees});
-
-  @override
-  List<Object> get props => [employees];
-}
-
-// class OfficeDetailsLoadedState extends EmployeesState {
-//   final OfficeDetailsEntity details;
-
-//   const OfficeDetailsLoadedState({required this.details});
-
-//   @override
-//   List<Object> get props => [details];
-// }
-
-class EmployeesModifiedState extends EmployeesState {
-  final String? message;
-
-  const EmployeesModifiedState({this.message});
-}
-
-class EmployeesErrorState extends EmployeesState {
-  final String message;
-
-  const EmployeesErrorState({required this.message});
-
-  @override
-  List<Object> get props => [message];
+@freezed
+sealed class EmployeesState with _$EmployeesState {
+  const factory EmployeesState.initial() = EmployeesInitialState;
+  const factory EmployeesState.loading() = EmployeesLoadingState;
+  const factory EmployeesState.loaded({required EmployeesEntity employees}) =
+      EmployeesLoadedState;
+  const factory EmployeesState.modified({String? message}) =
+      EmployeesModifiedState;
+  const factory EmployeesState.error({required String message}) =
+      EmployeesErrorState;
 }
