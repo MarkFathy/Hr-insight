@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:hr_app/src/core/errors/app_failure.dart';
-import 'package:hr_app/src/features/manager/employees/domain/entities/employees_entity.dart';
-import 'package:hr_app/src/features/manager/employees/domain/use_cases/delete_employee_use_case.dart';
-import 'package:hr_app/src/features/manager/employees/domain/use_cases/get_employees_use_case.dart';
-import 'package:hr_app/src/features/manager/employees/presentation/bloc/bloc.dart';
+import 'package:hr_app/core/errors/app_failure.dart';
+import 'package:hr_app/features/manager/employees/domain/entities/employees_entity.dart';
+import 'package:hr_app/features/manager/employees/domain/use_cases/delete_employee_use_case.dart';
+import 'package:hr_app/features/manager/employees/domain/use_cases/get_employees_use_case.dart';
+import 'package:hr_app/features/manager/employees/presentation/bloc/bloc.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockGetEmployeesUC extends Mock implements GetEmployeesUC {}

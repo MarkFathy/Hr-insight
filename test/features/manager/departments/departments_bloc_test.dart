@@ -1,15 +1,15 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:hr_app/src/core/errors/app_failure.dart';
-import 'package:hr_app/src/features/manager/departments/domain/entities/departments_entity.dart';
-import 'package:hr_app/src/features/manager/departments/domain/use_cases/add_department.dart';
-import 'package:hr_app/src/features/manager/departments/domain/use_cases/add_job.dart';
-import 'package:hr_app/src/features/manager/departments/domain/use_cases/delete_department.dart';
-import 'package:hr_app/src/features/manager/departments/domain/use_cases/delete_job.dart';
-import 'package:hr_app/src/features/manager/departments/domain/use_cases/edit_department.dart';
-import 'package:hr_app/src/features/manager/departments/domain/use_cases/edit_job.dart';
-import 'package:hr_app/src/features/manager/departments/domain/use_cases/get_departments_and_jobs_use_case.dart';
-import 'package:hr_app/src/features/manager/departments/presentation/bloc/bloc.dart';
+import 'package:hr_app/core/errors/app_failure.dart';
+import 'package:hr_app/features/manager/departments/domain/entities/departments_entity.dart';
+import 'package:hr_app/features/manager/departments/domain/use_cases/add_department.dart';
+import 'package:hr_app/features/manager/departments/domain/use_cases/add_job.dart';
+import 'package:hr_app/features/manager/departments/domain/use_cases/delete_department.dart';
+import 'package:hr_app/features/manager/departments/domain/use_cases/delete_job.dart';
+import 'package:hr_app/features/manager/departments/domain/use_cases/edit_department.dart';
+import 'package:hr_app/features/manager/departments/domain/use_cases/edit_job.dart';
+import 'package:hr_app/features/manager/departments/domain/use_cases/get_departments_and_jobs_use_case.dart';
+import 'package:hr_app/features/manager/departments/presentation/bloc/bloc.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockGetDepartmentAndJobssUC extends Mock
@@ -73,7 +73,9 @@ void main() {
     );
 
     test('emits [loading, loaded] when operation succeeds', () async {
-      when(() => mockGetUC.call()).thenAnswer((_) async => const Right(tDepartments));
+      when(
+        () => mockGetUC.call(),
+      ).thenAnswer((_) async => const Right(tDepartments));
 
       final expected = [
         const DepartmentsAndJobsState.loading(),

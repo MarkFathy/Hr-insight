@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:hr_app/src/core/errors/app_failure.dart';
-import 'package:hr_app/src/features/employee/leaves/domain/entities/leaves_entity.dart';
-import 'package:hr_app/src/features/manager/leaves/domain/use_cases/get_leaves.dart';
-import 'package:hr_app/src/features/manager/leaves/domain/use_cases/set_leave.dart';
-import 'package:hr_app/src/features/manager/leaves/presentation/bloc/bloc.dart';
+import 'package:hr_app/core/errors/app_failure.dart';
+import 'package:hr_app/features/employee/leaves/domain/entities/leaves_entity.dart';
+import 'package:hr_app/features/manager/leaves/domain/use_cases/get_leaves.dart';
+import 'package:hr_app/features/manager/leaves/domain/use_cases/set_leave.dart';
+import 'package:hr_app/features/manager/leaves/presentation/bloc/bloc.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockGetManagerLeavesUC extends Mock implements GetManagerLeavesUC {}

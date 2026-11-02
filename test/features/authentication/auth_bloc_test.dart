@@ -1,24 +1,24 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:hr_app/src/core/errors/app_failure.dart';
-import 'package:hr_app/src/core/usecases/usecase.dart';
-import 'package:hr_app/src/features/authentication/domain/entities/account_delete_params.dart';
-import 'package:hr_app/src/features/authentication/domain/entities/employee_entity.dart';
-import 'package:hr_app/src/features/authentication/domain/entities/manager_entity.dart';
-import 'package:hr_app/src/features/authentication/domain/entities/manager_info_entity.dart';
-import 'package:hr_app/src/features/authentication/domain/use_cases/auto_login_uc.dart';
-import 'package:hr_app/src/features/authentication/domain/use_cases/change_password_uc.dart';
-import 'package:hr_app/src/features/authentication/domain/use_cases/delete_account_use_case.dart';
-import 'package:hr_app/src/features/authentication/domain/use_cases/employee_sign_in_uc.dart';
-import 'package:hr_app/src/features/authentication/domain/use_cases/employee_sign_up_uc.dart';
-import 'package:hr_app/src/features/authentication/domain/use_cases/forget_password.dart';
-import 'package:hr_app/src/features/authentication/domain/use_cases/get_departments_uc.dart';
-import 'package:hr_app/src/features/authentication/domain/use_cases/manager_sign_in_uc.dart';
-import 'package:hr_app/src/features/authentication/domain/use_cases/manager_sign_up_uc.dart';
-import 'package:hr_app/src/features/authentication/domain/use_cases/reset_password.dart';
-import 'package:hr_app/src/features/authentication/domain/use_cases/sign_out_uc.dart';
-import 'package:hr_app/src/features/authentication/domain/use_cases/verify_email.dart';
-import 'package:hr_app/src/features/authentication/presentation/bloc/bloc.dart';
+import 'package:hr_app/core/errors/app_failure.dart';
+import 'package:hr_app/core/usecases/usecase.dart';
+import 'package:hr_app/features/authentication/domain/entities/account_delete_params.dart';
+import 'package:hr_app/features/authentication/domain/entities/employee_entity.dart';
+import 'package:hr_app/features/authentication/domain/entities/manager_entity.dart';
+import 'package:hr_app/features/authentication/domain/entities/manager_info_entity.dart';
+import 'package:hr_app/features/authentication/domain/use_cases/auto_login_uc.dart';
+import 'package:hr_app/features/authentication/domain/use_cases/change_password_uc.dart';
+import 'package:hr_app/features/authentication/domain/use_cases/delete_account_use_case.dart';
+import 'package:hr_app/features/authentication/domain/use_cases/employee_sign_in_uc.dart';
+import 'package:hr_app/features/authentication/domain/use_cases/employee_sign_up_uc.dart';
+import 'package:hr_app/features/authentication/domain/use_cases/forget_password.dart';
+import 'package:hr_app/features/authentication/domain/use_cases/get_departments_uc.dart';
+import 'package:hr_app/features/authentication/domain/use_cases/manager_sign_in_uc.dart';
+import 'package:hr_app/features/authentication/domain/use_cases/manager_sign_up_uc.dart';
+import 'package:hr_app/features/authentication/domain/use_cases/reset_password.dart';
+import 'package:hr_app/features/authentication/domain/use_cases/sign_out_uc.dart';
+import 'package:hr_app/features/authentication/domain/use_cases/verify_email.dart';
+import 'package:hr_app/features/authentication/presentation/bloc/bloc.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockAutoLoginUC extends Mock implements AutoLoginUC {}
@@ -126,7 +126,9 @@ void main() {
           bloc.stream,
           emitsInOrder([
             const AuthState.loading(),
-            predicate<AuthState>((state) => state is AuthSuccessState && state.isEmployee),
+            predicate<AuthState>(
+              (state) => state is AuthSuccessState && state.isEmployee,
+            ),
           ]),
         );
 
@@ -243,26 +245,27 @@ void main() {
   group('DeleteAccountEvent', () {
     const params = AccountDeleteParams(password: '123456');
 
-    test('emits [loading, accountDeleted] when deleteAccount succeeds', () async {
-      when(
-        () => mockDeleteAccountUC.call(any()),
-      ).thenAnswer((_) async => const Right(null));
+    test(
+      'emits [loading, accountDeleted] when deleteAccount succeeds',
+      () async {
+        when(
+          () => mockDeleteAccountUC.call(any()),
+        ).thenAnswer((_) async => const Right(null));
 
-      final expected = [
-        const AuthState.loading(),
-        const AuthState.accountDeleted('تم حذف الحساب بنجاح'),
-      ];
+        final expected = [
+          const AuthState.loading(),
+          const AuthState.accountDeleted('تم حذف الحساب بنجاح'),
+        ];
 
-      final expectation = expectLater(bloc.stream, emitsInOrder(expected));
+        final expectation = expectLater(bloc.stream, emitsInOrder(expected));
 
-      bloc.add(const AuthEvent.deleteAccount(params));
-      await expectation;
-    });
+        bloc.add(const AuthEvent.deleteAccount(params));
+        await expectation;
+      },
+    );
 
     test('emits [loading, failure] when deleteAccount fails', () async {
-      when(
-        () => mockDeleteAccountUC.call(any()),
-      ).thenAnswer(
+      when(() => mockDeleteAccountUC.call(any())).thenAnswer(
         (_) async => const Left(AppFailure.server(message: 'Unauthenticated.')),
       );
 

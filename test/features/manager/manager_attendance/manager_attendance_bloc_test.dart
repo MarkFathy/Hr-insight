@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:hr_app/src/core/errors/app_failure.dart';
-import 'package:hr_app/src/features/manager/manager_attendance/data/models/attendance_params.dart';
-import 'package:hr_app/src/features/manager/manager_attendance/domain/entities/manager_attendance_entity.dart';
-import 'package:hr_app/src/features/manager/manager_attendance/domain/use_cases/get_attendance.dart';
-import 'package:hr_app/src/features/manager/manager_attendance/presentation/bloc/attendance_bloc.dart';
+import 'package:hr_app/core/errors/app_failure.dart';
+import 'package:hr_app/features/manager/manager_attendance/data/models/attendance_params.dart';
+import 'package:hr_app/features/manager/manager_attendance/domain/entities/manager_attendance_entity.dart';
+import 'package:hr_app/features/manager/manager_attendance/domain/use_cases/get_attendance.dart';
+import 'package:hr_app/features/manager/manager_attendance/presentation/bloc/attendance_bloc.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockGetManagerAttendanceUC extends Mock

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:hr_app/src/core/di/service_locator.dart';
-import 'package:hr_app/src/core/theme/core_theme.dart';
-import 'package:hr_app/src/features/employee/leaves/domain/entities/leaves_entity.dart';
-import 'package:hr_app/src/features/employee/leaves/domain/use_cases/get_leaves.dart';
-import 'package:hr_app/src/features/employee/leaves/domain/use_cases/request_leave.dart';
-import 'package:hr_app/src/features/employee/leaves/presentation/bloc/bloc.dart';
-import 'package:hr_app/src/features/employee/leaves/presentation/leaves_screen.dart';
+import 'package:hr_app/core/di/service_locator.dart';
+import 'package:hr_app/core/theme/core_theme.dart';
+import 'package:hr_app/features/employee/leaves/domain/entities/leaves_entity.dart';
+import 'package:hr_app/features/employee/leaves/domain/use_cases/get_leaves.dart';
+import 'package:hr_app/features/employee/leaves/domain/use_cases/request_leave.dart';
+import 'package:hr_app/features/employee/leaves/presentation/bloc/bloc.dart';
+import 'package:hr_app/features/employee/leaves/presentation/leaves_screen.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockGetLeavesUC extends Mock implements GetLeavesUC {}
@@ -49,10 +49,8 @@ void main() {
     await tester.pumpWidget(
       ScreenUtilInit(
         designSize: const Size(375, 812),
-        builder: (context, child) => MaterialApp(
-          theme: themeData,
-          home: const LeavesScreen(),
-        ),
+        builder: (context, child) =>
+            MaterialApp(theme: themeData, home: const LeavesScreen()),
       ),
     );
 

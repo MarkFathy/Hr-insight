@@ -1,0 +1,34 @@
+{
+  "appTitle": "الحقيقة",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "internet_restored_banner": "تم استعادة الاتصال بالإنترنت",
+  "@internet_restored_banner": {
+    "description": "Banner message when internet connection is restored"
+  },
+  "internet_unstable_banner": "اتصال الإنترنت ضعيف — قد يتأخر التحميل",
+  "@internet_unstable_banner": {
+    "description": "Banner message when internet connection is slow or unstable"
+  },
+  "internet_captive_portal_banner": "الشبكة محتاجة تسجيل دخول أو الباقة منتهية — اضغط للفحص",
+  "@internet_captive_portal_banner": {
+    "description": "Banner message when captive portal or carrier balance issue is detected"
+  },
+  "internet_no_access_banner": "متصل بالشبكة لكن بدون إنترنت — تأكد من رصيد الباقة",
+  "@internet_no_access_banner": {
+    "description": "Banner message when connected to interface but no internet reachability"
+  },
+  "internet_disconnected_banner": "لا يوجد اتصال بالإنترنت — حاول مرة أخرى",
+  "@internet_disconnected_banner": {
+    "description": "Banner message when network interface is disconnected"
+  },
+  "no_internet_title": "لا يوجد اتصال بالإنترنت",
+  "@no_internet_title": {
+    "description": "Title for no internet error"
+  },
+  "try_again_text": "حاول مرة أخرى",
+  "@try_again_text": {
+    "description": "Action text to retry"
+  }
+}

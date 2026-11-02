@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hr_app/src/core/errors/exceptions.dart';
-import 'package:hr_app/src/core/network/dio_client.dart';
-import 'package:hr_app/src/core/network/dio_error_handler.dart';
-import 'package:hr_app/src/core/public_models/token.dart';
+import 'package:hr_app/core/errors/exceptions.dart';
+import 'package:hr_app/core/network/dio_client.dart';
+import 'package:hr_app/core/network/dio_error_handler.dart';
+import 'package:hr_app/core/public_models/token.dart';
 
 void main() {
   group('Token in-memory caching tests', () {
@@ -65,6 +65,29 @@ void main() {
         ),
       );
     });
+
+    test(
+      'throws ServerException with Arabic noInternetMessage on connectionError',
+      () {
+        final dioException = DioException(
+          requestOptions: RequestOptions(path: '/test'),
+          type: DioExceptionType.connectionError,
+          message:
+              "The connection errored: Failed host lookup: 'hr.emenu.club'",
+        );
+
+        expect(
+          () => DioErrorHandler.handle(dioException),
+          throwsA(
+            isA<ServerException>().having(
+              (e) => e.message,
+              'message',
+              DioErrorHandler.noInternetMessage,
+            ),
+          ),
+        );
+      },
+    );
   });
 
   group('DioClient configuration tests', () {

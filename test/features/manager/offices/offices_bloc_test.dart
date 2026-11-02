@@ -1,14 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:hr_app/src/core/errors/app_failure.dart';
-import 'package:hr_app/src/features/manager/offices/domain/entities/offices_entity.dart';
-import 'package:hr_app/src/features/manager/offices/domain/use_cases/add_office_use_case.dart';
-import 'package:hr_app/src/features/manager/offices/domain/use_cases/delete_office_use_case.dart';
-import 'package:hr_app/src/features/manager/offices/domain/use_cases/edit_office_use_case.dart';
-import 'package:hr_app/src/features/manager/offices/domain/use_cases/get_office_details_use_case.dart';
-import 'package:hr_app/src/features/manager/offices/domain/use_cases/get_offices_use_case.dart';
-import 'package:hr_app/src/features/manager/offices/domain/use_cases/set_office_use_case.dart';
-import 'package:hr_app/src/features/manager/offices/presentation/bloc/bloc.dart';
+import 'package:hr_app/core/errors/app_failure.dart';
+import 'package:hr_app/features/manager/offices/domain/entities/offices_entity.dart';
+import 'package:hr_app/features/manager/offices/domain/use_cases/add_office_use_case.dart';
+import 'package:hr_app/features/manager/offices/domain/use_cases/delete_office_use_case.dart';
+import 'package:hr_app/features/manager/offices/domain/use_cases/edit_office_use_case.dart';
+import 'package:hr_app/features/manager/offices/domain/use_cases/get_office_details_use_case.dart';
+import 'package:hr_app/features/manager/offices/domain/use_cases/get_offices_use_case.dart';
+import 'package:hr_app/features/manager/offices/domain/use_cases/set_office_use_case.dart';
+import 'package:hr_app/features/manager/offices/presentation/bloc/bloc.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockGetOfficesUC extends Mock implements GetOfficesUC {}
@@ -71,7 +71,10 @@ void main() {
         const OfficesState.loaded(offices: tOffices),
       ];
 
-      final expectation = expectLater(bloc.stream, emitsInOrder(expectedStates));
+      final expectation = expectLater(
+        bloc.stream,
+        emitsInOrder(expectedStates),
+      );
 
       bloc.add(const OfficesEvent.getOffices());
       await expectation;
@@ -87,7 +90,10 @@ void main() {
         const OfficesState.error(message: 'Server error'),
       ];
 
-      final expectation = expectLater(bloc.stream, emitsInOrder(expectedStates));
+      final expectation = expectLater(
+        bloc.stream,
+        emitsInOrder(expectedStates),
+      );
 
       bloc.add(const OfficesEvent.getOffices());
       await expectation;

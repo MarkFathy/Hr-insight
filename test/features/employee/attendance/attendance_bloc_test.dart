@@ -1,11 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:hr_app/src/core/errors/app_failure.dart';
-import 'package:hr_app/src/features/employee/attendance/domain/entities/attendance_entity.dart';
-import 'package:hr_app/src/features/employee/attendance/domain/entities/sign_entity.dart';
-import 'package:hr_app/src/features/employee/attendance/domain/use_cases/get_attendance.dart';
-import 'package:hr_app/src/features/employee/attendance/domain/use_cases/sign_attendance_use_case.dart';
-import 'package:hr_app/src/features/employee/attendance/presentation/bloc/bloc.dart';
+import 'package:hr_app/core/errors/app_failure.dart';
+import 'package:hr_app/features/employee/attendance/domain/entities/attendance_entity.dart';
+import 'package:hr_app/features/employee/attendance/domain/entities/sign_entity.dart';
+import 'package:hr_app/features/employee/attendance/domain/use_cases/get_attendance.dart';
+import 'package:hr_app/features/employee/attendance/domain/use_cases/sign_attendance_use_case.dart';
+import 'package:hr_app/features/employee/attendance/presentation/bloc/bloc.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockGetAttendanceUC extends Mock implements GetAttendanceUC {}
@@ -91,9 +91,7 @@ void main() {
     });
 
     test('emits [loading, error] when sign fails', () async {
-      when(
-        () => mockSignUC.call(isAttend: any(named: 'isAttend')),
-      ).thenAnswer(
+      when(() => mockSignUC.call(isAttend: any(named: 'isAttend'))).thenAnswer(
         (_) async => const Left(AppFailure.server(message: 'Failed to sign')),
       );
 

@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:hr_app/src/core/errors/app_failure.dart';
-import 'package:hr_app/src/features/profile/data/models/employee_profile_model.dart';
-import 'package:hr_app/src/features/profile/domain/entities/update_profile_params.dart';
-import 'package:hr_app/src/features/profile/domain/use_cases/get_profile.dart';
-import 'package:hr_app/src/features/profile/domain/use_cases/update_profile.dart';
-import 'package:hr_app/src/features/profile/presentation/bloc/bloc.dart';
+import 'package:hr_app/core/errors/app_failure.dart';
+import 'package:hr_app/features/profile/data/models/employee_profile_model.dart';
+import 'package:hr_app/features/profile/domain/entities/update_profile_params.dart';
+import 'package:hr_app/features/profile/domain/use_cases/get_profile.dart';
+import 'package:hr_app/features/profile/domain/use_cases/update_profile.dart';
+import 'package:hr_app/features/profile/presentation/bloc/bloc.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockGetProfileUC extends Mock implements GetProfileUC {}
@@ -87,8 +87,11 @@ void main() {
           bloc.stream,
           emitsInOrder([
             const ProfileState.loading(),
-            predicate<ProfileState>((state) => state is ProfileLoadedState &&
-                  state.managerProfile?.data?.company == 'Acme Inc'),
+            predicate<ProfileState>(
+              (state) =>
+                  state is ProfileLoadedState &&
+                  state.managerProfile?.data?.company == 'Acme Inc',
+            ),
           ]),
         );
 
@@ -98,7 +101,9 @@ void main() {
     );
 
     test('emits [loading, error] when getProfile fails', () async {
-      when(() => mockGetProfileUC.call(isEmployee: any(named: 'isEmployee'))).thenAnswer(
+      when(
+        () => mockGetProfileUC.call(isEmployee: any(named: 'isEmployee')),
+      ).thenAnswer(
         (_) async =>
             const Left(AppFailure.server(message: 'Failed to fetch profile')),
       );
