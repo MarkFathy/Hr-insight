@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hr_app/core/utils/connectivity_auto_restore_mixin.dart';
 import 'package:hr_app/core/utils/extensions.dart';
 import 'package:hr_app/core/widgets/app_error_state.dart';
+import 'package:hr_app/features/employee/attendance/domain/entities/attendance_entity.dart';
 import 'package:hr_app/features/employee/attendance/presentation/components/day_indicator.dart';
 import 'package:hr_app/features/manager/manager_attendance/data/models/attendance_params.dart';
 import 'package:hr_app/features/manager/manager_attendance/domain/entities/manager_attendance_entity.dart';
@@ -26,6 +27,18 @@ class _ManagerMonthlySignaturesCalendarState
   late final EventController _eventController;
   DateTime _currentMonth = DateTime.now();
   static final DateFormat _dateFormat = DateFormat('yyyy-MM-dd');
+  static final DateTime _minMonth = DateTime(2020);
+  static final DateTime _maxMonth = DateTime(2035);
+
+  static const List<String> _weekDays = [
+    'الإثنين',
+    'الثلاثاء',
+    'الأربعاء',
+    'الخميس',
+    'الجمعة',
+    'السبت',
+    'الأحد',
+  ];
 
   @override
   void initState() {
@@ -77,13 +90,33 @@ class _ManagerMonthlySignaturesCalendarState
           );
         }
 
-        // Build an O(1) lookup map of attendance records by date string
-        final attendanceMap = <String, ManagerAttendanceDataEntity>{};
+        // Build an O(1) lookup map of attendance records with precomputed formatted times
+        final attendanceMap = <String, _ManagerDayEntry>{};
         if (state is ManagerAttendanceStateLoaded &&
             state.attendance?.data != null) {
           for (final record in state.attendance!.data!) {
             if (record.date != null) {
-              attendanceMap[record.date!] = record;
+              attendanceMap[record.date!] = _ManagerDayEntry(
+                data: record,
+                formattedAttendanceTime:
+                    record.attendanceTime != null
+                        ? (AttendanceDataEntity.formatServerTime(
+                                time: record.attendanceTime,
+                                date: record.date,
+                                isoTimestamp: record.createdAt,
+                              ) ??
+                              record.attendanceTime)
+                        : null,
+                formattedDepartureTime:
+                    record.departureTime != null
+                        ? (AttendanceDataEntity.formatServerTime(
+                                time: record.departureTime,
+                                date: record.date,
+                                isoTimestamp: record.updatedAt,
+                              ) ??
+                              record.departureTime)
+                        : null,
+              );
             }
           }
         }
@@ -92,10 +125,12 @@ class _ManagerMonthlySignaturesCalendarState
           controller: _eventController,
           monthViewStyle: MonthViewStyle(
             showBorder: false,
-            minMonth: DateTime.now().subtract(const Duration(days: 3650)),
-            maxMonth: DateTime.now().add(const Duration(days: 3650)),
+            minMonth: _minMonth,
+            maxMonth: _maxMonth,
             initialMonth: _currentMonth,
-            cellAspectRatio: 3 / 8,
+            useAvailableVerticalSpace: true,
+            pagePhysics: const NeverScrollableScrollPhysics(),
+            pageViewPhysics: const PageScrollPhysics(),
           ),
           monthViewThemeSettings: MonthViewThemeSettings(
             headerStyle: HeaderStyle(
@@ -109,34 +144,23 @@ class _ManagerMonthlySignaturesCalendarState
             ),
           ),
           monthViewBuilders: MonthViewBuilders(
-            weekDayBuilder: (day) {
-              const weekDays = [
-                'الإثنين',
-                'الثلاثاء',
-                'الأربعاء',
-                'الخميس',
-                'الجمعة',
-                'السبت',
-                'الأحد',
-              ];
-              return Material(
-                color: colors.grey,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5.0),
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      border: Border(bottom: BorderSide(color: colors.primary)),
-                    ),
-                    child: Text(
-                      weekDays[day],
-                      textAlign: TextAlign.center,
-                      maxLines: 1,
-                      style: typography.bodySmall,
-                    ),
+            weekDayBuilder: (day) => Material(
+              color: colors.grey,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5.0),
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    border: Border(bottom: BorderSide(color: colors.primary)),
+                  ),
+                  child: Text(
+                    _weekDays[day % _weekDays.length],
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    style: typography.bodySmall,
                   ),
                 ),
-              );
-            },
+              ),
+            ),
             cellBuilder:
                 (date, events, isToday, isInMonth, hideDaysNotInMonth) {
                   if (!isInMonth) return const Center();
@@ -146,13 +170,15 @@ class _ManagerMonthlySignaturesCalendarState
                   }
 
                   final dateKey = _dateFormat.format(date);
-                  final dayRecord = attendanceMap[dateKey];
+                  final dayEntry = attendanceMap[dateKey];
 
                   return ManagerDayWidget(
                     key: ValueKey(dateKey),
                     date: date,
-                    dayData: dayRecord,
+                    dayData: dayEntry?.data,
                     isToday: isToday,
+                    formattedAttendanceTime: dayEntry?.formattedAttendanceTime,
+                    formattedDepartureTime: dayEntry?.formattedDepartureTime,
                   );
                 },
             onPageChange: (date, pageIndex) {
@@ -173,4 +199,16 @@ class _ManagerMonthlySignaturesCalendarState
       },
     );
   }
+}
+
+class _ManagerDayEntry {
+  final ManagerAttendanceDataEntity data;
+  final String? formattedAttendanceTime;
+  final String? formattedDepartureTime;
+
+  const _ManagerDayEntry({
+    required this.data,
+    this.formattedAttendanceTime,
+    this.formattedDepartureTime,
+  });
 }

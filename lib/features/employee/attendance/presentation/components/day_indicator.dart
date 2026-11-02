@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hr_app/core/utils/extensions.dart';
-import 'package:shimmer/shimmer.dart';
 
 class DayIndicator extends StatelessWidget {
   final String day;
@@ -22,18 +21,15 @@ class DayIndicator extends StatelessWidget {
         ),
       ),
       Expanded(
-        child: Shimmer.fromColors(
-          baseColor: context.colors.surface,
-          highlightColor: context.colors.primary.withValues(alpha: .3),
-          period: const Duration(milliseconds: 400),
-          child: const Material(
-            borderRadius: BorderRadius.only(
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: context.colors.surface.withValues(alpha: 0.4),
+            borderRadius: const BorderRadius.only(
               bottomLeft: Radius.circular(15),
               bottomRight: Radius.circular(15),
             ),
-            elevation: 4,
-            child: SizedBox.expand(),
           ),
+          child: const SizedBox.expand(),
         ),
       ),
     ],

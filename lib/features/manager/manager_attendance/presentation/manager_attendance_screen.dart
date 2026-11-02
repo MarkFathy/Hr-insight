@@ -90,6 +90,25 @@ class _ManagerAttendanceScreenState extends State<ManagerAttendanceScreen>
           title: const Text('حضور الموظفين الشهري'),
           leading: const AppBackButton(),
           centerTitle: true,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.refresh),
+              tooltip: 'تحديث البيانات',
+              onPressed: () {
+                screenCtx.read<EmployeesBloc>().add(const GetEmployeesEvent());
+                if (_selectedId != null) {
+                  _attendanceBloc.add(
+                    LoadManagerAttendanceEvent(
+                      ManagerAttendanceParams(
+                        date: _signatureMonth,
+                        employeeId: _selectedId.toString(),
+                      ),
+                    ),
+                  );
+                }
+              },
+            ),
+          ],
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(58.h),
             child: Padding(
@@ -101,46 +120,36 @@ class _ManagerAttendanceScreenState extends State<ManagerAttendanceScreen>
             ),
           ),
         ),
-        body: RefreshIndicator(
-          color: screenCtx.colors.primary,
-          backgroundColor: screenCtx.colors.surface,
-          onRefresh: () async {
-            screenCtx.read<EmployeesBloc>().add(const GetEmployeesEvent());
-            if (_selectedId != null) {
-              _attendanceBloc.add(
-                LoadManagerAttendanceEvent(
-                  ManagerAttendanceParams(
-                    date: _signatureMonth,
-                    employeeId: _selectedId.toString(),
-                  ),
-                ),
-              );
-            }
-          },
-          child: LayoutBuilder(
-            builder: (context, constraints) => SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              child: SizedBox(
-                height: constraints.maxHeight,
-                child: BlocBuilder<EmployeesBloc, EmployeesState>(
-                  builder: (context, empState) {
-                    if (_selectedId == null &&
-                        empState is EmployeesErrorState) {
-                      return AppErrorState(
+        body: BlocBuilder<EmployeesBloc, EmployeesState>(
+          builder: (context, empState) {
+            if (_selectedId == null && empState is EmployeesErrorState) {
+              return RefreshIndicator(
+                color: screenCtx.colors.primary,
+                backgroundColor: screenCtx.colors.surface,
+                onRefresh: () async {
+                  screenCtx.read<EmployeesBloc>().add(const GetEmployeesEvent());
+                },
+                child: LayoutBuilder(
+                  builder: (context, constraints) => SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: ConstrainedBox(
+                      constraints:
+                          BoxConstraints(minHeight: constraints.maxHeight),
+                      child: AppErrorState(
                         message: empState.message,
                         onRetry: () => screenCtx.read<EmployeesBloc>().add(
                           const GetEmployeesEvent(),
                         ),
-                      );
-                    }
-                    return ManagerMonthlySignaturesCalendar(
-                      employeeId: _selectedId,
-                    );
-                  },
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ),
+              );
+            }
+            return ManagerMonthlySignaturesCalendar(
+              employeeId: _selectedId,
+            );
+          },
         ),
       ),
     ),

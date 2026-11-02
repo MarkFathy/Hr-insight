@@ -79,7 +79,12 @@ class OfficeCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: Center(
-                  child: Image.asset(AppImages.office, fit: BoxFit.contain),
+                  child: Image.asset(
+                    AppImages.office,
+                    fit: BoxFit.contain,
+                    cacheWidth: 150,
+                    cacheHeight: 150,
+                  ),
                 ),
               ),
             ),

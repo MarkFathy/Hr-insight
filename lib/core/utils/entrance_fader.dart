@@ -32,6 +32,7 @@ class EntranceFaderState extends State<EntranceFader>
   AnimationController? _controller;
   Animation<double>? _dxAnimation;
   Animation<double>? _dyAnimation;
+  Timer? _delayTimer;
 
   @override
   void initState() {
@@ -45,17 +46,21 @@ class EntranceFaderState extends State<EntranceFader>
       begin: widget.offset.dy,
       end: 0.0,
     ).animate(_controller!);
-    unawaited(
-      Future.delayed(widget.delay, () {
+
+    if (widget.delay == Duration.zero) {
+      _controller!.forward();
+    } else {
+      _delayTimer = Timer(widget.delay, () {
         if (mounted) {
           _controller!.forward();
         }
-      }),
-    );
+      });
+    }
   }
 
   @override
   void dispose() {
+    _delayTimer?.cancel();
     _controller!.dispose();
     super.dispose();
   }
@@ -63,12 +68,18 @@ class EntranceFaderState extends State<EntranceFader>
   @override
   Widget build(BuildContext context) => AnimatedBuilder(
     animation: _controller!,
-    builder: (context, child) => Opacity(
-      opacity: _controller!.value,
-      child: Transform.translate(
-        offset: Offset(_dxAnimation!.value, _dyAnimation!.value),
-        child: widget.child,
-      ),
-    ),
+    child: widget.child,
+    builder: (context, child) {
+      if (_controller != null && _controller!.isCompleted) {
+        return child!;
+      }
+      return Opacity(
+        opacity: _controller!.value,
+        child: Transform.translate(
+          offset: Offset(_dxAnimation!.value, _dyAnimation!.value),
+          child: child,
+        ),
+      );
+    },
   );
 }

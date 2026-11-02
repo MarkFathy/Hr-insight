@@ -60,7 +60,12 @@ class GridItem extends StatelessWidget {
                       color: context.colors.primary.withValues(alpha: 0.2),
                     ),
                   ),
-                  child: Image.asset(asset, fit: BoxFit.contain),
+                  child: Image.asset(
+                    asset,
+                    fit: BoxFit.contain,
+                    cacheWidth: 120,
+                    cacheHeight: 120,
+                  ),
                 ),
                 12.ph,
                 Text(

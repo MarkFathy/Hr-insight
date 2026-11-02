@@ -413,4 +413,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthState.failure(e.toString()));
     }
   }
+
+  @override
+  Future<void> close() {
+    emailCtrl.dispose();
+    companyCtrl.dispose();
+    oldPassword.dispose();
+    passwordCtrl.dispose();
+    nameCtrl.dispose();
+    confirmPasswordCtrl.dispose();
+    phoneCtrl.dispose();
+    addressCtrl.dispose();
+    nationalityNumCtrl.dispose();
+    careerCtrl.dispose();
+    careerDescriptionCtrl.dispose();
+    managerPin.dispose();
+    verificationCode.dispose();
+    return super.close();
+  }
 }

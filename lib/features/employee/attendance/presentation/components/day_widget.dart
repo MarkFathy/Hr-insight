@@ -6,8 +6,16 @@ import 'package:hr_app/features/employee/attendance/domain/entities/attendance_e
 class DayWidget extends StatelessWidget {
   final DateTime date;
   final AttendanceDataEntity? dayData;
+  final String? formattedAttendanceTime;
+  final String? formattedDepartureTime;
 
-  const DayWidget({required this.date, super.key, this.dayData});
+  const DayWidget({
+    required this.date,
+    super.key,
+    this.dayData,
+    this.formattedAttendanceTime,
+    this.formattedDepartureTime,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,11 +23,22 @@ class DayWidget extends StatelessWidget {
     final isToday =
         date.year == now.year && date.month == now.month && date.day == now.day;
 
+    final attendanceTime =
+        formattedAttendanceTime ??
+        (dayData?.attendanceTime != null
+            ? (dayData!.getAdjustedAttendanceTime() ?? dayData!.attendanceTime!)
+            : null);
+
+    final departureTime =
+        formattedDepartureTime ??
+        (dayData?.departureTime != null
+            ? (dayData!.getAdjustedDepartureTime() ?? dayData!.departureTime!)
+            : null);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Material(
-          elevation: 3,
           color: switch ((isToday, dayData)) {
             (true, _) => context.colors.primary.withValues(alpha: 0.3),
             (_, AttendanceDataEntity(departureTime: null)) =>
@@ -47,7 +66,7 @@ class DayWidget extends StatelessWidget {
                 : Column(
                     children: [
                       Expanded(
-                        child: dayData!.attendanceTime != null
+                        child: attendanceTime != null
                             ? Center(
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
@@ -65,10 +84,7 @@ class DayWidget extends StatelessWidget {
                                         ),
                                         1.ph,
                                         _TimeBadge(
-                                          formattedTime:
-                                              dayData!
-                                                  .getAdjustedAttendanceTime() ??
-                                              dayData!.attendanceTime!,
+                                          formattedTime: attendanceTime,
                                           accentColor: context.colors.secondary,
                                         ),
                                       ],
@@ -84,7 +100,7 @@ class DayWidget extends StatelessWidget {
                         color: context.colors.surface,
                       ),
                       Expanded(
-                        child: dayData!.departureTime != null
+                        child: departureTime != null
                             ? Center(
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
@@ -105,10 +121,7 @@ class DayWidget extends StatelessWidget {
                                         ),
                                         1.ph,
                                         _TimeBadge(
-                                          formattedTime:
-                                              dayData!
-                                                  .getAdjustedDepartureTime() ??
-                                              dayData!.departureTime!,
+                                          formattedTime: departureTime,
                                           accentColor: context.colors.success,
                                         ),
                                       ],
@@ -139,10 +152,15 @@ class _TimeBadge extends StatelessWidget {
     final timePart = parts.first;
     final periodPart = parts.length > 1 ? parts.last : '';
 
-    return Material(
-      color: Colors.white,
-      borderRadius: context.radius.xsBorder,
-      elevation: 2,
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: context.radius.xsBorder,
+        border: Border.all(
+          color: context.colors.border.withValues(alpha: 0.5),
+          width: 0.5,
+        ),
+      ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
         child: Column(

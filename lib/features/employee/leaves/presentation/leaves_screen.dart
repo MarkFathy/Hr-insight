@@ -144,14 +144,12 @@ class _LeavesScreenState extends State<LeavesScreen>
                   );
                 }
 
-                final reversedLeaves = leavesList.reversed.toList();
-
                 return ListView.builder(
                   padding: EdgeInsets.fromLTRB(0, 8.h, 0, 96.h),
                   physics: const AlwaysScrollableScrollPhysics(),
-                  itemCount: reversedLeaves.length,
+                  itemCount: leavesList.length,
                   itemBuilder: (context, index) =>
-                      LeaveCard(leave: reversedLeaves[index]),
+                      LeaveCard(leave: leavesList[leavesList.length - 1 - index]),
                 );
               }
 

@@ -113,7 +113,11 @@ class ManagerGrid extends StatelessWidget {
                       color: context.colors.primary.withValues(alpha: 0.2),
                     ),
                   ),
-                  child: Image.asset(AppImages.departments),
+                  child: Image.asset(
+                    AppImages.departments,
+                    cacheWidth: 100,
+                    cacheHeight: 100,
+                  ),
                 ),
                 14.pw,
                 Expanded(

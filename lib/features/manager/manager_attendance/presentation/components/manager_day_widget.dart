@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hr_app/core/utils/entrance_fader.dart';
 import 'package:hr_app/core/utils/extensions.dart';
 import 'package:hr_app/features/employee/attendance/domain/entities/attendance_entity.dart';
 import 'package:hr_app/features/manager/manager_attendance/domain/entities/manager_attendance_entity.dart';
@@ -10,12 +9,16 @@ class ManagerDayWidget extends StatelessWidget {
   final DateTime date;
   final ManagerAttendanceDataEntity? dayData;
   final bool isToday;
+  final String? formattedAttendanceTime;
+  final String? formattedDepartureTime;
 
   const ManagerDayWidget({
     required this.date,
     super.key,
     this.dayData,
     this.isToday = false,
+    this.formattedAttendanceTime,
+    this.formattedDepartureTime,
   });
 
   static final intl.DateFormat _dateFormat = intl.DateFormat('yyyy-MM-dd');
@@ -29,11 +32,32 @@ class ManagerDayWidget extends StatelessWidget {
     final colors = context.colors;
     final typography = context.typography;
 
+    final attendanceTime =
+        formattedAttendanceTime ??
+        (dayData?.attendanceTime != null
+            ? (AttendanceDataEntity.formatServerTime(
+                    time: dayData!.attendanceTime,
+                    date: dayData!.date ?? _dateFormat.format(date),
+                    isoTimestamp: dayData!.createdAt,
+                  ) ??
+                  dayData!.attendanceTime!)
+            : null);
+
+    final departureTime =
+        formattedDepartureTime ??
+        (dayData?.departureTime != null
+            ? (AttendanceDataEntity.formatServerTime(
+                    time: dayData!.departureTime,
+                    date: dayData!.date ?? _dateFormat.format(date),
+                    isoTimestamp: dayData!.updatedAt,
+                  ) ??
+                  dayData!.departureTime!)
+            : null);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Material(
-          elevation: 3,
           color: (!isCurrentDay)
               ? (dayData == null)
                     ? colors.secondary
@@ -62,7 +86,7 @@ class ManagerDayWidget extends StatelessWidget {
                 : Column(
                     children: [
                       Expanded(
-                        child: dayData!.attendanceTime != null
+                        child: attendanceTime != null
                             ? Center(
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
@@ -71,31 +95,20 @@ class ManagerDayWidget extends StatelessWidget {
                                       horizontal: 2.w,
                                       vertical: 2.h,
                                     ),
-                                    child: EntranceFader(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Text(
-                                            'الحضور',
-                                            style: typography.labelSmall
-                                                .copyWith(color: Colors.white),
-                                          ),
-                                          1.ph,
-                                          _ManagerTimeBadge(
-                                            formattedTime:
-                                                AttendanceDataEntity.formatServerTime(
-                                                  time: dayData!.attendanceTime,
-                                                  date:
-                                                      dayData!.date ??
-                                                      _dateFormat.format(date),
-                                                  isoTimestamp:
-                                                      dayData!.createdAt,
-                                                ) ??
-                                                dayData!.attendanceTime!,
-                                            accentColor: colors.secondary,
-                                          ),
-                                        ],
-                                      ),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          'الحضور',
+                                          style: typography.labelSmall
+                                              .copyWith(color: Colors.white),
+                                        ),
+                                        1.ph,
+                                        _ManagerTimeBadge(
+                                          formattedTime: attendanceTime,
+                                          accentColor: colors.secondary,
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -104,7 +117,7 @@ class ManagerDayWidget extends StatelessWidget {
                       ),
                       const Divider(height: 1, thickness: 0.5),
                       Expanded(
-                        child: dayData!.departureTime != null
+                        child: departureTime != null
                             ? Center(
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
@@ -113,33 +126,22 @@ class ManagerDayWidget extends StatelessWidget {
                                       horizontal: 2.w,
                                       vertical: 2.h,
                                     ),
-                                    child: EntranceFader(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Text(
-                                            'الإنصراف',
-                                            style: typography.labelSmall
-                                                .copyWith(
-                                                  color: colors.success,
-                                                ),
-                                          ),
-                                          1.ph,
-                                          _ManagerTimeBadge(
-                                            formattedTime:
-                                                AttendanceDataEntity.formatServerTime(
-                                                  time: dayData!.departureTime,
-                                                  date:
-                                                      dayData!.date ??
-                                                      _dateFormat.format(date),
-                                                  isoTimestamp:
-                                                      dayData!.updatedAt,
-                                                ) ??
-                                                dayData!.departureTime!,
-                                            accentColor: colors.success,
-                                          ),
-                                        ],
-                                      ),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          'الإنصراف',
+                                          style: typography.labelSmall
+                                              .copyWith(
+                                                color: colors.success,
+                                              ),
+                                        ),
+                                        1.ph,
+                                        _ManagerTimeBadge(
+                                          formattedTime: departureTime,
+                                          accentColor: colors.success,
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -171,10 +173,15 @@ class _ManagerTimeBadge extends StatelessWidget {
     final timePart = parts.first;
     final periodPart = parts.length > 1 ? parts.last : '';
 
-    return Material(
-      color: Colors.white,
-      borderRadius: context.radius.xsBorder,
-      elevation: 4,
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: context.radius.xsBorder,
+        border: Border.all(
+          color: context.colors.border.withValues(alpha: 0.5),
+          width: 0.5,
+        ),
+      ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
         child: Column(

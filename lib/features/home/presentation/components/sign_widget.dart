@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/utils/extensions.dart';
-import 'package:hr_app/core/utils/navigation_helper.dart';
 import 'package:hr_app/core/widgets/animated_switch.dart';
 import 'package:hr_app/core/widgets/app_snack_bar.dart';
 import 'package:hr_app/features/employee/attendance/domain/entities/attendance_entity.dart';
 import 'package:hr_app/features/employee/attendance/presentation/bloc/bloc.dart';
+import 'package:hr_app/features/home/presentation/components/attendance_confirmation_dialog.dart';
 import 'package:hr_app/features/home/presentation/components/clock_widget.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:shimmer/shimmer.dart';
@@ -87,55 +87,16 @@ class SignWidget extends StatelessWidget {
                         : InkWell(
                             onTap: () {
                               if (state is AttendanceLoadingState) return;
-                              final actionText = isAttended
-                                  ? 'الإنصراف'
-                                  : 'الحضور';
-                              final currentTimeText = intl.DateFormat.jms(
-                                'ar',
-                              ).format(DateTime.now());
                               unawaited(
-                                showAdaptiveDialog<void>(
+                                AttendanceConfirmationDialog.show(
                                   context: context,
-                                  builder: (ctx) => AlertDialog.adaptive(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16.r),
-                                    ),
-                                    content: Text(
-                                      'ستقوم بتسجيل $actionText\nالساعة الان $currentTimeText',
-                                      style: context.typography.titleMedium
-                                          .copyWith(
-                                            color: context.colors.primary,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          bloc.add(
-                                            const SignEvent(isAttend: true),
-                                          );
-                                          NavigationHelper.pop(ctx);
-                                        },
-                                        child: Text(
-                                          'تسجيل',
-                                          style: TextStyle(
-                                            color: context.colors.primary,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                      TextButton(
-                                        onPressed: () =>
-                                            NavigationHelper.pop(ctx),
-                                        child: Text(
-                                          'إلغاء',
-                                          style: TextStyle(
-                                            color: context.colors.textSecondary,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                  isCheckIn: !isAttended,
+                                  todayRecord: todayRecord,
+                                  onConfirm: () {
+                                    bloc.add(
+                                      SignEvent(isAttend: !isAttended),
+                                    );
+                                  },
                                 ),
                               );
                             },
