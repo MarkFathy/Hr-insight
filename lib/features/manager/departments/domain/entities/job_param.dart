@@ -8,7 +8,8 @@ abstract class JobParams with _$JobParams {
   const JobParams._();
 
   const factory JobParams({
-    required String? title, @JsonKey(name: 'job_id') int? jobId,
+    required String? title,
+    @JsonKey(name: 'job_id') int? jobId,
     @JsonKey(name: 'department_id') int? departmentId,
   }) = _JobParams;
 

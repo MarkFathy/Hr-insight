@@ -4,18 +4,18 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'leaves_entity.freezed.dart';
 part 'leaves_entity.g.dart';
 
-List<LeavesDataEntity>? _leavesDataFromJson(dynamic json) {
-  if (json == null) return null;
-  if (json is List) {
-    return json
+List<LeavesDataEntity>? _leavesDataFromJson(dynamic json) => switch (json) {
+  final List<dynamic> list =>
+    list
         .map((e) => LeavesDataEntity.fromJson(e as Map<String, dynamic>))
-        .toList();
-  }
-  if (json is Map) {
-    return [LeavesDataEntity.fromJson(json as Map<String, dynamic>)];
-  }
-  return null;
-}
+        .toList(),
+  final Map<dynamic, dynamic> map => [
+    LeavesDataEntity.fromJson(
+      map is Map<String, dynamic> ? map : Map<String, dynamic>.from(map),
+    ),
+  ],
+  _ => null,
+};
 
 @freezed
 abstract class LeavesEntity with _$LeavesEntity {

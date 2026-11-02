@@ -10,7 +10,6 @@ import 'package:hr_app/core/service/stability_interceptor.dart';
 /// timeouts, interceptors, and request methods.
 class DioClient {
   final Dio _dio;
-  static Dio? _staticDio;
 
   DioClient({required Token token, Dio? dio})
     : _dio =
@@ -31,17 +30,9 @@ class DioClient {
       AuthInterceptor(token: token),
       SafeLoggingInterceptor(),
     ]);
-    _staticDio = _dio;
   }
 
   Dio get dio => _dio;
-
-  static void attachStabilityInterceptor(StabilityInterceptor interceptor) {
-    if (_staticDio != null &&
-        _staticDio!.interceptors.every((i) => i is! StabilityInterceptor)) {
-      _staticDio!.interceptors.insert(0, interceptor);
-    }
-  }
 
   Future<Response<dynamic>> get(
     String path, {

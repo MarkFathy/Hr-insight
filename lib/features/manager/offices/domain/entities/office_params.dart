@@ -8,7 +8,11 @@ abstract class OfficeParams with _$OfficeParams {
   const OfficeParams._();
 
   const factory OfficeParams({
-    required String? name, required double? radius, required double? lat, required double? lng, int? id,
+    required String? name,
+    required double? radius,
+    required double? lat,
+    required double? lng,
+    int? id,
   }) = _OfficeParams;
 
   factory OfficeParams.fromJson(Map<String, dynamic> json) =>

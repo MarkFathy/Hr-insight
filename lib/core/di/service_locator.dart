@@ -79,8 +79,6 @@ import 'package:hr_app/features/profile/presentation/bloc/bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final sl = GetIt.instance;
-GetIt get getIt => sl;
-Future<void> setupServiceLocator() => init();
 
 Future<void> init() async {
   //! Network & Internet Reachability
@@ -259,7 +257,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => AddOfficeUC(sl()));
   sl.registerLazySingleton(() => EditOfficeUC(sl()));
   sl.registerLazySingleton(() => DeleteOfficeUC(sl()));
-
+  sl.registerLazySingleton(() => SetOfficeUC(sl()));
   //! Repository
   sl.registerLazySingleton<OfficesRepo>(
     () => OfficesRepoImpl(remoteDataSource: sl()),
@@ -312,8 +310,6 @@ Future<void> init() async {
   //! Use cases
   sl.registerLazySingleton(() => GetEmployeesUC(sl()));
   sl.registerLazySingleton(() => DeleteEmployeeUC(sl()));
-
-  sl.registerLazySingleton(() => SetOfficeUC(sl()));
 
   //! Repository
   sl.registerLazySingleton<EmployeesRepo>(

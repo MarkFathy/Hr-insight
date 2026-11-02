@@ -8,7 +8,8 @@ abstract class SetEmployeeParams with _$SetEmployeeParams {
   const SetEmployeeParams._();
 
   const factory SetEmployeeParams({
-    @JsonKey(name: 'employee_id') required int employeeId, @JsonKey(name: 'office_id') int? officeId,
+    @JsonKey(name: 'employee_id') required int employeeId,
+    @JsonKey(name: 'office_id') int? officeId,
     @JsonKey(name: 'job_id') int? jobId,
   }) = _SetEmployeeParams;
 

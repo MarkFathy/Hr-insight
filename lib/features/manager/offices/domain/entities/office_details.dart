@@ -6,12 +6,12 @@ part 'office_details.freezed.dart';
 part 'office_details.g.dart';
 
 double? _radiusFromJson(dynamic val) {
-  if (val == null) return null;
-  final numVal = (val as num).toDouble();
-  if (numVal >= 1700) {
-    return double.parse((numVal - 1700).toStringAsFixed(2));
+  if (val case final num n) {
+    final numVal = n.toDouble();
+    final adjusted = numVal >= 1700 ? numVal - 1700 : numVal;
+    return double.parse(adjusted.toStringAsFixed(2));
   }
-  return double.parse(numVal.toStringAsFixed(2));
+  return null;
 }
 
 @freezed

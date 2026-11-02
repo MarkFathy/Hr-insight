@@ -20,13 +20,12 @@ class DayWidget extends StatelessWidget {
       children: [
         Material(
           elevation: 3,
-          color: (!isToday)
-              ? (dayData == null)
-                    ? context.colors.surface
-                    : (dayData!.departureTime == null)
-                    ? context.colors.error
-                    : context.colors.surface
-              : context.colors.primary.withValues(alpha: .3),
+          color: switch ((isToday, dayData)) {
+            (true, _) => context.colors.primary.withValues(alpha: 0.3),
+            (_, AttendanceDataEntity(departureTime: null)) =>
+              context.colors.error,
+            _ => context.colors.surface,
+          },
           child: Center(
             child: Text(
               date.day.toString(),

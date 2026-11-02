@@ -22,16 +22,16 @@ abstract class EmployeeRegisterParams with _$EmployeeRegisterParams {
   }) = _EmployeeRegisterParams;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
-      'name': name,
-      'email': email,
-      'password': password,
-      'password_confirmation': confirmPassword,
-      'phone': phone,
-      'address': address,
-      'image': image,
-      'manager_pin': managerPin,
-      'department_id': departmentId,
-      'job_id': jobId,
-      'office_id': officeId,
-    };
+    'name': name,
+    'email': email,
+    'password': password,
+    'password_confirmation': confirmPassword,
+    'phone': phone,
+    'address': address,
+    'image': image,
+    'manager_pin': managerPin,
+    'department_id': departmentId,
+    'job_id': jobId,
+    'office_id': officeId,
+  };
 }

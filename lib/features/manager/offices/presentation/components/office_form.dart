@@ -341,6 +341,3 @@ class _OfficeFormState extends State<OfficeForm>
     );
   }
 }
-
-/// Compatibility alias
-typedef OfficeFormScreen = OfficeForm;

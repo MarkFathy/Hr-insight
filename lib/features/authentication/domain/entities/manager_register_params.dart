@@ -18,12 +18,12 @@ abstract class ManagerRegisterParams with _$ManagerRegisterParams {
   }) = _ManagerRegisterParams;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
-      'name': name,
-      'email': email,
-      'password': password,
-      'password_confirmation': passwordConfirmation,
-      'phone': phone,
-      'company_name': companyName,
-      'image': image,
-    };
+    'name': name,
+    'email': email,
+    'password': password,
+    'password_confirmation': passwordConfirmation,
+    'phone': phone,
+    'company_name': companyName,
+    'image': image,
+  };
 }

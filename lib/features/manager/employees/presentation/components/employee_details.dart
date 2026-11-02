@@ -79,7 +79,7 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen>
 
     return Scaffold(
       appBar: AppBar(
-        leading: const SBackButton(),
+        leading: const AppBackButton(),
         title: Text(employee.name ?? 'تفاصيل الموظف'),
         centerTitle: true,
         actions: [

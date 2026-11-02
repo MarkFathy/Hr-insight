@@ -59,23 +59,15 @@ class AppEmptyState extends StatelessWidget {
               ),
             ),
           ],
-          () {
-            final currentActionLabel = actionLabel;
-            final currentOnAction = onAction;
-            if (currentActionLabel != null && currentOnAction != null) {
-              return Column(
-                children: [
-                  20.ph,
-                  AppButton(
-                    title: currentActionLabel,
-                    icon: actionIcon,
-                    onTap: currentOnAction,
-                  ),
-                ],
-              );
-            }
-            return const SizedBox.shrink();
-          }(),
+          if (actionLabel case final currentActionLabel?
+              when onAction != null) ...[
+            20.ph,
+            AppButton(
+              title: currentActionLabel,
+              icon: actionIcon,
+              onTap: onAction,
+            ),
+          ],
         ],
       ),
     ),

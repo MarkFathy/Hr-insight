@@ -294,7 +294,7 @@ class _SetEmployeeDialogState extends State<SetEmployeeDialog>
     builder: (btnContext) => Row(
       children: [
         Expanded(
-          child: SButton(
+          child: AppButton(
             title: 'حفظ',
             onTap: () {
               if (_selectedOffice == null) {

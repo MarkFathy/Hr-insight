@@ -14,8 +14,6 @@ import 'package:hr_app/core/widgets/app_text_field.dart';
 import 'package:hr_app/features/manager/departments/domain/entities/departments_entity.dart';
 import 'package:hr_app/features/manager/departments/presentation/bloc/bloc.dart';
 
-typedef DepartmentsForm = DepartmentFormScreen;
-
 class DepartmentFormScreen extends StatefulWidget {
   final VoidCallback? rebuild;
   final DepartmentDataEntity? data;

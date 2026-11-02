@@ -43,6 +43,3 @@ class AppBackButton extends StatelessWidget {
     );
   }
 }
-
-/// Backwards compatibility alias
-typedef SBackButton = AppBackButton;

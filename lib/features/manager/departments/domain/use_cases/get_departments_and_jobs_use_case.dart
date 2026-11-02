@@ -10,4 +10,3 @@ class GetDepartmentsAndJobsUseCase {
 }
 
 typedef GetDepartmentAndJobssUC = GetDepartmentsAndJobsUseCase;
-typedef GetDepartmentsAndJobsUC = GetDepartmentsAndJobsUseCase;

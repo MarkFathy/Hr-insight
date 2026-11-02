@@ -136,4 +136,3 @@ class EmployeeAccountInfoStep extends StatelessWidget {
 }
 
 /// Backwards compatibility alias
-typedef Form2 = EmployeeAccountInfoStep;

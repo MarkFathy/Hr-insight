@@ -8,8 +8,11 @@ abstract class ChangePasswordParams with _$ChangePasswordParams {
   const ChangePasswordParams._();
 
   const factory ChangePasswordParams({
-    @JsonKey(name: 'old_password') required String oldPassword, required String password, @JsonKey(name: 'password_confirmation')
-    required String passwordConfirmation, bool? isEmployee,
+    @JsonKey(name: 'old_password') required String oldPassword,
+    required String password,
+    @JsonKey(name: 'password_confirmation')
+    required String passwordConfirmation,
+    bool? isEmployee,
     String? token,
   }) = _ChangePasswordParams;
 

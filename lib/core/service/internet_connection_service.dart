@@ -76,13 +76,9 @@ enum ProbeOutcome { ok, portal, failed }
 class ProbeResult {
   const ProbeResult.ok(this.latencyMs) : outcome = ProbeOutcome.ok;
 
-  const ProbeResult.portal()
-      : outcome = ProbeOutcome.portal,
-        latencyMs = null;
+  const ProbeResult.portal() : outcome = ProbeOutcome.portal, latencyMs = null;
 
-  const ProbeResult.failed()
-      : outcome = ProbeOutcome.failed,
-        latencyMs = null;
+  const ProbeResult.failed() : outcome = ProbeOutcome.failed, latencyMs = null;
 
   final ProbeOutcome outcome;
   final int? latencyMs;
@@ -114,8 +110,8 @@ class ReachabilityProbe {
     HttpClient? httpClient,
     this.timeout = NetworkConfig.probeTimeout,
     this.requiredSuccesses = NetworkConfig.requiredProbeSuccesses,
-  })  : targets = List<ProbeTarget>.unmodifiable(targets ?? defaultTargets),
-        _client = httpClient ?? _createDefaultClient(timeout);
+  }) : targets = List<ProbeTarget>.unmodifiable(targets ?? defaultTargets),
+       _client = httpClient ?? _createDefaultClient(timeout);
 
   static final List<ProbeTarget> defaultTargets = [
     ProbeTarget(
@@ -132,11 +128,10 @@ class ReachabilityProbe {
     ),
   ];
 
-  static HttpClient _createDefaultClient(Duration timeout) =>
-      HttpClient()
-        ..connectionTimeout = timeout
-        ..idleTimeout = const Duration(seconds: 30)
-        ..userAgent = 'App-ReachabilityProbe/1.0';
+  static HttpClient _createDefaultClient(Duration timeout) => HttpClient()
+    ..connectionTimeout = timeout
+    ..idleTimeout = const Duration(seconds: 30)
+    ..userAgent = 'App-ReachabilityProbe/1.0';
 
   final List<ProbeTarget> targets;
   final HttpClient _client;
@@ -261,16 +256,17 @@ class InternetConnectionService
     Connectivity? connectivity,
     Future<int?> Function()? pingChecker,
     bool registerObserver = true,
-  })  : _probe = probe ?? ReachabilityProbe(),
-        _connectivity = connectivity ?? Connectivity(),
-        _pingChecker = pingChecker {
+  }) : _probe = probe ?? ReachabilityProbe(),
+       _connectivity = connectivity ?? Connectivity(),
+       _pingChecker = pingChecker {
     if (registerObserver) {
       try {
         WidgetsBinding.instance.addObserver(this);
       } on Object catch (_) {}
     }
-    _connectivitySubscription =
-        _connectivity.onConnectivityChanged.listen(_handleConnectivityChanged);
+    _connectivitySubscription = _connectivity.onConnectivityChanged.listen(
+      _handleConnectivityChanged,
+    );
     unawaited(checkNow());
   }
 
@@ -379,7 +375,8 @@ class InternetConnectionService
       return true;
     }
 
-    final useFullCheck = _currentState == NetworkState.checking ||
+    final useFullCheck =
+        _currentState == NetworkState.checking ||
         _currentState == NetworkState.disconnected ||
         _forceConsensus;
 
@@ -394,10 +391,12 @@ class InternetConnectionService
       _lastIssue = outcome.issue;
       _slowPingHits = 0;
       _consecutiveFailures++;
-      final wasOnline = _currentState == NetworkState.connected ||
+      final wasOnline =
+          _currentState == NetworkState.connected ||
           _currentState == NetworkState.unstable;
-      final requiredFailures =
-          wasOnline ? NetworkConfig.failuresBeforeDisconnect : 1;
+      final requiredFailures = wasOnline
+          ? NetworkConfig.failuresBeforeDisconnect
+          : 1;
       if (_consecutiveFailures >= requiredFailures) {
         _updateState(NetworkState.disconnected);
       }
@@ -421,7 +420,7 @@ class InternetConnectionService
   }
 
   Future<({bool ok, int? latencyMs, NetworkIssue issue})>
-      _evaluateReachability({
+  _evaluateReachability({
     required bool useFullCheck,
     required int startEpoch,
   }) async {
@@ -589,7 +588,8 @@ class InternetConnectionService
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.paused || state == AppLifecycleState.hidden) {
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.hidden) {
       _isBackground = true;
       _timer?.cancel();
     } else if (state == AppLifecycleState.resumed) {

@@ -16,7 +16,8 @@ class EntranceFader extends StatefulWidget {
   final Offset offset;
 
   const EntranceFader({
-    required this.child, super.key,
+    required this.child,
+    super.key,
     this.delay = const Duration(),
     this.duration = const Duration(milliseconds: 400),
     this.offset = const Offset(0.0, 32.0),
@@ -44,11 +45,13 @@ class EntranceFaderState extends State<EntranceFader>
       begin: widget.offset.dy,
       end: 0.0,
     ).animate(_controller!);
-    unawaited(Future.delayed(widget.delay, () {
-      if (mounted) {
-        _controller!.forward();
-      }
-    }));
+    unawaited(
+      Future.delayed(widget.delay, () {
+        if (mounted) {
+          _controller!.forward();
+        }
+      }),
+    );
   }
 
   @override
@@ -59,13 +62,13 @@ class EntranceFaderState extends State<EntranceFader>
 
   @override
   Widget build(BuildContext context) => AnimatedBuilder(
-      animation: _controller!,
-      builder: (context, child) => Opacity(
-        opacity: _controller!.value,
-        child: Transform.translate(
-          offset: Offset(_dxAnimation!.value, _dyAnimation!.value),
-          child: widget.child,
-        ),
+    animation: _controller!,
+    builder: (context, child) => Opacity(
+      opacity: _controller!.value,
+      child: Transform.translate(
+        offset: Offset(_dxAnimation!.value, _dyAnimation!.value),
+        child: widget.child,
       ),
-    );
+    ),
+  );
 }

@@ -30,7 +30,7 @@ class _IntroScreenState extends State<IntroScreen>
         Expanded(
           child: PageView(
             scrollDirection: Axis.vertical,
-            children: [
+            children: const [
               IntoPage(
                 firstPage: true,
                 image: AppImages.lattendanceIntro,

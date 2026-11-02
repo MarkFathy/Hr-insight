@@ -142,35 +142,32 @@ class _NetworkBanner extends StatelessWidget {
       );
     }
 
-    switch (issue) {
-      case NetworkIssue.captivePortal:
-        return (
-          color: context.colors.warning,
-          icon: Icons.wifi_lock_rounded,
-          message:
-              l10n?.internet_captive_portal_banner ??
-              'Network needs sign-in or has no data balance — tap to check',
-        );
-      case NetworkIssue.noInternet:
-        return (
-          color: context.colors.warning,
-          icon: Icons.wifi_find_rounded,
-          message:
-              l10n?.internet_no_access_banner ??
-              'Connected to the network but no internet — check your data balance',
-        );
-      case NetworkIssue.noInterface:
-      case NetworkIssue.none:
-        final fallback =
-            l10n?.no_internet_title != null && l10n?.try_again_text != null
-            ? '${l10n!.no_internet_title} — ${l10n.try_again_text}'
-            : 'No Internet Connection — Try Again';
-        return (
-          color: context.colors.error,
-          icon: Icons.wifi_off_rounded,
-          message: l10n?.internet_disconnected_banner ?? fallback,
-        );
-    }
+    final fallback =
+        l10n?.no_internet_title != null && l10n?.try_again_text != null
+        ? '${l10n!.no_internet_title} — ${l10n.try_again_text}'
+        : 'No Internet Connection — Try Again';
+
+    return switch (issue) {
+      NetworkIssue.captivePortal => (
+        color: context.colors.warning,
+        icon: Icons.wifi_lock_rounded,
+        message:
+            l10n?.internet_captive_portal_banner ??
+            'Network needs sign-in or has no data balance — tap to check',
+      ),
+      NetworkIssue.noInternet => (
+        color: context.colors.warning,
+        icon: Icons.wifi_find_rounded,
+        message:
+            l10n?.internet_no_access_banner ??
+            'Connected to the network but no internet — check your data balance',
+      ),
+      NetworkIssue.noInterface || NetworkIssue.none => (
+        color: context.colors.error,
+        icon: Icons.wifi_off_rounded,
+        message: l10n?.internet_disconnected_banner ?? fallback,
+      ),
+    };
   }
 
   @override

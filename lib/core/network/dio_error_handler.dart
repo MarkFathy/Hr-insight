@@ -39,30 +39,32 @@ class DioErrorHandler {
 
   static Never handle(DioException e) {
     final resData = e.response?.data;
-    if (resData is Map && resData['message'] != null) {
-      throw ServerException(resData['message'].toString());
-    } else if (resData is String && resData.isNotEmpty) {
+    if (resData case {'message': final msg?} when msg.toString().isNotEmpty) {
+      throw ServerException(msg.toString());
+    } else if (resData case final String str when str.isNotEmpty) {
       try {
-        final decoded = jsonDecode(resData);
-        if (decoded is Map && decoded['message'] != null) {
-          throw ServerException(decoded['message'].toString());
+        final decoded = jsonDecode(str);
+        if (decoded case {
+          'message': final msg?,
+        } when msg.toString().isNotEmpty) {
+          throw ServerException(msg.toString());
         }
       } on Exception catch (_) {}
-      throw ServerException(resData);
+      throw ServerException(str);
     }
 
     switch (e.type) {
-      case DioExceptionType.connectionTimeout:
-      case DioExceptionType.sendTimeout:
-      case DioExceptionType.receiveTimeout:
-      case DioExceptionType.transformTimeout:
+      case DioExceptionType.connectionTimeout ||
+          DioExceptionType.sendTimeout ||
+          DioExceptionType.receiveTimeout ||
+          DioExceptionType.transformTimeout:
         throw ServerException(timeoutMessage);
       case DioExceptionType.connectionError:
         throw ServerException(noInternetMessage);
-      case DioExceptionType.badResponse:
-      case DioExceptionType.badCertificate:
-      case DioExceptionType.cancel:
-      case DioExceptionType.unknown:
+      case DioExceptionType.badResponse ||
+          DioExceptionType.badCertificate ||
+          DioExceptionType.cancel ||
+          DioExceptionType.unknown:
         final rawMessage = e.message ?? e.error?.toString() ?? '';
         if (isNetworkError(rawMessage)) {
           throw ServerException(noInternetMessage);

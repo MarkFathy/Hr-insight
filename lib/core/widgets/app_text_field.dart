@@ -128,6 +128,3 @@ class _AppTextFieldState extends State<AppTextField> {
     );
   }
 }
-
-/// Backwards compatibility alias
-typedef STextField = AppTextField;

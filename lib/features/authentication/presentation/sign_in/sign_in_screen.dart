@@ -213,8 +213,9 @@ class _SignInScreenState extends State<SignInScreen>
                                   child: TextButton(
                                     onPressed: () => showDialog<void>(
                                       context: context,
-                                      builder: (context) =>
-                                          ResetPassword(isEmployee: isEmployee),
+                                      builder: (context) => ResetPasswordDialog(
+                                        isEmployee: isEmployee,
+                                      ),
                                     ),
                                     style: TextButton.styleFrom(
                                       foregroundColor: context.colors.primary,

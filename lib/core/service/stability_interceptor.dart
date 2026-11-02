@@ -47,9 +47,9 @@ class StabilityInterceptor extends Interceptor {
           : null;
 
       switch (err.type) {
-        case DioExceptionType.connectionTimeout:
-        case DioExceptionType.sendTimeout:
-        case DioExceptionType.receiveTimeout:
+        case DioExceptionType.connectionTimeout ||
+            DioExceptionType.sendTimeout ||
+            DioExceptionType.receiveTimeout:
           if (latency != null) {
             _service.reportLatency(latency);
           }
@@ -60,10 +60,10 @@ class StabilityInterceptor extends Interceptor {
           if (latency != null) {
             _service.reportLatency(latency);
           }
-        case DioExceptionType.cancel:
-        case DioExceptionType.badCertificate:
-        case DioExceptionType.unknown:
-        case DioExceptionType.transformTimeout:
+        case DioExceptionType.cancel ||
+            DioExceptionType.badCertificate ||
+            DioExceptionType.unknown ||
+            DioExceptionType.transformTimeout:
           break;
       }
     }

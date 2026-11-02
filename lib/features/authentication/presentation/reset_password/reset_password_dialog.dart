@@ -293,4 +293,3 @@ class _ResetPasswordDialogState extends State<ResetPasswordDialog>
 }
 
 /// Backwards compatibility alias
-typedef ResetPassword = ResetPasswordDialog;

@@ -31,7 +31,10 @@ class EmployeeSignUpScreen extends StatefulWidget {
 class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen>
     with AutoConnectivityRestoreMixin {
   int _currentIndex = 0;
-  static const List<Widget> _forms = [Form1(), Form2()];
+  static const List<Widget> _forms = [
+    EmployeeWorkInfoStep(),
+    EmployeeAccountInfoStep(),
+  ];
   late final AuthBloc _bloc;
 
   @override
