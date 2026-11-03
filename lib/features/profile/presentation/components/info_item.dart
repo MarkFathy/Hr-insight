@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/utils/extensions.dart';
 import 'package:hr_app/core/widgets/app_snack_bar.dart';
 import 'package:hr_app/features/profile/presentation/bloc/bloc.dart';
@@ -23,7 +22,7 @@ class ProfileInfoItem extends StatelessWidget {
       BlocSelector<ProfileBloc, ProfileState, bool>(
         selector: (state) => state is ProfileLoadingState,
         builder: (context, isLoading) => Padding(
-          padding: EdgeInsets.symmetric(vertical: 6.r),
+          padding: const EdgeInsets.symmetric(vertical: 6),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -32,11 +31,11 @@ class ProfileInfoItem extends StatelessWidget {
                   baseColor: Colors.blueGrey.shade700,
                   highlightColor: context.colors.surface,
                   child: Container(
-                    width: 70.w,
-                    height: 14.h,
+                    width: 70,
+                    height: 14,
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(4.r),
+                      borderRadius: BorderRadius.circular(4),
                     ),
                   ),
                 )
@@ -45,7 +44,7 @@ class ProfileInfoItem extends StatelessWidget {
                   title,
                   style: context.typography.bodySmall.copyWith(
                     color: Colors.white.withValues(alpha: 0.6),
-                    fontSize: 12.sp,
+                    fontSize: 12,
                   ),
                 ),
               if (selectable)
@@ -61,15 +60,15 @@ class ProfileInfoItem extends StatelessWidget {
                       }
                     }
                   },
-                  borderRadius: BorderRadius.circular(8.r),
+                  borderRadius: BorderRadius.circular(8),
                   child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 10.w,
-                      vertical: 4.h,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
                     ),
                     decoration: BoxDecoration(
                       color: context.colors.primary.withValues(alpha: 0.12),
-                      borderRadius: BorderRadius.circular(8.r),
+                      borderRadius: BorderRadius.circular(8),
                       border: Border.all(
                         color: context.colors.primary.withValues(alpha: 0.3),
                       ),
@@ -79,7 +78,7 @@ class ProfileInfoItem extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.copy_rounded,
-                          size: 14.r,
+                          size: 14,
                           color: context.colors.primary,
                         ),
                         6.pw,
@@ -88,7 +87,7 @@ class ProfileInfoItem extends StatelessWidget {
                           style: context.typography.titleMedium.copyWith(
                             color: context.colors.primary,
                             fontWeight: FontWeight.bold,
-                            fontSize: 13.sp,
+                            fontSize: 13,
                             letterSpacing: 1.2,
                           ),
                         ),
@@ -101,11 +100,11 @@ class ProfileInfoItem extends StatelessWidget {
                   baseColor: Colors.blueGrey.shade700,
                   highlightColor: context.colors.surface,
                   child: Container(
-                    width: 90.w,
-                    height: 14.h,
+                    width: 90,
+                    height: 14,
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(4.r),
+                      borderRadius: BorderRadius.circular(4),
                     ),
                   ),
                 )
@@ -115,7 +114,7 @@ class ProfileInfoItem extends StatelessWidget {
                   style: context.typography.body.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
-                    fontSize: 12.sp,
+                    fontSize: 12,
                   ),
                 ),
             ],

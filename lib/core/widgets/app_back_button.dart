@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/utils/extensions.dart';
 import 'package:hr_app/core/utils/navigation_helper.dart';
 
@@ -15,18 +14,18 @@ class AppBackButton extends StatelessWidget {
     return Align(
       alignment: AlignmentDirectional.centerStart,
       child: Container(
-        margin: EdgeInsetsDirectional.only(start: 8.w),
-        width: 40.r,
-        height: 40.r,
+        margin: const EdgeInsetsDirectional.only(start: 8),
+        width: 40,
+        height: 40,
         decoration: BoxDecoration(
           color: context.colors.surface,
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: context.radius.mdBorder,
           border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
         ),
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            borderRadius: BorderRadius.circular(12.r),
+            borderRadius: context.radius.mdBorder,
             onTap: onPressed ?? () => NavigationHelper.pop(context),
             child: Center(
               child: Icon(
@@ -34,7 +33,7 @@ class AppBackButton extends StatelessWidget {
                     ? Icons.arrow_forward_ios_rounded
                     : Icons.arrow_back_ios_new_rounded,
                 color: context.colors.primary,
-                size: 16.r,
+                size: 16,
               ),
             ),
           ),

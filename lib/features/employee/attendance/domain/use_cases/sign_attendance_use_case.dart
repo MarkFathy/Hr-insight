@@ -6,8 +6,15 @@ class SignAttendanceUseCase {
   final AttendanceRepo repository;
   SignAttendanceUseCase(this.repository);
 
-  ResultFuture<SignEntity> call({required bool isAttend}) async =>
-      repository.sign(isAttend: isAttend);
+  ResultFuture<SignEntity> call({
+    required bool isAttend,
+    int? attendanceId,
+    String? date,
+  }) async => repository.sign(
+    isAttend: isAttend,
+    attendanceId: attendanceId,
+    date: date,
+  );
 }
 
 typedef SignUC = SignAttendanceUseCase;

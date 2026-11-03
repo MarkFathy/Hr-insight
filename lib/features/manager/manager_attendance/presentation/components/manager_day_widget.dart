@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/utils/extensions.dart';
 import 'package:hr_app/features/employee/attendance/domain/entities/attendance_entity.dart';
 import 'package:hr_app/features/manager/manager_attendance/domain/entities/manager_attendance_entity.dart';
@@ -91,17 +90,18 @@ class ManagerDayWidget extends StatelessWidget {
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 2.w,
-                                      vertical: 2.h,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 2,
+                                      vertical: 2,
                                     ),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Text(
                                           'الحضور',
-                                          style: typography.labelSmall
-                                              .copyWith(color: Colors.white),
+                                          style: typography.labelSmall.copyWith(
+                                            color: Colors.white,
+                                          ),
                                         ),
                                         1.ph,
                                         _ManagerTimeBadge(
@@ -122,19 +122,18 @@ class ManagerDayWidget extends StatelessWidget {
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 2.w,
-                                      vertical: 2.h,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 2,
+                                      vertical: 2,
                                     ),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Text(
                                           'الإنصراف',
-                                          style: typography.labelSmall
-                                              .copyWith(
-                                                color: colors.success,
-                                              ),
+                                          style: typography.labelSmall.copyWith(
+                                            color: colors.success,
+                                          ),
                                         ),
                                         1.ph,
                                         _ManagerTimeBadge(
@@ -183,7 +182,7 @@ class _ManagerTimeBadge extends StatelessWidget {
         ),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -207,7 +206,7 @@ class _ManagerTimeBadge extends StatelessWidget {
                 style: context.typography.caption.copyWith(
                   color: accentColor,
                   fontWeight: FontWeight.w800,
-                  fontSize: 9.sp,
+                  fontSize: 9,
                   height: 1.0,
                   letterSpacing: 0.5,
                 ),

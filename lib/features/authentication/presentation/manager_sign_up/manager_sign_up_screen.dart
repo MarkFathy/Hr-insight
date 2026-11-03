@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/di/service_locator.dart';
 import 'package:hr_app/core/utils/connectivity_auto_restore_mixin.dart';
 import 'package:hr_app/core/utils/extensions.dart';
@@ -82,266 +81,281 @@ class _ManagerSignUpScreenState extends State<ManagerSignUpScreen>
                 centerTitle: true,
                 leading: const AppBackButton(),
               ),
-              body: Form(
-                key: bloc.formKey,
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.w),
-                    child: BlocSelector<AuthBloc, AuthState, EmailVerifiedState?>(
-                      selector: (state) =>
-                          state is EmailVerifiedState ? state : null,
-                      builder: (context, verifiedState) {
-                        if (verifiedState != null) {
+              body: ResponsiveContainer(
+                maxWidth: 520,
+                child: Form(
+                  key: bloc.formKey,
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: BlocSelector<AuthBloc, AuthState, EmailVerifiedState?>(
+                        selector: (state) =>
+                            state is EmailVerifiedState ? state : null,
+                        builder: (context, verifiedState) {
+                          if (verifiedState != null) {
+                            return Column(
+                              children: [
+                                20.ph,
+                                Text(
+                                  'تم إرسال رمز التحقق الى : ${verifiedState.manager!.data!.manager!.email!}',
+                                ),
+                                20.ph,
+                                AppTextField(
+                                  label: 'رمز التحقق',
+                                  controller: bloc.verificationCode,
+                                ),
+                                BlocSelector<AuthBloc, AuthState, bool>(
+                                  selector: (state) =>
+                                      state is AuthLoadingState,
+                                  builder: (context, isLoading) => isLoading
+                                      ? const AppIndicator()
+                                      : AppButton(
+                                          title: 'تأكيد',
+                                          onTap: () {
+                                            if (!bloc.formKey.currentState!
+                                                .validate()) {
+                                              return;
+                                            }
+                                            bloc.add(
+                                              VerifyEmailEvent(
+                                                VerifyParams(
+                                                  email: verifiedState
+                                                      .manager!
+                                                      .data!
+                                                      .manager!
+                                                      .email!,
+                                                  otp: bloc
+                                                      .verificationCode
+                                                      .text,
+                                                  isEmployee: false,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                ),
+                              ],
+                            );
+                          }
+
                           return Column(
                             children: [
-                              20.ph,
-                              Text(
-                                'تم إرسال رمز التحقق الى : ${verifiedState.manager!.data!.manager!.email!}',
-                              ),
-                              20.ph,
-                              AppTextField(
-                                label: 'رمز التحقق',
-                                controller: bloc.verificationCode,
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 16,
+                                ),
+                                child: Column(
+                                  children: [
+                                    StatefulBuilder(
+                                      builder: (context, changeState) {
+                                        final profileImg = bloc.profileImage;
+                                        return Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 8,
+                                          ),
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              final img = await pickImage();
+                                              if (img != null) {
+                                                bloc.profileImage = img;
+                                                changeState(() {});
+                                              }
+                                            },
+                                            child: Stack(
+                                              clipBehavior: Clip.none,
+                                              children: [
+                                                Container(
+                                                  width: 104,
+                                                  height: 104,
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: context
+                                                        .colors
+                                                        .primary
+                                                        .withValues(
+                                                          alpha: 0.06,
+                                                        ),
+                                                    border: Border.all(
+                                                      color: context
+                                                          .colors
+                                                          .primary
+                                                          .withValues(
+                                                            alpha: 0.85,
+                                                          ),
+                                                      width: 2.5,
+                                                    ),
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: context
+                                                            .colors
+                                                            .primary
+                                                            .withValues(
+                                                              alpha: 0.15,
+                                                            ),
+                                                        blurRadius: 16,
+                                                        offset: const Offset(
+                                                          0,
+                                                          6,
+                                                        ),
+                                                        spreadRadius: 1,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  child: ClipOval(
+                                                    child: profileImg != null
+                                                        ? Image.file(
+                                                            profileImg,
+                                                            width: 104,
+                                                            height: 104,
+                                                            fit: BoxFit.cover,
+                                                          )
+                                                        : Center(
+                                                            child: Icon(
+                                                              Icons
+                                                                  .person_outline_rounded,
+                                                              size: 55,
+                                                              color: context
+                                                                  .colors
+                                                                  .primary
+                                                                  .withValues(
+                                                                    alpha: 0.6,
+                                                                  ),
+                                                            ),
+                                                          ),
+                                                  ),
+                                                ),
+                                                Positioned(
+                                                  bottom: 2,
+                                                  right: 2,
+                                                  child: Container(
+                                                    padding:
+                                                        const EdgeInsets.all(7),
+                                                    decoration: BoxDecoration(
+                                                      color: context
+                                                          .colors
+                                                          .primary,
+                                                      shape: BoxShape.circle,
+                                                      border: Border.all(
+                                                        color: context
+                                                            .colors
+                                                            .surface,
+                                                        width: 2.5,
+                                                      ),
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: Colors.black
+                                                              .withValues(
+                                                                alpha: 0.15,
+                                                              ),
+                                                          blurRadius: 6,
+                                                          offset: const Offset(
+                                                            0,
+                                                            2,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    child: const Icon(
+                                                      Icons.camera_alt_rounded,
+                                                      size: 16,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                    AppTextField(
+                                      label: 'اسم المستخدم',
+                                      controller: bloc.nameCtrl,
+                                    ),
+                                    AppTextField(
+                                      label: 'البريد الالكتروني',
+                                      controller: bloc.emailCtrl,
+                                      isEmail: true,
+                                    ),
+                                    AppTextField(
+                                      label: 'اسم الشركة',
+                                      controller: bloc.companyCtrl,
+                                    ),
+                                    AppTextField(
+                                      label: 'الهاتف',
+                                      controller: bloc.phoneCtrl,
+                                      isMobile: true,
+                                    ),
+                                    AppTextField(
+                                      label: 'كلمه المرور',
+                                      controller: bloc.passwordCtrl,
+                                      isPassword: true,
+                                    ),
+                                    AppTextField(
+                                      label: 'تأكيد كلمه المرور',
+                                      controller: bloc.confirmPasswordCtrl,
+                                      isPassword: true,
+                                    ),
+                                  ],
+                                ),
                               ),
                               BlocSelector<AuthBloc, AuthState, bool>(
                                 selector: (state) => state is AuthLoadingState,
                                 builder: (context, isLoading) => isLoading
-                                    ? const AppIndicator()
+                                    ? const ButtonIndicator()
                                     : AppButton(
-                                        title: 'تأكيد',
+                                        title: 'إنشاء حساب',
                                         onTap: () {
                                           if (!bloc.formKey.currentState!
                                               .validate()) {
                                             return;
                                           }
-                                          bloc.add(
-                                            VerifyEmailEvent(
-                                              VerifyParams(
-                                                email: verifiedState
-                                                    .manager!
-                                                    .data!
-                                                    .manager!
-                                                    .email!,
-                                                otp: bloc.verificationCode.text,
-                                                isEmployee: false,
-                                              ),
-                                            ),
-                                          );
+                                          if (bloc.profileImage == null) {
+                                            showBar('اضف صورة شخصية', context);
+                                            return;
+                                          }
+                                          bloc.add(const ManagerSignUpEvent());
                                         },
                                       ),
                               ),
-                            ],
-                          );
-                        }
-
-                        return Column(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(vertical: 18.h),
-                              child: Column(
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  StatefulBuilder(
-                                    builder: (context, changeState) {
-                                      final profileImg = bloc.profileImage;
-                                      return Padding(
-                                        padding: EdgeInsets.symmetric(
-                                          vertical: 8.h,
+                                  Text(
+                                    'لديك حساب بالفعل؟ ',
+                                    style: context.typography.bodySmall
+                                        .copyWith(
+                                          color: context.colors.textPrimary,
+                                          fontSize: 12,
                                         ),
-                                        child: GestureDetector(
-                                          onTap: () async {
-                                            final image = await pickImage();
-                                            if (image != null) {
-                                              bloc.profileImage = image;
-                                              changeState(() {});
-                                            }
-                                          },
-                                          child: Stack(
-                                            clipBehavior: Clip.none,
-                                            children: [
-                                              Container(
-                                                width: 105.r,
-                                                height: 105.r,
-                                                decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: context.colors.primary
-                                                      .withValues(alpha: 0.06),
-                                                  border: Border.all(
-                                                    color: context
-                                                        .colors
-                                                        .primary
-                                                        .withValues(
-                                                          alpha: 0.85,
-                                                        ),
-                                                    width: 2.5.r,
-                                                  ),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: context
-                                                          .colors
-                                                          .primary
-                                                          .withValues(
-                                                            alpha: 0.15,
-                                                          ),
-                                                      blurRadius: 16,
-                                                      offset: const Offset(
-                                                        0,
-                                                        6,
-                                                      ),
-                                                      spreadRadius: 1,
-                                                    ),
-                                                  ],
-                                                ),
-                                                child: ClipOval(
-                                                  child: profileImg != null
-                                                      ? Image.file(
-                                                          profileImg,
-                                                          width: 105.r,
-                                                          height: 105.r,
-                                                          fit: BoxFit.cover,
-                                                        )
-                                                      : Center(
-                                                          child: Icon(
-                                                            Icons
-                                                                .person_outline_rounded,
-                                                            size: 55.r,
-                                                            color: context
-                                                                .colors
-                                                                .primary
-                                                                .withValues(
-                                                                  alpha: 0.6,
-                                                                ),
-                                                          ),
-                                                        ),
-                                                ),
-                                              ),
-                                              Positioned(
-                                                bottom: 2.r,
-                                                right: 2.r,
-                                                child: Container(
-                                                  padding: EdgeInsets.all(7.r),
-                                                  decoration: BoxDecoration(
-                                                    color:
-                                                        context.colors.primary,
-                                                    shape: BoxShape.circle,
-                                                    border: Border.all(
-                                                      color: context
-                                                          .colors
-                                                          .surface,
-                                                      width: 2.5.r,
-                                                    ),
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        color: Colors.black
-                                                            .withValues(
-                                                              alpha: 0.15,
-                                                            ),
-                                                        blurRadius: 6,
-                                                        offset: const Offset(
-                                                          0,
-                                                          2,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  child: const Icon(
-                                                    Icons.camera_alt_rounded,
-                                                    size: 16,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
+                                  ),
+                                  InkWell(
+                                    onTap: () =>
+                                        NavigationHelper.nextScreenReplaceNamed(
+                                          context,
+                                          SignInScreen.routeName,
+                                          args: false,
+                                        ),
+                                    child: Text(
+                                      'تسجيل الدخول',
+                                      style: context.typography.bodySmall
+                                          .copyWith(
+                                            color: context.colors.primary,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
                                           ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                  AppTextField(
-                                    label: 'اسم المستخدم',
-                                    controller: bloc.nameCtrl,
-                                  ),
-                                  AppTextField(
-                                    label: 'البريد الالكتروني',
-                                    controller: bloc.emailCtrl,
-                                    isEmail: true,
-                                  ),
-                                  AppTextField(
-                                    label: 'اسم الشركة',
-                                    controller: bloc.companyCtrl,
-                                  ),
-                                  AppTextField(
-                                    label: 'الهاتف',
-                                    controller: bloc.phoneCtrl,
-                                    isMobile: true,
-                                  ),
-                                  AppTextField(
-                                    label: 'كلمه المرور',
-                                    controller: bloc.passwordCtrl,
-                                    isPassword: true,
-                                  ),
-                                  AppTextField(
-                                    label: 'تأكيد كلمه المرور',
-                                    controller: bloc.confirmPasswordCtrl,
-                                    isPassword: true,
+                                    ),
                                   ),
                                 ],
                               ),
-                            ),
-                            BlocSelector<AuthBloc, AuthState, bool>(
-                              selector: (state) => state is AuthLoadingState,
-                              builder: (context, isLoading) => isLoading
-                                  ? const ButtonIndicator()
-                                  : AppButton(
-                                      title: 'إنشاء حساب',
-                                      onTap: () {
-                                        if (!bloc.formKey.currentState!
-                                            .validate()) {
-                                          return;
-                                        }
-                                        if (bloc.profileImage == null) {
-                                          showBar('اضف صورة شخصية', context);
-                                          return;
-                                        }
-                                        bloc.add(const ManagerSignUpEvent());
-                                      },
-                                    ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'لديك حساب بالفعل؟ ',
-                                  style: context.typography.bodySmall.copyWith(
-                                    color: context.colors.textPrimary,
-                                    fontSize: 12.sp,
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: () =>
-                                      NavigationHelper.nextScreenReplaceNamed(
-                                        context,
-                                        SignInScreen.routeName,
-                                        args: false,
-                                      ),
-                                  child: Text(
-                                    'تسجيل الدخول',
-                                    style: context.typography.bodySmall
-                                        .copyWith(
-                                          color: context.colors.primary,
-                                          fontSize: 12.sp,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height:
-                                  MediaQuery.of(context).viewInsets.bottom / 4,
-                            ),
-                          ],
-                        );
-                      },
+                              SizedBox(
+                                height:
+                                    MediaQuery.viewInsetsOf(context).bottom / 4,
+                              ),
+                            ],
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),

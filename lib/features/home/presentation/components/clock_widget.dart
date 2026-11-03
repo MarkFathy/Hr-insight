@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/utils/extensions.dart';
 import 'package:intl/intl.dart';
 
@@ -33,12 +32,12 @@ class _ClockWidgetState extends State<ClockWidget> {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.all(8.0),
+    padding: const EdgeInsets.symmetric(vertical: 8),
     child: Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
       decoration: BoxDecoration(
         color: context.colors.surface,
-        borderRadius: BorderRadius.circular(15.r),
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(color: context.colors.border),
       ),
       child: Text(
@@ -46,6 +45,7 @@ class _ClockWidgetState extends State<ClockWidget> {
         style: context.typography.titleMedium.copyWith(
           color: Colors.white,
           fontWeight: FontWeight.bold,
+          fontSize: 16,
         ),
       ),
     ),

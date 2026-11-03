@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/utils/image_picker_helper.dart';
 import 'package:hr_app/core/widgets/app_text_field.dart';
 import 'package:hr_app/features/authentication/presentation/bloc/bloc.dart';
@@ -24,7 +23,7 @@ class EmployeeAccountInfoStep extends StatelessWidget {
             builder: (context, changeState) {
               final profileImg = bloc.profileImage;
               return Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.r),
+                padding: const EdgeInsets.symmetric(vertical: 8),
                 child: GestureDetector(
                   onTap: () async {
                     final image = await pickImage();
@@ -37,14 +36,14 @@ class EmployeeAccountInfoStep extends StatelessWidget {
                     clipBehavior: Clip.none,
                     children: [
                       Container(
-                        width: 105.r,
-                        height: 105.r,
+                        width: 104,
+                        height: 104,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: theme.primaryColor.withValues(alpha: 0.06),
                           border: Border.all(
                             color: theme.primaryColor.withValues(alpha: 0.85),
-                            width: 2.5.r,
+                            width: 2.5,
                           ),
                           boxShadow: [
                             BoxShadow(
@@ -59,14 +58,14 @@ class EmployeeAccountInfoStep extends StatelessWidget {
                           child: profileImg != null
                               ? Image.file(
                                   profileImg,
-                                  width: 105.r,
-                                  height: 105.r,
+                                  width: 104,
+                                  height: 104,
                                   fit: BoxFit.cover,
                                 )
                               : Center(
                                   child: Icon(
                                     Icons.person_outline_rounded,
-                                    size: 55.r,
+                                    size: 55,
                                     color: theme.primaryColor.withValues(
                                       alpha: 0.6,
                                     ),
@@ -75,17 +74,14 @@ class EmployeeAccountInfoStep extends StatelessWidget {
                         ),
                       ),
                       Positioned(
-                        bottom: 2.r,
-                        right: 2.r,
+                        bottom: 2,
+                        right: 2,
                         child: Container(
-                          padding: EdgeInsets.all(7.r),
+                          padding: const EdgeInsets.all(7),
                           decoration: BoxDecoration(
                             color: theme.primaryColor,
                             shape: BoxShape.circle,
-                            border: Border.all(
-                              color: Colors.white,
-                              width: 2.5.r,
-                            ),
+                            border: Border.all(color: Colors.white, width: 2.5),
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black.withValues(alpha: 0.15),
@@ -94,9 +90,9 @@ class EmployeeAccountInfoStep extends StatelessWidget {
                               ),
                             ],
                           ),
-                          child: Icon(
+                          child: const Icon(
                             Icons.camera_alt_rounded,
-                            size: 16.r,
+                            size: 16,
                             color: Colors.white,
                           ),
                         ),
@@ -134,5 +130,3 @@ class EmployeeAccountInfoStep extends StatelessWidget {
     );
   }
 }
-
-/// Backwards compatibility alias

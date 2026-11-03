@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/utils/extensions.dart';
 
 class AppTextField extends StatefulWidget {
@@ -72,7 +71,7 @@ class _AppTextFieldState extends State<AppTextField> {
               ? Icons.visibility_outlined
               : Icons.visibility_off_outlined,
           color: Colors.white70,
-          size: 20.r,
+          size: 20,
         ),
         onPressed: () {
           setState(() {
@@ -85,7 +84,7 @@ class _AppTextFieldState extends State<AppTextField> {
     }
 
     return Padding(
-      padding: widget.padding ?? EdgeInsets.symmetric(vertical: 8.h),
+      padding: widget.padding ?? const EdgeInsets.symmetric(vertical: 8),
       child: TextFormField(
         controller: widget.controller,
         autocorrect: false,

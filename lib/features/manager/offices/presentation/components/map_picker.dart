@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hr_app/core/utils/connectivity_auto_restore_mixin.dart';
 import 'package:hr_app/core/utils/extensions.dart';
@@ -107,7 +106,7 @@ class _MapPickerState extends State<MapPicker>
 
   @override
   Widget build(BuildContext context) => SizedBox(
-    height: widget.height ?? 220.h,
+    height: widget.height ?? 220,
     child: Stack(
       children: [
         // ========== الخريطة ==========
@@ -134,12 +133,12 @@ class _MapPickerState extends State<MapPicker>
                 markers: [
                   Marker(
                     point: selectedPlace!,
-                    width: 80.r,
-                    height: 80.r,
+                    width: 80,
+                    height: 80,
                     child: Icon(
                       Icons.location_on,
                       color: context.colors.error,
-                      size: 40.r,
+                      size: 40,
                     ),
                   ),
                 ],
@@ -149,26 +148,26 @@ class _MapPickerState extends State<MapPicker>
 
         // ========== زرار موقعي الحالي ==========
         Positioned(
-          bottom: 12.r,
-          right: 12.r,
+          bottom: 12,
+          right: 12,
           child: FloatingActionButton.small(
             heroTag: 'my_location_btn',
             backgroundColor: context.colors.primary,
             tooltip: 'موقعي الحالي',
             onPressed: _loadingLocation ? null : _goToMyLocation,
             child: _loadingLocation
-                ? SizedBox(
-                    width: 18.r,
-                    height: 18.r,
-                    child: const CircularProgressIndicator(
+                ? const SizedBox(
+                    width: 18,
+                    height: 18,
+                    child: CircularProgressIndicator(
                       strokeWidth: 2,
                       color: Colors.white,
                     ),
                   )
-                : Icon(
+                : const Icon(
                     Icons.my_location_rounded,
                     color: Colors.white,
-                    size: 20.r,
+                    size: 20,
                   ),
           ),
         ),

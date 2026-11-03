@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/di/service_locator.dart';
 import 'package:hr_app/core/utils/connectivity_auto_restore_mixin.dart';
 import 'package:hr_app/core/utils/extensions.dart';
@@ -53,12 +52,12 @@ class _EmployeesScreenState extends State<EmployeesScreen>
         appBar: AppBar(
           title: const Text('الموظفين'),
           leading: const AppBackButton(),
-          leadingWidth: 64.w,
+          leadingWidth: 64,
           centerTitle: true,
           bottom: PreferredSize(
-            preferredSize: Size.fromHeight(60.h),
+            preferredSize: const Size.fromHeight(60),
             child: Padding(
-              padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 12.h),
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
               child: SearchField(
                 controller: _searchController,
                 hintText: 'بحث باسم الموظف أو البريد...',
@@ -89,15 +88,15 @@ class _EmployeesScreenState extends State<EmployeesScreen>
               if (state is EmployeesLoadingState) {
                 return GridView.builder(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 12.w,
-                    vertical: 12.h,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 12,
                   ),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: 0.95,
-                    mainAxisSpacing: 12.h,
-                    crossAxisSpacing: 12.w,
+                    mainAxisSpacing: 12,
+                    crossAxisSpacing: 12,
                   ),
                   itemCount: 8,
                   itemBuilder: (context, index) => const EmployeeIndicator(),
@@ -168,12 +167,12 @@ class _EmployeesScreenState extends State<EmployeesScreen>
 
                 return GridView.builder(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  padding: EdgeInsets.fromLTRB(12.w, 8.h, 12.w, 20.h),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  padding: const EdgeInsets.fromLTRB(12, 8, 12, 20),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: 0.95,
-                    mainAxisSpacing: 12.h,
-                    crossAxisSpacing: 12.w,
+                    mainAxisSpacing: 12,
+                    crossAxisSpacing: 12,
                   ),
                   itemCount: filteredEmployees.length,
                   itemBuilder: (context, index) {

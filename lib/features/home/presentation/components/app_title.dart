@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/utils/context_extensions.dart';
 
 class AppTitle extends StatelessWidget {
@@ -11,12 +10,12 @@ class AppTitle extends StatelessWidget {
     textAlign: TextAlign.end,
     style: TextStyle(
       fontFamily: 'Cairo',
-      fontSize: 28.sp,
+      fontSize: 30,
       height: 1.15,
       color: context.colors.primary,
       fontWeight: FontWeight.w900,
       shadows: const [Shadow(blurRadius: 10)],
-      letterSpacing: 4,
+      letterSpacing: 4.5,
     ),
   );
 }

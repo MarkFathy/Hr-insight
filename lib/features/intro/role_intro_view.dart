@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/constants/app_images.dart';
 import 'package:hr_app/core/utils/connectivity_auto_restore_mixin.dart';
 import 'package:hr_app/core/utils/extensions.dart';
@@ -47,8 +46,10 @@ class _RoleIntroViewState extends State<RoleIntroView>
   @override
   Widget build(BuildContext context) => Scaffold(
     body: SafeArea(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+      child: ResponsiveContainer(
+        maxWidth: 520,
+        alignment: Alignment.center,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -59,10 +60,13 @@ class _RoleIntroViewState extends State<RoleIntroView>
             16.ph,
             Center(
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: context.colors.primary.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(14.r),
+                  borderRadius: BorderRadius.circular(14),
                   border: Border.all(
                     color: context.colors.primary.withValues(alpha: 0.3),
                   ),
@@ -75,7 +79,7 @@ class _RoleIntroViewState extends State<RoleIntroView>
                           ? Icons.admin_panel_settings_rounded
                           : Icons.badge_rounded,
                       color: context.colors.primary,
-                      size: 18.r,
+                      size: 18,
                     ),
                     8.pw,
                     Text(
@@ -110,7 +114,7 @@ class _RoleIntroViewState extends State<RoleIntroView>
             ),
             Expanded(
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 20.h),
+                padding: const EdgeInsets.symmetric(vertical: 20),
                 child: centerImage,
               ),
             ),

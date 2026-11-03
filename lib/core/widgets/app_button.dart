@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/utils/extensions.dart';
 
 class AppButton extends StatelessWidget {
@@ -26,13 +25,17 @@ class AppButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveHeight = height ?? 48.h;
+    final effectiveHeight = height ?? context.sizes.buttonHeight;
 
     return Padding(
-      padding: margin ?? EdgeInsets.symmetric(horizontal: 24.w, vertical: 8.h),
-      child: SizedBox(
-        width: width ?? double.infinity,
-        height: effectiveHeight,
+      padding:
+          margin ?? const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight: effectiveHeight,
+          minWidth: width ?? double.infinity,
+          maxWidth: width ?? double.infinity,
+        ),
         child: outlined
             ? OutlinedButton(
                 onPressed: isLoading ? null : onTap,
@@ -40,7 +43,7 @@ class AppButton extends StatelessWidget {
                   foregroundColor: context.colors.primary,
                   side: BorderSide(color: context.colors.primary, width: 1.5),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14.r),
+                    borderRadius: BorderRadius.circular(14),
                   ),
                 ),
                 child: _buildChild(context, context.colors.primary),
@@ -53,7 +56,7 @@ class AppButton extends StatelessWidget {
                   elevation: 0,
                   shadowColor: context.colors.primary.withValues(alpha: 0.4),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14.r),
+                    borderRadius: BorderRadius.circular(14),
                   ),
                 ),
                 child: _buildChild(context, Colors.black),
@@ -65,8 +68,8 @@ class AppButton extends StatelessWidget {
   Widget _buildChild(BuildContext context, Color textColor) {
     if (isLoading) {
       return SizedBox(
-        height: 22.r,
-        width: 22.r,
+        height: 22,
+        width: 22,
         child: CircularProgressIndicator(
           strokeWidth: 2.2,
           valueColor: AlwaysStoppedAnimation<Color>(textColor),
@@ -79,14 +82,18 @@ class AppButton extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 18.r, color: textColor),
+          Icon(icon, size: 18, color: textColor),
           8.pw,
-          Text(
-            title,
-            style: context.typography.labelLarge.copyWith(
-              color: textColor,
-              fontWeight: FontWeight.bold,
-              fontSize: 15.sp,
+          Flexible(
+            child: Text(
+              title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: context.typography.labelLarge.copyWith(
+                color: textColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
+              ),
             ),
           ),
         ],
@@ -95,10 +102,12 @@ class AppButton extends StatelessWidget {
 
     return Text(
       title,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
       style: context.typography.labelLarge.copyWith(
         color: textColor,
         fontWeight: FontWeight.bold,
-        fontSize: 15.sp,
+        fontSize: 15,
       ),
     );
   }

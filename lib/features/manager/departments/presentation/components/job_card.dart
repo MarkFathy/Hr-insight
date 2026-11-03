@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/utils/extensions.dart';
 import 'package:hr_app/core/utils/navigation_helper.dart';
 import 'package:hr_app/features/manager/departments/domain/entities/departments_entity.dart';
@@ -20,19 +19,22 @@ class JobCard extends StatelessWidget {
     final bloc = context.read<DepartmentsAndJobsBloc>();
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10.r, vertical: 4.r),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       child: Material(
         color: theme.scaffoldBackgroundColor.withValues(alpha: 0.6),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(12),
           side: BorderSide(color: theme.primaryColor.withValues(alpha: 0.15)),
         ),
         clipBehavior: Clip.antiAlias,
         child: ListTile(
-          contentPadding: EdgeInsets.symmetric(horizontal: 12.r, vertical: 2.r),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 12,
+            vertical: 2,
+          ),
           leading: Container(
-            width: 38.r,
-            height: 38.r,
+            width: 38,
+            height: 38,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: theme.primaryColor.withValues(alpha: 0.12),
@@ -40,7 +42,7 @@ class JobCard extends StatelessWidget {
             child: Icon(
               Icons.work_outline_rounded,
               color: theme.primaryColor,
-              size: 20.r,
+              size: 20,
             ),
           ),
           title: Text(
@@ -48,16 +50,16 @@ class JobCard extends StatelessWidget {
             style: theme.textTheme.titleSmall?.copyWith(
               fontWeight: FontWeight.bold,
               color: Colors.white,
-              fontSize: 13.r,
+              fontSize: 13,
             ),
           ),
           subtitle: Padding(
-            padding: EdgeInsets.only(top: 3.r),
+            padding: const EdgeInsets.only(top: 3),
             child: Row(
               children: [
                 Icon(
                   Icons.people_outline_rounded,
-                  size: 13.r,
+                  size: 13,
                   color: Colors.white.withValues(alpha: 0.6),
                 ),
                 4.pw,
@@ -65,7 +67,7 @@ class JobCard extends StatelessWidget {
                   '${job.employeesCount ?? 0} موظف',
                   style: TextStyle(
                     color: Colors.white.withValues(alpha: 0.7),
-                    fontSize: 11.r,
+                    fontSize: 11,
                   ),
                 ),
               ],
@@ -78,16 +80,16 @@ class JobCard extends StatelessWidget {
                 icon: Icon(
                   Icons.edit_outlined,
                   color: theme.primaryColor,
-                  size: 20.r,
+                  size: 20,
                 ),
                 tooltip: 'تعديل الوظيفة',
                 onPressed: () => _openEditJobScreen(context, bloc),
               ),
               IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.delete_outline_rounded,
                   color: Colors.redAccent,
-                  size: 20.r,
+                  size: 20,
                 ),
                 tooltip: 'حذف الوظيفة',
                 onPressed: () => _showDeleteJobDialog(context, bloc),
@@ -126,20 +128,20 @@ class JobCard extends StatelessWidget {
         builder: (ctx) => AlertDialog(
           backgroundColor: theme.scaffoldBackgroundColor,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18.r),
+            borderRadius: BorderRadius.circular(18),
             side: BorderSide(color: Colors.red.withValues(alpha: 0.3)),
           ),
           title: Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.delete_outline_rounded,
                 color: Colors.redAccent,
-                size: 24.r,
+                size: 24,
               ),
               8.pw,
-              Text(
+              const Text(
                 'تأكيد حذف الوظيفة',
-                style: TextStyle(fontSize: 15.r, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -147,7 +149,7 @@ class JobCard extends StatelessWidget {
             'هل أنت متأكد من حذف وظيفة "${job.title}"؟',
             style: TextStyle(
               color: Colors.white.withValues(alpha: 0.8),
-              fontSize: 13.r,
+              fontSize: 13,
             ),
           ),
           actions: [
@@ -163,7 +165,7 @@ class JobCard extends StatelessWidget {
                 backgroundColor: Colors.red.shade700,
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.r),
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
               onPressed: () {

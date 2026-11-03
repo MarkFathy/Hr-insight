@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/utils/connectivity_auto_restore_mixin.dart';
 import 'package:hr_app/core/utils/extensions.dart';
 import 'package:hr_app/core/utils/navigation_helper.dart';
@@ -45,14 +44,14 @@ class _ManagerLeaveDialogState extends State<ManagerLeaveDialog>
 
     return Dialog(
       backgroundColor: Colors.transparent,
-      insetPadding: EdgeInsets.symmetric(horizontal: 16.r, vertical: 24.r),
+      insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
       child: Container(
         constraints: BoxConstraints(
           maxHeight: MediaQuery.of(context).size.height * 0.85,
         ),
         decoration: BoxDecoration(
           color: colors.background,
-          borderRadius: BorderRadius.circular(24.r),
+          borderRadius: BorderRadius.circular(24),
           border: Border.all(
             color: colors.primary.withValues(alpha: 0.3),
             width: 1.5,
@@ -72,22 +71,22 @@ class _ManagerLeaveDialogState extends State<ManagerLeaveDialog>
             children: [
               // Dialog Header
               Padding(
-                padding: EdgeInsets.fromLTRB(16.r, 16.r, 16.r, 8.r),
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       children: [
                         Container(
-                          padding: EdgeInsets.all(8.r),
+                          padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             color: colors.primary.withValues(alpha: 0.12),
-                            borderRadius: BorderRadius.circular(12.r),
+                            borderRadius: BorderRadius.circular(12),
                           ),
                           child: Icon(
                             Icons.description_rounded,
                             color: colors.primary,
-                            size: 20.r,
+                            size: 20,
                           ),
                         ),
                         10.pw,
@@ -95,16 +94,16 @@ class _ManagerLeaveDialogState extends State<ManagerLeaveDialog>
                           'تفاصيل طلب الإجازة',
                           style: typography.titleMedium.copyWith(
                             fontWeight: FontWeight.bold,
-                            fontSize: 16.sp,
+                            fontSize: 16,
                           ),
                         ),
                       ],
                     ),
                     InkWell(
                       onTap: () => NavigationHelper.pop(context),
-                      borderRadius: BorderRadius.circular(20.r),
+                      borderRadius: BorderRadius.circular(20),
                       child: Container(
-                        padding: EdgeInsets.all(6.r),
+                        padding: const EdgeInsets.all(6),
                         decoration: BoxDecoration(
                           color: Colors.white.withValues(alpha: 0.08),
                           shape: BoxShape.circle,
@@ -112,7 +111,7 @@ class _ManagerLeaveDialogState extends State<ManagerLeaveDialog>
                         child: Icon(
                           Icons.close_rounded,
                           color: Colors.white.withValues(alpha: 0.7),
-                          size: 20.r,
+                          size: 20,
                         ),
                       ),
                     ),
@@ -125,13 +124,13 @@ class _ManagerLeaveDialogState extends State<ManagerLeaveDialog>
               // Employee Profile Section
               if (employeeDataEntity != null)
                 Padding(
-                  padding: EdgeInsets.all(16.r),
+                  padding: const EdgeInsets.all(16),
                   child: _EmployeeProfileCard(employee: employeeDataEntity),
                 ),
 
               // Leave Details Section
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: _LeaveDetailsSection(leave: leave),
               ),
 
@@ -139,7 +138,7 @@ class _ManagerLeaveDialogState extends State<ManagerLeaveDialog>
 
               // Action Buttons
               Padding(
-                padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                 child: _LeaveActionButtons(
                   leaveId: leave.id,
                   isPending: isPending,
@@ -165,17 +164,17 @@ class _EmployeeProfileCard extends StatelessWidget {
     final typography = context.typography;
 
     return Container(
-      padding: EdgeInsets.all(12.r),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: colors.secondary.withValues(alpha: 0.6),
-        borderRadius: BorderRadius.circular(16.r),
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(color: colors.primary.withValues(alpha: 0.15)),
       ),
       child: Row(
         children: [
           Container(
-            width: 50.r,
-            height: 50.r,
+            width: 50,
+            height: 50,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: colors.primary.withValues(alpha: 0.15),
@@ -193,8 +192,8 @@ class _EmployeeProfileCard extends StatelessWidget {
                         color: colors.secondary,
                         child: Center(
                           child: SizedBox(
-                            width: 18.r,
-                            height: 18.r,
+                            width: 18,
+                            height: 18,
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
                               color: colors.primary,
@@ -205,14 +204,10 @@ class _EmployeeProfileCard extends StatelessWidget {
                       errorWidget: (_, _, _) => Icon(
                         Icons.person_rounded,
                         color: colors.primary,
-                        size: 28.r,
+                        size: 28,
                       ),
                     )
-                  : Icon(
-                      Icons.person_rounded,
-                      color: colors.primary,
-                      size: 28.r,
-                    ),
+                  : Icon(Icons.person_rounded, color: colors.primary, size: 28),
             ),
           ),
           12.pw,
@@ -224,7 +219,7 @@ class _EmployeeProfileCard extends StatelessWidget {
                   employee.name ?? 'بدون اسم',
                   style: typography.titleMedium.copyWith(
                     fontWeight: FontWeight.bold,
-                    fontSize: 15.r,
+                    fontSize: 15,
                   ),
                 ),
                 4.ph,
@@ -256,14 +251,14 @@ class _EmployeeProfileCard extends StatelessWidget {
 
   Widget _buildEmployeeMetaRow(String label, String value, AppColors colors) =>
       Padding(
-        padding: EdgeInsets.only(bottom: 2.r),
+        padding: const EdgeInsets.only(bottom: 2),
         child: Row(
           children: [
             Text(
               label,
               style: TextStyle(
                 color: colors.primary,
-                fontSize: 12.r,
+                fontSize: 12,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -272,7 +267,7 @@ class _EmployeeProfileCard extends StatelessWidget {
                 value,
                 style: TextStyle(
                   color: Colors.white.withValues(alpha: 0.85),
-                  fontSize: 12.r,
+                  fontSize: 12,
                 ),
                 overflow: TextOverflow.ellipsis,
               ),
@@ -348,23 +343,23 @@ class _LeaveInfoRow extends StatelessWidget {
     final colors = context.colors;
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 14.r, vertical: 10.r),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       decoration: BoxDecoration(
         color: colors.secondary.withValues(alpha: 0.4),
-        borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
-              Icon(icon, size: 18.r, color: colors.primary),
+              Icon(icon, size: 18, color: colors.primary),
               8.pw,
               Text(
                 title,
                 style: TextStyle(
                   color: Colors.white.withValues(alpha: 0.7),
-                  fontSize: 13.r,
+                  fontSize: 13,
                 ),
               ),
             ],
@@ -401,14 +396,14 @@ class _LeaveStatusBadge extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, size: 16.r, color: fg),
+        Icon(icon, size: 16, color: fg),
         6.pw,
         Text(
           text,
           style: TextStyle(
             color: fg,
             fontWeight: FontWeight.bold,
-            fontSize: 13.r,
+            fontSize: 13,
           ),
         ),
       ],
@@ -439,9 +434,9 @@ class _LeaveActionButtons extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: colors.success,
                 foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(vertical: 12.r),
+                padding: const EdgeInsets.symmetric(vertical: 12),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14.r),
+                  borderRadius: BorderRadius.circular(14),
                 ),
                 elevation: 4,
               ),
@@ -454,9 +449,9 @@ class _LeaveActionButtons extends StatelessWidget {
                 NavigationHelper.pop(context);
               },
               icon: const Icon(Icons.check_circle_rounded, size: 20),
-              label: Text(
+              label: const Text(
                 'قبول الطلب',
-                style: TextStyle(fontSize: 14.r, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
               ),
             ),
           ),
@@ -466,9 +461,9 @@ class _LeaveActionButtons extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: colors.error,
                 foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(vertical: 12.r),
+                padding: const EdgeInsets.symmetric(vertical: 12),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14.r),
+                  borderRadius: BorderRadius.circular(14),
                 ),
                 elevation: 4,
               ),
@@ -481,9 +476,9 @@ class _LeaveActionButtons extends StatelessWidget {
                 NavigationHelper.pop(context);
               },
               icon: const Icon(Icons.cancel_rounded, size: 20),
-              label: Text(
+              label: const Text(
                 'رفض الطلب',
-                style: TextStyle(fontSize: 14.r, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
               ),
             ),
           ),
@@ -496,9 +491,9 @@ class _LeaveActionButtons extends StatelessWidget {
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
           side: BorderSide(color: Colors.white.withValues(alpha: 0.2)),
-          padding: EdgeInsets.symmetric(vertical: 12.r),
+          padding: const EdgeInsets.symmetric(vertical: 12),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14.r),
+            borderRadius: BorderRadius.circular(14),
           ),
         ),
         onPressed: () => NavigationHelper.pop(context),

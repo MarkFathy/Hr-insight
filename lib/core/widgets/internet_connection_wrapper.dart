@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/di/service_locator.dart';
 import 'package:hr_app/core/service/internet_connection_service.dart';
 import 'package:hr_app/core/utils/context_extensions.dart';
@@ -181,12 +180,12 @@ class _NetworkBanner extends StatelessWidget {
         child: SafeArea(
           bottom: false,
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(content.icon, color: Colors.white, size: 18.r),
-                SizedBox(width: 8.w),
+                Icon(content.icon, color: Colors.white, size: 18),
+                const SizedBox(width: 8),
                 Flexible(
                   child: Text(
                     content.message,
@@ -194,7 +193,7 @@ class _NetworkBanner extends StatelessWidget {
                     style: context.typography.bodySmall.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
-                      fontSize: 12.sp,
+                      fontSize: 12,
                     ),
                   ),
                 ),

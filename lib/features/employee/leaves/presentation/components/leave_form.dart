@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/di/service_locator.dart';
 import 'package:hr_app/core/utils/connectivity_auto_restore_mixin.dart';
 import 'package:hr_app/core/utils/extensions.dart';
@@ -58,15 +57,18 @@ class _LeaveFormState extends State<LeaveForm>
 
         return Dialog(
           backgroundColor: context.colors.surface,
-          insetPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
+          insetPadding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 24,
+          ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(22.r),
+            borderRadius: BorderRadius.circular(22),
             side: BorderSide(
               color: context.colors.primary.withValues(alpha: 0.25),
             ),
           ),
           child: Padding(
-            padding: EdgeInsets.all(18.r),
+            padding: const EdgeInsets.all(18),
             child: SingleChildScrollView(
               child: StatefulBuilder(
                 builder: (context, changeState) => Column(
@@ -80,7 +82,7 @@ class _LeaveFormState extends State<LeaveForm>
                         Row(
                           children: [
                             Container(
-                              padding: EdgeInsets.all(6.r),
+                              padding: const EdgeInsets.all(6),
                               decoration: BoxDecoration(
                                 color: context.colors.primary.withValues(
                                   alpha: 0.15,
@@ -90,7 +92,7 @@ class _LeaveFormState extends State<LeaveForm>
                               child: Icon(
                                 Icons.event_note_rounded,
                                 color: context.colors.primary,
-                                size: 20.r,
+                                size: 20,
                               ),
                             ),
                             8.pw,
@@ -159,7 +161,7 @@ class _LeaveFormState extends State<LeaveForm>
                       key: _formKey,
                       child: DropdownButtonFormField<String>(
                         dropdownColor: context.colors.surfaceContainer,
-                        borderRadius: BorderRadius.circular(14.r),
+                        borderRadius: BorderRadius.circular(14),
                         isExpanded: true,
                         style: context.typography.body.copyWith(
                           color: Colors.white,
@@ -170,7 +172,7 @@ class _LeaveFormState extends State<LeaveForm>
                           prefixIcon: Icon(
                             Icons.category_outlined,
                             color: context.colors.primary,
-                            size: 20.r,
+                            size: 20,
                           ),
                         ),
                         validator: (value) =>
@@ -258,12 +260,12 @@ class _DatePickerTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) => InkWell(
     onTap: onTap,
-    borderRadius: BorderRadius.circular(14.r),
+    borderRadius: BorderRadius.circular(14),
     child: Container(
-      padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       decoration: BoxDecoration(
         color: context.colors.surfaceContainer,
-        borderRadius: BorderRadius.circular(14.r),
+        borderRadius: BorderRadius.circular(14),
         border: Border.all(
           color: selectedDate != null
               ? context.colors.primary.withValues(alpha: 0.4)
@@ -280,7 +282,7 @@ class _DatePickerTile extends StatelessWidget {
                 color: selectedDate != null
                     ? context.colors.primary
                     : context.colors.textSecondary,
-                size: 18.r,
+                size: 18,
               ),
               10.pw,
               Text(

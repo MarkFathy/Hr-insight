@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/di/service_locator.dart';
 import 'package:hr_app/core/utils/connectivity_auto_restore_mixin.dart';
 import 'package:hr_app/core/utils/extensions.dart';
@@ -92,7 +91,7 @@ class _OfficeFormState extends State<OfficeForm>
           ),
           bottomNavigationBar: SafeArea(
             child: Padding(
-              padding: EdgeInsets.fromLTRB(16.r, 8.r, 16.r, 16.r),
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
               child: AppButton(
                 title: isEdit ? 'حفظ التعديلات' : 'إضافة المكتب',
                 isLoading: state is OfficesLoadingState,
@@ -136,9 +135,9 @@ class _OfficeFormState extends State<OfficeForm>
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 16.r,
-                            vertical: 10.r,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 10,
                           ),
                           color: context.colors.surfaceContainerHigh,
                           child: Row(
@@ -146,7 +145,7 @@ class _OfficeFormState extends State<OfficeForm>
                               Icon(
                                 Icons.touch_app_rounded,
                                 color: context.colors.primary,
-                                size: 18.r,
+                                size: 18,
                               ),
                               8.pw,
                               Expanded(
@@ -160,9 +159,9 @@ class _OfficeFormState extends State<OfficeForm>
                               ),
                               if (_selectedLoc != null)
                                 Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 8.r,
-                                    vertical: 3.r,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 3,
                                   ),
                                   decoration: BoxDecoration(
                                     color: context.colors.success.withValues(
@@ -181,7 +180,7 @@ class _OfficeFormState extends State<OfficeForm>
                                       Icon(
                                         Icons.check_circle_rounded,
                                         color: context.colors.success,
-                                        size: 13.r,
+                                        size: 13,
                                       ),
                                       4.pw,
                                       Text(
@@ -189,7 +188,7 @@ class _OfficeFormState extends State<OfficeForm>
                                         style: context.typography.bodySmall
                                             .copyWith(
                                               color: context.colors.success,
-                                              fontSize: 10.sp,
+                                              fontSize: 10,
                                               fontWeight: FontWeight.bold,
                                             ),
                                       ),
@@ -200,7 +199,7 @@ class _OfficeFormState extends State<OfficeForm>
                           ),
                         ),
                         MapPicker(
-                          height: 320.h,
+                          height: 320,
                           oldLoc:
                               (widget.data != null &&
                                   widget.data!.lat != null &&
@@ -217,7 +216,7 @@ class _OfficeFormState extends State<OfficeForm>
 
                   // Form Fields
                   Padding(
-                    padding: EdgeInsets.fromLTRB(16.r, 16.r, 16.r, 24.r),
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
                     child: Form(
                       key: _formKey,
                       child: Column(
@@ -226,8 +225,8 @@ class _OfficeFormState extends State<OfficeForm>
                           // Error banner
                           if (state is OfficesErrorState) ...[
                             Container(
-                              padding: EdgeInsets.all(12.r),
-                              margin: EdgeInsets.only(bottom: 14.r),
+                              padding: const EdgeInsets.all(12),
+                              margin: const EdgeInsets.only(bottom: 14),
                               decoration: BoxDecoration(
                                 color: context.colors.error.withValues(
                                   alpha: 0.12,
@@ -244,7 +243,7 @@ class _OfficeFormState extends State<OfficeForm>
                                   Icon(
                                     Icons.error_outline_rounded,
                                     color: context.colors.error,
-                                    size: 18.r,
+                                    size: 18,
                                   ),
                                   8.pw,
                                   Expanded(
@@ -302,16 +301,16 @@ class _OfficeFormState extends State<OfficeForm>
                           ),
                           8.ph,
                           Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 4.r,
-                              vertical: 4.r,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 4,
+                              vertical: 4,
                             ),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Icon(
                                   Icons.info_outline_rounded,
-                                  size: 15.r,
+                                  size: 15,
                                   color: context.colors.textSecondary,
                                 ),
                                 6.pw,
@@ -321,7 +320,7 @@ class _OfficeFormState extends State<OfficeForm>
                                     style: context.typography.bodySmall
                                         .copyWith(
                                           color: context.colors.textSecondary,
-                                          fontSize: 11.sp,
+                                          fontSize: 11,
                                         ),
                                   ),
                                 ),

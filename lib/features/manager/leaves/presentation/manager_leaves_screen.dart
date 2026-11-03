@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/di/service_locator.dart';
 import 'package:hr_app/core/utils/connectivity_auto_restore_mixin.dart';
 import 'package:hr_app/core/utils/extensions.dart';
@@ -65,9 +64,9 @@ class _ManagerLeavesScreenState extends State<ManagerLeavesScreen>
           leading: const AppBackButton(),
           centerTitle: true,
           bottom: PreferredSize(
-            preferredSize: Size.fromHeight(60.h),
+            preferredSize: const Size.fromHeight(60),
             child: Padding(
-              padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 12.h),
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
               child: _ManagerLeavesEmployeePicker(
                 selectedId: _selectedId,
                 onSelected: (emp) {
@@ -125,10 +124,10 @@ class _ManagerLeavesEmployeePicker extends StatelessWidget {
       builder: (context, data) {
         if (data.isLoading) {
           return Container(
-            height: 44.h,
+            height: 44,
             decoration: BoxDecoration(
               color: colors.secondary.withValues(alpha: 0.5),
-              borderRadius: BorderRadius.circular(14.r),
+              borderRadius: BorderRadius.circular(14),
             ),
             child: Center(
               child: Shimmer.fromColors(
@@ -159,13 +158,13 @@ class _ManagerLeavesEmployeePicker extends StatelessWidget {
               ),
             );
           },
-          borderRadius: BorderRadius.circular(14.r),
+          borderRadius: BorderRadius.circular(14),
           child: Container(
-            height: 46.h,
-            padding: EdgeInsets.symmetric(horizontal: 14.w),
+            height: 46,
+            padding: const EdgeInsets.symmetric(horizontal: 14),
             decoration: BoxDecoration(
               color: colors.secondary,
-              borderRadius: BorderRadius.circular(14.r),
+              borderRadius: BorderRadius.circular(14),
               border: Border.all(
                 color: selectedId != null
                     ? colors.primary
@@ -180,7 +179,7 @@ class _ManagerLeavesEmployeePicker extends StatelessWidget {
                       ? Icons.person_rounded
                       : Icons.groups_rounded,
                   color: colors.primary,
-                  size: 20.r,
+                  size: 20,
                 ),
                 10.pw,
                 Expanded(
@@ -189,13 +188,13 @@ class _ManagerLeavesEmployeePicker extends StatelessWidget {
                     style: TextStyle(
                       color: selectedId != null ? colors.primary : Colors.white,
                       fontWeight: FontWeight.bold,
-                      fontSize: 13.sp,
+                      fontSize: 13,
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.all(4.r),
+                  padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
                     color: colors.primary.withValues(alpha: 0.12),
                     shape: BoxShape.circle,
@@ -203,7 +202,7 @@ class _ManagerLeavesEmployeePicker extends StatelessWidget {
                   child: Icon(
                     Icons.keyboard_arrow_down_rounded,
                     color: colors.primary,
-                    size: 18.r,
+                    size: 18,
                   ),
                 ),
               ],
@@ -252,7 +251,7 @@ class _LeavesListBody extends StatelessWidget {
           if (leavesData.isLoading) {
             return ListView.builder(
               physics: const AlwaysScrollableScrollPhysics(),
-              padding: EdgeInsets.only(top: 10.r),
+              padding: const EdgeInsets.only(top: 10),
               itemCount: 8,
               itemBuilder: (context, index) => const ListIndicator(),
             );
@@ -327,7 +326,7 @@ class _LeavesListBody extends StatelessWidget {
 
               return ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.symmetric(vertical: 10.r),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 itemCount: filteredLeaves.length,
                 itemBuilder: (context, index) {
                   final leave = filteredLeaves[index];

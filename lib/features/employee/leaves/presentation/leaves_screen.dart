@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/di/service_locator.dart';
 import 'package:hr_app/core/utils/connectivity_auto_restore_mixin.dart';
 import 'package:hr_app/core/utils/extensions.dart';
@@ -105,7 +104,7 @@ class _LeavesScreenState extends State<LeavesScreen>
               if (state is LeavesLoadingState) {
                 return ListView.builder(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  padding: EdgeInsets.fromLTRB(0, 8.h, 0, 96.h),
+                  padding: const EdgeInsets.fromLTRB(0, 8, 0, 96),
                   itemCount: 6,
                   itemBuilder: (context, index) => const ListIndicator(),
                 );
@@ -145,11 +144,12 @@ class _LeavesScreenState extends State<LeavesScreen>
                 }
 
                 return ListView.builder(
-                  padding: EdgeInsets.fromLTRB(0, 8.h, 0, 96.h),
+                  padding: const EdgeInsets.fromLTRB(0, 8, 0, 96),
                   physics: const AlwaysScrollableScrollPhysics(),
                   itemCount: leavesList.length,
-                  itemBuilder: (context, index) =>
-                      LeaveCard(leave: leavesList[leavesList.length - 1 - index]),
+                  itemBuilder: (context, index) => LeaveCard(
+                    leave: leavesList[leavesList.length - 1 - index],
+                  ),
                 );
               }
 

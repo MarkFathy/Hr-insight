@@ -1,7 +1,6 @@
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/utils/connectivity_auto_restore_mixin.dart';
 import 'package:hr_app/core/utils/extensions.dart';
 import 'package:hr_app/core/widgets/app_back_button.dart';
@@ -67,9 +66,8 @@ class _AttendanceCalendarState extends State<AttendanceCalendar>
         IconButton(
           icon: const Icon(Icons.refresh),
           tooltip: 'تحديث البيانات',
-          onPressed: () => context.read<AttendanceBloc>().add(
-            const GetAttendanceEvent(),
-          ),
+          onPressed: () =>
+              context.read<AttendanceBloc>().add(const GetAttendanceEvent()),
         ),
       ],
     ),
@@ -92,8 +90,7 @@ class _AttendanceCalendarState extends State<AttendanceCalendar>
               await bloc.stream
                   .firstWhere(
                     (s) =>
-                        s is AttendanceLoadedState ||
-                        s is AttendanceErrorState,
+                        s is AttendanceLoadedState || s is AttendanceErrorState,
                   )
                   .timeout(
                     const Duration(seconds: 15),
@@ -122,13 +119,33 @@ class _AttendanceCalendarState extends State<AttendanceCalendar>
         if (state is AttendanceLoadedState && state.attendance.data != null) {
           for (final record in state.attendance.data!) {
             if (record.date != null) {
-              attendanceMap[record.date!] = _AttendanceDayEntry(
-                data: record,
-                formattedAttendanceTime:
-                    record.getAdjustedAttendanceTime() ?? record.attendanceTime,
-                formattedDepartureTime:
-                    record.getAdjustedDepartureTime() ?? record.departureTime,
-              );
+              final attTime =
+                  record.getAdjustedAttendanceTime() ?? record.attendanceTime;
+              final depTime =
+                  record.getAdjustedDepartureTime() ?? record.departureTime;
+
+              final existing = attendanceMap[record.date!];
+              if (existing == null) {
+                attendanceMap[record.date!] = _AttendanceDayEntry(
+                  data: record,
+                  formattedAttendanceTime: attTime,
+                  formattedDepartureTime: depTime,
+                );
+              } else {
+                final mergedAtt = (attTime != null && attTime.isNotEmpty)
+                    ? attTime
+                    : existing.formattedAttendanceTime;
+                final mergedDep = (depTime != null && depTime.isNotEmpty)
+                    ? depTime
+                    : existing.formattedDepartureTime;
+                attendanceMap[record.date!] = _AttendanceDayEntry(
+                  data: (depTime != null && depTime.isNotEmpty)
+                      ? record
+                      : existing.data,
+                  formattedAttendanceTime: mergedAtt,
+                  formattedDepartureTime: mergedDep,
+                );
+              }
             }
           }
         }
@@ -148,15 +165,9 @@ class _AttendanceCalendarState extends State<AttendanceCalendar>
           ),
           monthViewThemeSettings: MonthViewThemeSettings(
             headerStyle: HeaderStyle(
-              leftIconConfig: IconDataConfig(
-                color: context.colors.primary,
-              ),
-              rightIconConfig: IconDataConfig(
-                color: context.colors.primary,
-              ),
-              decoration: BoxDecoration(
-                color: context.colors.secondary,
-              ),
+              leftIconConfig: IconDataConfig(color: context.colors.primary),
+              rightIconConfig: IconDataConfig(color: context.colors.primary),
+              decoration: BoxDecoration(color: context.colors.secondary),
               headerTextStyle: context.typography.titleLarge.copyWith(
                 color: context.colors.primary,
                 fontWeight: FontWeight.bold,
@@ -168,7 +179,7 @@ class _AttendanceCalendarState extends State<AttendanceCalendar>
               color: context.colors.surface,
               child: Center(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8.h),
+                  padding: const EdgeInsets.symmetric(vertical: 8),
                   child: Text(
                     _weekDays[day % _weekDays.length],
                     style: context.typography.bodySmall,

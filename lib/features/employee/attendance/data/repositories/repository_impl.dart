@@ -25,9 +25,17 @@ class AttendanceRepoImpl implements AttendanceRepo {
   }
 
   @override
-  ResultFuture<SignEntity> sign({required bool isAttend}) async {
+  ResultFuture<SignEntity> sign({
+    required bool isAttend,
+    int? attendanceId,
+    String? date,
+  }) async {
     try {
-      final remoteSections = await remoteDataSource.sign(isAttend: isAttend);
+      final remoteSections = await remoteDataSource.sign(
+        isAttend: isAttend,
+        attendanceId: attendanceId,
+        date: date,
+      );
       return Right(remoteSections);
     } on ServerException catch (e) {
       return Left(AppFailure.server(message: e.message));

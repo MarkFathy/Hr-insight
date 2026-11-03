@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/utils/extensions.dart';
 import 'package:hr_app/core/utils/navigation_helper.dart';
 import 'package:hr_app/features/employee/attendance/domain/entities/attendance_entity.dart';
@@ -24,15 +23,14 @@ class AttendanceConfirmationDialog extends StatefulWidget {
     required bool isCheckIn,
     required VoidCallback onConfirm,
     AttendanceDataEntity? todayRecord,
-  }) =>
-      showDialog<void>(
-        context: context,
-        builder: (ctx) => AttendanceConfirmationDialog(
-          isCheckIn: isCheckIn,
-          onConfirm: onConfirm,
-          todayRecord: todayRecord,
-        ),
-      );
+  }) => showDialog<void>(
+    context: context,
+    builder: (ctx) => AttendanceConfirmationDialog(
+      isCheckIn: isCheckIn,
+      onConfirm: onConfirm,
+      todayRecord: todayRecord,
+    ),
+  );
 
   @override
   State<AttendanceConfirmationDialog> createState() =>
@@ -46,8 +44,10 @@ class _AttendanceConfirmationDialogState
 
   static final intl.DateFormat _timeFormatter = intl.DateFormat('hh:mm:ss');
   static final intl.DateFormat _periodFormatter = intl.DateFormat('a', 'ar');
-  static final intl.DateFormat _fullDateFormatter =
-      intl.DateFormat('EEEE، d MMMM yyyy', 'ar');
+  static final intl.DateFormat _fullDateFormatter = intl.DateFormat(
+    'EEEE، d MMMM yyyy',
+    'ar',
+  );
 
   @override
   void initState() {
@@ -78,8 +78,7 @@ class _AttendanceConfirmationDialogState
         : 'تأكيد تسجيل انصرافك وانتهاء ساعات العمل اليومية';
 
     final themeColor = isCheckIn ? colors.primary : colors.warning;
-    final actionIcon =
-        isCheckIn ? Icons.login_rounded : Icons.logout_rounded;
+    final actionIcon = isCheckIn ? Icons.login_rounded : Icons.logout_rounded;
 
     final timeStr = _timeFormatter.format(_currentTime);
     final periodStr = _periodFormatter.format(_currentTime);
@@ -89,12 +88,12 @@ class _AttendanceConfirmationDialogState
 
     return Dialog(
       backgroundColor: Colors.transparent,
-      insetPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
+      insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
       child: Container(
-        constraints: BoxConstraints(maxWidth: 400.w),
+        constraints: const BoxConstraints(maxWidth: 400),
         decoration: BoxDecoration(
           color: colors.background,
-          borderRadius: BorderRadius.circular(24.r),
+          borderRadius: BorderRadius.circular(24),
           border: Border.all(
             color: themeColor.withValues(alpha: 0.35),
             width: 1.5,
@@ -113,7 +112,7 @@ class _AttendanceConfirmationDialogState
           ],
         ),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 22.h),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 22),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -124,8 +123,8 @@ class _AttendanceConfirmationDialogState
                   alignment: Alignment.center,
                   children: [
                     Container(
-                      width: 78.r,
-                      height: 78.r,
+                      width: 78,
+                      height: 78,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: themeColor.withValues(alpha: 0.12),
@@ -136,8 +135,8 @@ class _AttendanceConfirmationDialogState
                       ),
                     ),
                     Container(
-                      width: 60.r,
-                      height: 60.r,
+                      width: 60,
+                      height: 60,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: themeColor.withValues(alpha: 0.2),
@@ -145,7 +144,7 @@ class _AttendanceConfirmationDialogState
                       child: Icon(
                         Icons.fingerprint_rounded,
                         color: themeColor,
-                        size: 38.r,
+                        size: 38,
                       ),
                     ),
                   ],
@@ -156,10 +155,13 @@ class _AttendanceConfirmationDialogState
               // Action Badge Tag
               Center(
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: themeColor.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(20.r),
+                    borderRadius: BorderRadius.circular(20),
                     border: Border.all(
                       color: themeColor.withValues(alpha: 0.3),
                     ),
@@ -167,11 +169,7 @@ class _AttendanceConfirmationDialogState
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(
-                        actionIcon,
-                        size: 13.r,
-                        color: themeColor,
-                      ),
+                      Icon(actionIcon, size: 13, color: themeColor),
                       5.pw,
                       Text(
                         actionTitle,
@@ -193,7 +191,7 @@ class _AttendanceConfirmationDialogState
                 style: typography.titleLarge.copyWith(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
-                  fontSize: 18.sp,
+                  fontSize: 18,
                 ),
               ),
               6.ph,
@@ -202,7 +200,7 @@ class _AttendanceConfirmationDialogState
                 textAlign: TextAlign.center,
                 style: typography.caption.copyWith(
                   color: colors.textSecondary,
-                  fontSize: 12.sp,
+                  fontSize: 12,
                   height: 1.35,
                 ),
               ),
@@ -210,10 +208,13 @@ class _AttendanceConfirmationDialogState
 
               // Live Digital Clock & Date Box
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 14,
+                ),
                 decoration: BoxDecoration(
                   color: colors.surfaceContainer,
-                  borderRadius: BorderRadius.circular(16.r),
+                  borderRadius: BorderRadius.circular(16),
                   border: Border.all(
                     color: colors.primary.withValues(alpha: 0.15),
                   ),
@@ -232,26 +233,26 @@ class _AttendanceConfirmationDialogState
                           style: typography.h1.copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.w800,
-                            fontSize: 26.sp,
+                            fontSize: 26,
                             letterSpacing: 1.5,
                           ),
                         ),
                         8.pw,
                         Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 6.w,
-                            vertical: 2.h,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 6,
+                            vertical: 2,
                           ),
                           decoration: BoxDecoration(
                             color: themeColor.withValues(alpha: 0.2),
-                            borderRadius: BorderRadius.circular(6.r),
+                            borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
                             periodStr,
                             style: typography.labelSmall.copyWith(
                               color: themeColor,
                               fontWeight: FontWeight.bold,
-                              fontSize: 11.sp,
+                              fontSize: 11,
                             ),
                           ),
                         ),
@@ -265,7 +266,7 @@ class _AttendanceConfirmationDialogState
                       children: [
                         Icon(
                           Icons.calendar_today_rounded,
-                          size: 13.r,
+                          size: 13,
                           color: colors.textTertiary,
                         ),
                         6.pw,
@@ -273,7 +274,7 @@ class _AttendanceConfirmationDialogState
                           dateStr,
                           style: typography.caption.copyWith(
                             color: colors.textSecondary,
-                            fontSize: 11.sp,
+                            fontSize: 11,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -290,7 +291,7 @@ class _AttendanceConfirmationDialogState
                         children: [
                           Icon(
                             Icons.check_circle_outline_rounded,
-                            size: 14.r,
+                            size: 14,
                             color: colors.success,
                           ),
                           6.pw,
@@ -298,7 +299,7 @@ class _AttendanceConfirmationDialogState
                             'تم تسجيل الحضور الساعة:',
                             style: typography.caption.copyWith(
                               color: colors.textSecondary,
-                              fontSize: 11.sp,
+                              fontSize: 11,
                             ),
                           ),
                           4.pw,
@@ -308,7 +309,7 @@ class _AttendanceConfirmationDialogState
                             style: typography.labelSmall.copyWith(
                               color: colors.success,
                               fontWeight: FontWeight.bold,
-                              fontSize: 11.sp,
+                              fontSize: 11,
                             ),
                           ),
                         ],
@@ -325,7 +326,7 @@ class _AttendanceConfirmationDialogState
                 children: [
                   Icon(
                     Icons.my_location_rounded,
-                    size: 13.r,
+                    size: 13,
                     color: colors.primary,
                   ),
                   6.pw,
@@ -334,7 +335,7 @@ class _AttendanceConfirmationDialogState
                       'يتم التحقق من النطاق الجغرافي للمكتب (GPS) تلقائياً',
                       style: typography.caption.copyWith(
                         color: colors.textTertiary,
-                        fontSize: 10.sp,
+                        fontSize: 10,
                       ),
                     ),
                   ),
@@ -349,7 +350,7 @@ class _AttendanceConfirmationDialogState
                   Expanded(
                     flex: 2,
                     child: SizedBox(
-                      height: 46.h,
+                      height: 48,
                       child: OutlinedButton(
                         onPressed: () => NavigationHelper.pop(context),
                         style: OutlinedButton.styleFrom(
@@ -358,7 +359,7 @@ class _AttendanceConfirmationDialogState
                             color: colors.border.withValues(alpha: 0.5),
                           ),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14.r),
+                            borderRadius: BorderRadius.circular(14),
                           ),
                         ),
                         child: Text(
@@ -377,7 +378,7 @@ class _AttendanceConfirmationDialogState
                   Expanded(
                     flex: 3,
                     child: SizedBox(
-                      height: 46.h,
+                      height: 48,
                       child: ElevatedButton.icon(
                         onPressed: () {
                           NavigationHelper.pop(context);
@@ -388,20 +389,16 @@ class _AttendanceConfirmationDialogState
                           foregroundColor: Colors.black,
                           elevation: 2,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14.r),
+                            borderRadius: BorderRadius.circular(14),
                           ),
                         ),
-                        icon: Icon(
-                          actionIcon,
-                          size: 18.r,
-                          color: Colors.black,
-                        ),
+                        icon: Icon(actionIcon, size: 18, color: Colors.black),
                         label: Text(
                           isCheckIn ? 'تأكيد الحضور' : 'تأكيد الإنصراف',
                           style: typography.titleSmall.copyWith(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
-                            fontSize: 13.sp,
+                            fontSize: 13,
                           ),
                         ),
                       ),

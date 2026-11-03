@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/di/service_locator.dart';
 import 'package:hr_app/core/utils/connectivity_auto_restore_mixin.dart';
 import 'package:hr_app/core/utils/extensions.dart';
@@ -83,13 +82,14 @@ class _OfficesScreenState extends State<OfficesScreen>
                 if (state is OfficesLoadingState) {
                   return GridView.builder(
                     physics: const AlwaysScrollableScrollPhysics(),
-                    padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 80.h),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.85,
-                      mainAxisSpacing: 14.h,
-                      crossAxisSpacing: 14.w,
-                    ),
+                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 80),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.85,
+                          mainAxisSpacing: 14,
+                          crossAxisSpacing: 14,
+                        ),
                     itemCount: 6,
                     itemBuilder: (context, index) => const OfficesIndicator(),
                   );
@@ -118,13 +118,14 @@ class _OfficesScreenState extends State<OfficesScreen>
 
                   return GridView.builder(
                     physics: const AlwaysScrollableScrollPhysics(),
-                    padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 80.h),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.85,
-                      mainAxisSpacing: 14.h,
-                      crossAxisSpacing: 14.w,
-                    ),
+                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 80),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.85,
+                          mainAxisSpacing: 14,
+                          crossAxisSpacing: 14,
+                        ),
                     itemCount: officeList.length,
                     itemBuilder: (context, index) =>
                         OfficeCard(office: officeList[index]),

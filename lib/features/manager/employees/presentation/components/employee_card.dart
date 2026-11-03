@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/utils/extensions.dart';
 import 'package:hr_app/core/utils/navigation_helper.dart';
 import 'package:hr_app/features/authentication/domain/entities/employee_entity.dart';
@@ -57,7 +56,7 @@ class EmployeeCard extends StatelessWidget {
           borderRadius: context.radius.mdBorder,
         ),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.r, vertical: 10.r),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -65,8 +64,8 @@ class EmployeeCard extends StatelessWidget {
               Row(
                 children: [
                   Container(
-                    width: 38.r,
-                    height: 38.r,
+                    width: 38,
+                    height: 38,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(
@@ -82,18 +81,18 @@ class EmployeeCard extends StatelessWidget {
                               placeholder: (_, _) => Icon(
                                 Icons.person,
                                 color: context.colors.primary,
-                                size: 22.r,
+                                size: 22,
                               ),
                               errorWidget: (_, _, _) => Icon(
                                 Icons.person,
                                 color: context.colors.primary,
-                                size: 22.r,
+                                size: 22,
                               ),
                             )
                           : Icon(
                               Icons.person,
                               color: context.colors.primary,
-                              size: 22.r,
+                              size: 22,
                             ),
                     ),
                   ),
@@ -107,7 +106,7 @@ class EmployeeCard extends StatelessWidget {
                           style: context.typography.titleSmall.copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontSize: 12.r,
+                            fontSize: 12,
                           ),
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -115,7 +114,7 @@ class EmployeeCard extends StatelessWidget {
                           employee.email ?? '',
                           style: context.typography.bodySmall.copyWith(
                             color: Colors.white.withValues(alpha: 0.5),
-                            fontSize: 10.r,
+                            fontSize: 10,
                           ),
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -126,7 +125,7 @@ class EmployeeCard extends StatelessWidget {
               ),
               if (!inOffice) ...[
                 Divider(
-                  height: 12.r,
+                  height: 12,
                   color: Colors.white.withValues(alpha: 0.08),
                 ),
                 _EmployeeInfoRow(
@@ -166,7 +165,7 @@ class _EmployeeInfoRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: EdgeInsets.symmetric(vertical: 1.r),
+    padding: const EdgeInsets.symmetric(vertical: 1),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -174,7 +173,7 @@ class _EmployeeInfoRow extends StatelessWidget {
           label,
           style: context.typography.bodySmall.copyWith(
             color: Colors.white.withValues(alpha: 0.5),
-            fontSize: 10.r,
+            fontSize: 10,
           ),
         ),
         5.pw,
@@ -185,7 +184,7 @@ class _EmployeeInfoRow extends StatelessWidget {
               color: isSet
                   ? context.colors.primary
                   : Colors.white.withValues(alpha: 0.4),
-              fontSize: 10.r,
+              fontSize: 10,
               fontWeight: isSet ? FontWeight.w600 : FontWeight.normal,
             ),
             overflow: TextOverflow.ellipsis,

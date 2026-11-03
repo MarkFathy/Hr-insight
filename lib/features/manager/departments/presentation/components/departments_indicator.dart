@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/utils/extensions.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -10,11 +9,11 @@ class DepartmentsIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 12.r, vertical: 6.r),
-      padding: EdgeInsets.all(16.r),
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: colors.secondary,
-        borderRadius: BorderRadius.circular(16.r),
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(color: colors.primary.withValues(alpha: 0.15)),
       ),
       child: Shimmer.fromColors(
@@ -23,8 +22,8 @@ class DepartmentsIndicator extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              width: 42.r,
-              height: 42.r,
+              width: 42,
+              height: 42,
               decoration: const BoxDecoration(
                 color: Colors.white,
                 shape: BoxShape.circle,
@@ -36,8 +35,8 @@ class DepartmentsIndicator extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    width: 120.r,
-                    height: 14.r,
+                    width: 120,
+                    height: 14,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(4),
@@ -45,8 +44,8 @@ class DepartmentsIndicator extends StatelessWidget {
                   ),
                   8.ph,
                   Container(
-                    width: 60.r,
-                    height: 10.r,
+                    width: 60,
+                    height: 10,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(4),

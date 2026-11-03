@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/di/service_locator.dart';
 import 'package:hr_app/core/utils/connectivity_auto_restore_mixin.dart';
 import 'package:hr_app/core/utils/extensions.dart';
@@ -110,9 +109,9 @@ class _ManagerAttendanceScreenState extends State<ManagerAttendanceScreen>
             ),
           ],
           bottom: PreferredSize(
-            preferredSize: Size.fromHeight(58.h),
+            preferredSize: const Size.fromHeight(58),
             child: Padding(
-              padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 10.h),
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
               child: _EmployeeSelectorBar(
                 selectedId: _selectedId,
                 onSelected: _onEmployeeSelected,
@@ -127,14 +126,17 @@ class _ManagerAttendanceScreenState extends State<ManagerAttendanceScreen>
                 color: screenCtx.colors.primary,
                 backgroundColor: screenCtx.colors.surface,
                 onRefresh: () async {
-                  screenCtx.read<EmployeesBloc>().add(const GetEmployeesEvent());
+                  screenCtx.read<EmployeesBloc>().add(
+                    const GetEmployeesEvent(),
+                  );
                 },
                 child: LayoutBuilder(
                   builder: (context, constraints) => SingleChildScrollView(
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: ConstrainedBox(
-                      constraints:
-                          BoxConstraints(minHeight: constraints.maxHeight),
+                      constraints: BoxConstraints(
+                        minHeight: constraints.maxHeight,
+                      ),
                       child: AppErrorState(
                         message: empState.message,
                         onRetry: () => screenCtx.read<EmployeesBloc>().add(
@@ -146,9 +148,7 @@ class _ManagerAttendanceScreenState extends State<ManagerAttendanceScreen>
                 ),
               );
             }
-            return ManagerMonthlySignaturesCalendar(
-              employeeId: _selectedId,
-            );
+            return ManagerMonthlySignaturesCalendar(employeeId: _selectedId);
           },
         ),
       ),
@@ -186,10 +186,10 @@ class _EmployeeSelectorBar extends StatelessWidget {
       builder: (context, data) {
         if (data.isLoading) {
           return Container(
-            height: 44.h,
+            height: 44,
             decoration: BoxDecoration(
               color: colors.secondary.withValues(alpha: 0.5),
-              borderRadius: BorderRadius.circular(14.r),
+              borderRadius: BorderRadius.circular(14),
             ),
             child: Center(
               child: Shimmer.fromColors(
@@ -221,13 +221,13 @@ class _EmployeeSelectorBar extends StatelessWidget {
               ),
             );
           },
-          borderRadius: BorderRadius.circular(14.r),
+          borderRadius: BorderRadius.circular(14),
           child: Container(
-            height: 46.h,
-            padding: EdgeInsets.symmetric(horizontal: 14.w),
+            height: 46,
+            padding: const EdgeInsets.symmetric(horizontal: 14),
             decoration: BoxDecoration(
               color: colors.secondary,
-              borderRadius: BorderRadius.circular(14.r),
+              borderRadius: BorderRadius.circular(14),
               border: Border.all(
                 color: selectedId != null
                     ? colors.primary
@@ -237,7 +237,7 @@ class _EmployeeSelectorBar extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Icon(Icons.person_rounded, color: colors.primary, size: 20.r),
+                Icon(Icons.person_rounded, color: colors.primary, size: 20),
                 10.pw,
                 Expanded(
                   child: Text(
@@ -247,13 +247,13 @@ class _EmployeeSelectorBar extends StatelessWidget {
                           ? colors.primary
                           : Colors.white.withValues(alpha: 0.8),
                       fontWeight: FontWeight.bold,
-                      fontSize: 13.sp,
+                      fontSize: 13,
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.all(4.r),
+                  padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
                     color: colors.primary.withValues(alpha: 0.12),
                     shape: BoxShape.circle,
@@ -261,7 +261,7 @@ class _EmployeeSelectorBar extends StatelessWidget {
                   child: Icon(
                     Icons.keyboard_arrow_down_rounded,
                     color: colors.primary,
-                    size: 18.r,
+                    size: 18,
                   ),
                 ),
               ],

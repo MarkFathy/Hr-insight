@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/utils/extensions.dart';
 import 'package:hr_app/features/authentication/domain/entities/employee_entity.dart';
 import 'package:hr_app/features/employee/leaves/domain/entities/leaves_entity.dart';
@@ -18,11 +17,11 @@ class LeaveCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
+    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
     child: Container(
       decoration: BoxDecoration(
         color: context.colors.surface,
-        borderRadius: BorderRadius.circular(16.r),
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: context.colors.primary.withValues(alpha: 0.18),
         ),
@@ -49,7 +48,7 @@ class LeaveCard extends StatelessWidget {
                   ),
                 ),
           child: Padding(
-            padding: EdgeInsets.all(14.r),
+            padding: const EdgeInsets.all(14),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -62,7 +61,7 @@ class LeaveCard extends StatelessWidget {
                         child: Row(
                           children: [
                             Container(
-                              padding: EdgeInsets.all(6.r),
+                              padding: const EdgeInsets.all(6),
                               decoration: BoxDecoration(
                                 color: context.colors.primary.withValues(
                                   alpha: 0.15,
@@ -71,7 +70,7 @@ class LeaveCard extends StatelessWidget {
                               ),
                               child: Icon(
                                 Icons.person_rounded,
-                                size: 16.r,
+                                size: 16,
                                 color: context.colors.primary,
                               ),
                             ),
@@ -82,7 +81,7 @@ class LeaveCard extends StatelessWidget {
                                 style: context.typography.titleSmall.copyWith(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
-                                  fontSize: 14.sp,
+                                  fontSize: 14,
                                 ),
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -93,7 +92,7 @@ class LeaveCard extends StatelessWidget {
                                 ' • ',
                                 style: TextStyle(
                                   color: context.colors.textSecondary,
-                                  fontSize: 12.sp,
+                                  fontSize: 12,
                                 ),
                               ),
                               Flexible(
@@ -101,7 +100,7 @@ class LeaveCard extends StatelessWidget {
                                   employeeDataEntity!.department!.name!,
                                   style: TextStyle(
                                     color: context.colors.primary,
-                                    fontSize: 12.sp,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.w600,
                                   ),
                                   overflow: TextOverflow.ellipsis,
@@ -115,16 +114,16 @@ class LeaveCard extends StatelessWidget {
                       Row(
                         children: [
                           Container(
-                            padding: EdgeInsets.all(6.r),
+                            padding: const EdgeInsets.all(6),
                             decoration: BoxDecoration(
                               color: context.colors.primary.withValues(
                                 alpha: 0.15,
                               ),
-                              borderRadius: BorderRadius.circular(10.r),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                             child: Icon(
                               Icons.beach_access_rounded,
-                              size: 16.r,
+                              size: 16,
                               color: context.colors.primary,
                             ),
                           ),
@@ -134,7 +133,7 @@ class LeaveCard extends StatelessWidget {
                             style: context.typography.titleSmall.copyWith(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
-                              fontSize: 14.sp,
+                              fontSize: 14,
                             ),
                           ),
                         ],
@@ -145,13 +144,13 @@ class LeaveCard extends StatelessWidget {
                 12.ph,
                 // Duration strip container
                 Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 12.w,
-                    vertical: 10.h,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 10,
                   ),
                   decoration: BoxDecoration(
                     color: context.colors.surfaceContainer,
-                    borderRadius: BorderRadius.circular(12.r),
+                    borderRadius: BorderRadius.circular(12),
                     border: Border.all(
                       color: Colors.white.withValues(alpha: 0.05),
                     ),
@@ -163,7 +162,7 @@ class LeaveCard extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.date_range_rounded,
-                            size: 16.r,
+                            size: 16,
                             color: context.colors.primary,
                           ),
                           8.pw,
@@ -187,7 +186,7 @@ class LeaveCard extends StatelessWidget {
                           _fullDateFormat.format(leave.dayDate!),
                           style: context.typography.caption.copyWith(
                             color: context.colors.textSecondary,
-                            fontSize: 10.sp,
+                            fontSize: 10,
                           ),
                         ),
                     ],
@@ -217,23 +216,23 @@ class LeaveCard extends StatelessWidget {
     };
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.15),
-        borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(color: color.withValues(alpha: 0.35)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 13.r, color: color),
+          Icon(icon, size: 13, color: color),
           4.pw,
           Text(
             text,
             style: context.typography.labelSmall.copyWith(
               color: color,
               fontWeight: FontWeight.bold,
-              fontSize: 11.sp,
+              fontSize: 11,
             ),
           ),
         ],

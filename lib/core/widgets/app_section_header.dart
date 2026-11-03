@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/utils/extensions.dart';
 
 class AppSectionHeader extends StatelessWidget {
@@ -18,31 +17,39 @@ class AppSectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          children: [
-            if (icon != null) ...[
-              Icon(icon, size: 20.r, color: context.colors.primary),
-              8.pw,
-            ],
-            Text(
-              title,
-              style: context.typography.titleMedium.copyWith(
-                fontWeight: FontWeight.bold,
-                color: context.colors.textPrimary,
+        Expanded(
+          child: Row(
+            children: [
+              if (icon != null) ...[
+                Icon(icon, size: 22, color: context.colors.primary),
+                10.pw,
+              ],
+              Expanded(
+                child: Text(
+                  title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: context.typography.titleMedium.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: context.colors.textPrimary,
+                    fontSize: 16.5,
+                  ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-        if (actionTitle != null && onAction != null)
+        if (actionTitle != null && onAction != null) ...[
+          8.pw,
           TextButton(
             onPressed: onAction,
             style: TextButton.styleFrom(
               foregroundColor: context.colors.primary,
-              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               visualDensity: VisualDensity.compact,
             ),
             child: Text(
@@ -50,9 +57,11 @@ class AppSectionHeader extends StatelessWidget {
               style: context.typography.labelMedium.copyWith(
                 color: context.colors.primary,
                 fontWeight: FontWeight.bold,
+                fontSize: 13.5,
               ),
             ),
           ),
+        ],
       ],
     ),
   );

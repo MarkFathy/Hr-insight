@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/utils/connectivity_auto_restore_mixin.dart';
 import 'package:hr_app/core/utils/extensions.dart';
 import 'package:hr_app/features/authentication/presentation/bloc/bloc.dart';
@@ -34,7 +33,7 @@ class UserCard extends StatelessWidget {
         children: [
           // User Header Profile Card
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.r, vertical: 8.r),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Material(
               color: context.colors.surface,
               elevation: 3,
@@ -46,7 +45,7 @@ class UserCard extends StatelessWidget {
                 ),
               ),
               child: Padding(
-                padding: EdgeInsets.all(16.r),
+                padding: const EdgeInsets.all(16),
                 child: Row(
                   children: [
                     // Avatar
@@ -55,8 +54,8 @@ class UserCard extends StatelessWidget {
                         baseColor: Colors.blueGrey.shade700,
                         highlightColor: context.colors.surface,
                         child: Container(
-                          width: 60.r,
-                          height: 60.r,
+                          width: 60,
+                          height: 60,
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.white,
@@ -69,8 +68,8 @@ class UserCard extends StatelessWidget {
                             ? () => _showFullImageDialog(context, imageUrl)
                             : null,
                         child: Container(
-                          width: 60.r,
-                          height: 60.r,
+                          width: 60,
+                          height: 60,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.black.withValues(alpha: 0.25),
@@ -113,11 +112,11 @@ class UserCard extends StatelessWidget {
                               baseColor: Colors.blueGrey.shade700,
                               highlightColor: context.colors.surface,
                               child: Container(
-                                width: 120.w,
-                                height: 16.h,
+                                width: 120,
+                                height: 16,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
-                                  borderRadius: BorderRadius.circular(4.r),
+                                  borderRadius: BorderRadius.circular(4),
                                 ),
                               ),
                             ),
@@ -126,11 +125,11 @@ class UserCard extends StatelessWidget {
                               baseColor: Colors.blueGrey.shade700,
                               highlightColor: context.colors.surface,
                               child: Container(
-                                width: 80.w,
-                                height: 12.h,
+                                width: 80,
+                                height: 12,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
-                                  borderRadius: BorderRadius.circular(4.r),
+                                  borderRadius: BorderRadius.circular(4),
                                 ),
                               ),
                             ),
@@ -156,21 +155,21 @@ class UserCard extends StatelessWidget {
                             ),
                             6.ph,
                             Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 8.r,
-                                vertical: 2.r,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 2,
                               ),
                               decoration: BoxDecoration(
                                 color: context.colors.primary.withValues(
                                   alpha: 0.15,
                                 ),
-                                borderRadius: BorderRadius.circular(6.r),
+                                borderRadius: BorderRadius.circular(6),
                               ),
                               child: Text(
                                 'موظف',
                                 style: TextStyle(
                                   color: context.colors.primary,
-                                  fontSize: 10.r,
+                                  fontSize: 10,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -198,15 +197,15 @@ class UserCard extends StatelessWidget {
                             ),
                             6.ph,
                             Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 8.r,
-                                vertical: 2.r,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 2,
                               ),
                               decoration: BoxDecoration(
                                 color: Colors.cyanAccent.withValues(
                                   alpha: 0.15,
                                 ),
-                                borderRadius: BorderRadius.circular(6.r),
+                                borderRadius: BorderRadius.circular(6),
                               ),
                               child: const Text(
                                 'مسؤول النظام',
@@ -228,13 +227,13 @@ class UserCard extends StatelessWidget {
                         backgroundColor: context.colors.error.withValues(
                           alpha: 0.12,
                         ),
-                        padding: EdgeInsets.all(10.r),
+                        padding: const EdgeInsets.all(10),
                       ),
                       onPressed: () => _showLogoutConfirmationDialog(context),
                       icon: Icon(
                         Icons.logout_rounded,
                         color: context.colors.error,
-                        size: 20.r,
+                        size: 20,
                       ),
                     ),
                   ],
@@ -245,7 +244,7 @@ class UserCard extends StatelessWidget {
 
           // Profile Details Section
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.r, vertical: 4.r),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
             child: Material(
               color: context.colors.surface,
               elevation: 2,
@@ -257,7 +256,10 @@ class UserCard extends StatelessWidget {
                 ),
               ),
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.r, vertical: 12.r),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
                 child: isEmployee
                     ? Column(
                         children: [
@@ -269,7 +271,7 @@ class UserCard extends StatelessWidget {
                                 : '',
                           ),
                           Divider(
-                            height: 14.r,
+                            height: 14,
                             color: Colors.white.withValues(alpha: 0.08),
                           ),
                           ProfileInfoItem(
@@ -284,7 +286,7 @@ class UserCard extends StatelessWidget {
                                 : '',
                           ),
                           Divider(
-                            height: 14.r,
+                            height: 14,
                             color: Colors.white.withValues(alpha: 0.08),
                           ),
                           ProfileInfoItem(
@@ -295,7 +297,7 @@ class UserCard extends StatelessWidget {
                                 : '',
                           ),
                           Divider(
-                            height: 14.r,
+                            height: 14,
                             color: Colors.white.withValues(alpha: 0.08),
                           ),
                           ProfileInfoItem(
@@ -316,7 +318,7 @@ class UserCard extends StatelessWidget {
                                 : '',
                           ),
                           Divider(
-                            height: 14.r,
+                            height: 14,
                             color: Colors.white.withValues(alpha: 0.08),
                           ),
                           ProfileInfoItem(
@@ -327,7 +329,7 @@ class UserCard extends StatelessWidget {
                                 : '',
                           ),
                           Divider(
-                            height: 14.r,
+                            height: 14,
                             color: Colors.white.withValues(alpha: 0.08),
                           ),
                           ProfileInfoItem(
@@ -364,7 +366,7 @@ class UserCard extends StatelessWidget {
       showDialog<void>(
         context: context,
         builder: (ctx) => Dialog(
-          insetPadding: EdgeInsets.all(16.r),
+          insetPadding: const EdgeInsets.all(16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -388,7 +390,7 @@ class UserCard extends StatelessWidget {
                       fit: BoxFit.contain,
                       placeholder: (context, url) => Center(
                         child: Padding(
-                          padding: EdgeInsets.all(32.r),
+                          padding: const EdgeInsets.all(32),
                           child: CircularProgressIndicator(
                             color: context.colors.primary,
                           ),
@@ -396,11 +398,11 @@ class UserCard extends StatelessWidget {
                       ),
                       errorWidget: (context, url, error) => Center(
                         child: Padding(
-                          padding: EdgeInsets.all(32.r),
+                          padding: const EdgeInsets.all(32),
                           child: Icon(
                             Icons.error_outline,
                             color: context.colors.error,
-                            size: 48.r,
+                            size: 48,
                           ),
                         ),
                       ),
@@ -438,21 +440,21 @@ class _LogoutConfirmationDialogState extends State<_LogoutConfirmationDialog>
       borderRadius: context.radius.lgBorder,
       side: BorderSide(color: context.colors.error.withValues(alpha: 0.25)),
     ),
-    titlePadding: EdgeInsets.fromLTRB(20.w, 20.h, 20.w, 12.h),
-    contentPadding: EdgeInsets.symmetric(horizontal: 20.w),
-    actionsPadding: EdgeInsets.fromLTRB(20.w, 16.h, 20.w, 16.h),
+    titlePadding: const EdgeInsets.fromLTRB(20, 20, 20, 12),
+    contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+    actionsPadding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
     title: Row(
       children: [
         Container(
-          padding: EdgeInsets.all(8.r),
+          padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: context.colors.error.withValues(alpha: 0.12),
-            borderRadius: BorderRadius.circular(10.r),
+            borderRadius: BorderRadius.circular(10),
           ),
           child: Icon(
             Icons.logout_rounded,
             color: context.colors.error,
-            size: 20.r,
+            size: 20,
           ),
         ),
         12.pw,
@@ -486,7 +488,7 @@ class _LogoutConfirmationDialogState extends State<_LogoutConfirmationDialog>
           backgroundColor: context.colors.error,
           foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(borderRadius: context.radius.smBorder),
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         ),
         onPressed: () {
           Navigator.pop(context);

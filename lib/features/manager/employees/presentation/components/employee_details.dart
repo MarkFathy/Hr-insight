@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/di/service_locator.dart';
 import 'package:hr_app/core/utils/connectivity_auto_restore_mixin.dart';
 import 'package:hr_app/core/utils/extensions.dart';
@@ -119,8 +118,8 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen>
                 Hero(
                   tag: 'User-Profile-${employee.id}',
                   child: Container(
-                    width: 110.r,
-                    height: 110.r,
+                    width: 110,
+                    height: 110,
                     decoration: BoxDecoration(
                       color: context.colors.surface,
                       borderRadius: context.radius.smBorder,
@@ -137,8 +136,8 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen>
                               fit: BoxFit.cover,
                               placeholder: (context, url) => Center(
                                 child: SizedBox(
-                                  width: 22.r,
-                                  height: 22.r,
+                                  width: 22,
+                                  height: 22,
                                   child: CircularProgressIndicator(
                                     strokeWidth: 2,
                                     color: context.colors.primary,
@@ -147,7 +146,7 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen>
                               ),
                               errorWidget: (context, url, error) => Icon(
                                 Icons.person,
-                                size: 55.r,
+                                size: 55,
                                 color: context.colors.primary.withValues(
                                   alpha: 0.5,
                                 ),
@@ -155,7 +154,7 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen>
                             )
                           : Icon(
                               Icons.person,
-                              size: 55.r,
+                              size: 55,
                               color: context.colors.primary.withValues(
                                 alpha: 0.5,
                               ),

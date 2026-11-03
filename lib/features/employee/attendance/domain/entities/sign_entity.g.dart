@@ -9,7 +9,7 @@ part of 'sign_entity.dart';
 _SignEntity _$SignEntityFromJson(Map<String, dynamic> json) => _SignEntity(
   status: (json['status'] as num?)?.toInt(),
   message: json['message'] as String?,
-  data: json['data'] as String?,
+  data: json['data'],
 );
 
 Map<String, dynamic> _$SignEntityToJson(_SignEntity instance) =>

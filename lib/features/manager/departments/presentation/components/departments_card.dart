@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/utils/extensions.dart';
 import 'package:hr_app/core/utils/navigation_helper.dart';
 import 'package:hr_app/features/manager/departments/domain/entities/departments_entity.dart';
@@ -24,11 +23,11 @@ class DepartmentCard extends StatelessWidget {
     final jobs = department.jobs ?? [];
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 12.r, vertical: 6.r),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       child: Material(
         color: theme.colorScheme.secondary,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16.r),
+          borderRadius: BorderRadius.circular(16),
           side: BorderSide(
             color: theme.primaryColor.withValues(alpha: 0.25),
             width: 1.2,
@@ -45,11 +44,14 @@ class DepartmentCard extends StatelessWidget {
           ),
           child: ExpansionTile(
             key: ValueKey(department.id),
-            tilePadding: EdgeInsets.symmetric(horizontal: 14.r, vertical: 4.r),
-            childrenPadding: EdgeInsets.only(bottom: 12.r),
+            tilePadding: const EdgeInsets.symmetric(
+              horizontal: 14,
+              vertical: 4,
+            ),
+            childrenPadding: const EdgeInsets.only(bottom: 12),
             leading: Container(
-              width: 42.r,
-              height: 42.r,
+              width: 42,
+              height: 42,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: theme.primaryColor.withValues(alpha: 0.15),
@@ -61,7 +63,7 @@ class DepartmentCard extends StatelessWidget {
               child: Icon(
                 Icons.corporate_fare_rounded,
                 color: theme.primaryColor,
-                size: 22.r,
+                size: 22,
               ),
             ),
             title: Text(
@@ -69,27 +71,27 @@ class DepartmentCard extends StatelessWidget {
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
-                fontSize: 15.r,
+                fontSize: 15,
               ),
             ),
             subtitle: Padding(
-              padding: EdgeInsets.only(top: 4.r),
+              padding: const EdgeInsets.only(top: 4),
               child: Row(
                 children: [
                   Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 8.r,
-                      vertical: 2.r,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 2,
                     ),
                     decoration: BoxDecoration(
                       color: theme.primaryColor.withValues(alpha: 0.12),
-                      borderRadius: BorderRadius.circular(6.r),
+                      borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
                       '${jobs.length} وظائف',
                       style: TextStyle(
                         color: theme.primaryColor,
-                        fontSize: 11.r,
+                        fontSize: 11,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -104,7 +106,7 @@ class DepartmentCard extends StatelessWidget {
                   icon: Icon(
                     Icons.add_circle_outline_rounded,
                     color: theme.primaryColor,
-                    size: 22.r,
+                    size: 22,
                   ),
                   tooltip: 'إضافة وظيفة',
                   onPressed: () => _openAddJobScreen(context, bloc),
@@ -113,7 +115,7 @@ class DepartmentCard extends StatelessWidget {
                   icon: Icon(
                     Icons.edit_outlined,
                     color: Colors.white.withValues(alpha: 0.8),
-                    size: 20.r,
+                    size: 20,
                   ),
                   tooltip: 'تعديل القسم',
                   onPressed: () => _openEditDepartmentScreen(context, bloc),
@@ -134,9 +136,9 @@ class DepartmentCard extends StatelessWidget {
               8.ph,
               if (jobs.isEmpty)
                 Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: 16.r,
-                    horizontal: 16.r,
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 16,
+                    horizontal: 16,
                   ),
                   child: Column(
                     children: [
@@ -144,7 +146,7 @@ class DepartmentCard extends StatelessWidget {
                         'لا توجد وظائف مضافة في هذا القسم حتى الآن',
                         style: TextStyle(
                           color: Colors.white.withValues(alpha: 0.5),
-                          fontSize: 12.r,
+                          fontSize: 12,
                         ),
                       ),
                       8.ph,
@@ -217,20 +219,20 @@ class DepartmentCard extends StatelessWidget {
         builder: (ctx) => AlertDialog(
           backgroundColor: theme.scaffoldBackgroundColor,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18.r),
+            borderRadius: BorderRadius.circular(18),
             side: BorderSide(color: Colors.red.withValues(alpha: 0.3)),
           ),
           title: Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.delete_outline_rounded,
                 color: Colors.redAccent,
-                size: 24.r,
+                size: 24,
               ),
               8.pw,
-              Text(
+              const Text(
                 'تأكيد حذف القسم',
-                style: TextStyle(fontSize: 15.r, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -238,7 +240,7 @@ class DepartmentCard extends StatelessWidget {
             'سيتم حذف قسم "${department.name}" وجميع الوظائف التابعة له نهائياً.',
             style: TextStyle(
               color: Colors.white.withValues(alpha: 0.8),
-              fontSize: 13.r,
+              fontSize: 13,
             ),
           ),
           actions: [
@@ -254,7 +256,7 @@ class DepartmentCard extends StatelessWidget {
                 backgroundColor: Colors.red.shade700,
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.r),
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
               onPressed: () {

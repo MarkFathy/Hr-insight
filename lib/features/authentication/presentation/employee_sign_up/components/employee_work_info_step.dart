@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/constants/app_constants.dart';
 import 'package:hr_app/core/utils/entrance_fader.dart';
 import 'package:hr_app/core/utils/extensions.dart';
@@ -20,7 +19,7 @@ class EmployeeWorkInfoStep extends StatelessWidget {
         builder: (context, changeState) => Column(
           children: [
             Container(
-              margin: EdgeInsets.fromLTRB(1.r, 0.r, 0.r, 37.r),
+              margin: const EdgeInsets.fromLTRB(1, 0, 0, 36),
               child: Text(
                 'إنشاء حساب موظف',
                 style: context.typography.titleMedium.copyWith(
@@ -77,8 +76,8 @@ class EmployeeWorkInfoStep extends StatelessWidget {
                                       offset: const Offset(-5, -10),
                                       child: Container(
                                         clipBehavior: Clip.hardEdge,
-                                        width: 50.r,
-                                        height: 50.r,
+                                        width: 50,
+                                        height: 50,
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: Colors.grey.shade700,
@@ -116,11 +115,11 @@ class EmployeeWorkInfoStep extends StatelessWidget {
                         ),
                         if (bloc.info == null)
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8.r),
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
                             child: (bloc.state is AuthLoadingState)
                                 ? SizedBox(
-                                    width: 28.r,
-                                    height: 28.r,
+                                    width: 28,
+                                    height: 28,
                                     child: CircularProgressIndicator(
                                       strokeWidth: 2.5,
                                       color: Theme.of(context).primaryColor,
@@ -133,13 +132,11 @@ class EmployeeWorkInfoStep extends StatelessWidget {
                                       ).primaryColor,
                                       foregroundColor: Colors.black,
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                          12.r,
-                                        ),
+                                        borderRadius: BorderRadius.circular(12),
                                       ),
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 16.r,
-                                        vertical: 12.r,
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                        vertical: 12,
                                       ),
                                     ),
                                     onPressed: () {
@@ -231,5 +228,3 @@ class EmployeeWorkInfoStep extends StatelessWidget {
     );
   }
 }
-
-/// Backwards compatibility alias

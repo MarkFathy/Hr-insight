@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/constants/app_images.dart';
 import 'package:hr_app/core/utils/extensions.dart';
 import 'package:hr_app/core/utils/navigation_helper.dart';
@@ -19,7 +18,7 @@ class OfficeCard extends StatelessWidget {
   Widget build(BuildContext context) => Material(
     color: context.colors.surface,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(16.r),
+      borderRadius: BorderRadius.circular(16),
       side: BorderSide(
         color: context.colors.primary.withValues(alpha: 0.35),
         width: 1.3,
@@ -40,7 +39,7 @@ class OfficeCard extends StatelessWidget {
         ),
       ),
       child: Padding(
-        padding: EdgeInsets.all(10.r),
+        padding: const EdgeInsets.all(10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -51,7 +50,7 @@ class OfficeCard extends StatelessWidget {
                 Icon(
                   Icons.location_city_rounded,
                   color: context.colors.primary,
-                  size: 16.r,
+                  size: 16,
                 ),
                 6.pw,
                 Flexible(
@@ -60,7 +59,7 @@ class OfficeCard extends StatelessWidget {
                     style: context.typography.titleSmall.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
-                      fontSize: 13.r,
+                      fontSize: 13,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -72,11 +71,11 @@ class OfficeCard extends StatelessWidget {
             // Center: Office Graphic with soft circle container
             Expanded(
               child: Container(
-                margin: EdgeInsets.symmetric(vertical: 6.r),
-                padding: EdgeInsets.all(6.r),
+                margin: const EdgeInsets.symmetric(vertical: 6),
+                padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
                   color: context.colors.background.withValues(alpha: 0.4),
-                  borderRadius: BorderRadius.circular(12.r),
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 child: Center(
                   child: Image.asset(
@@ -95,17 +94,20 @@ class OfficeCard extends StatelessWidget {
               children: [
                 // Radius Chip
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 6.r, vertical: 3.r),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 3,
+                  ),
                   decoration: BoxDecoration(
                     color: context.colors.primary.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(8.r),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(
                         Icons.radar_rounded,
-                        size: 12.r,
+                        size: 12,
                         color: context.colors.primary,
                       ),
                       4.pw,
@@ -113,7 +115,7 @@ class OfficeCard extends StatelessWidget {
                         '${office.radius.formatRadius} م',
                         style: TextStyle(
                           color: context.colors.primary,
-                          fontSize: 10.r,
+                          fontSize: 10,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -123,17 +125,20 @@ class OfficeCard extends StatelessWidget {
 
                 // Employee Count Chip
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 6.r, vertical: 3.r),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 3,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.cyanAccent.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(8.r),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.people_alt_outlined,
-                        size: 12.r,
+                        size: 12,
                         color: Colors.cyanAccent,
                       ),
                       4.pw,
@@ -164,11 +169,11 @@ class OfficesIndicator extends StatelessWidget {
   Widget build(BuildContext context) => Material(
     color: context.colors.surface,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(16.r),
+      borderRadius: BorderRadius.circular(16),
       side: BorderSide(color: context.colors.primary.withValues(alpha: 0.2)),
     ),
     child: Padding(
-      padding: EdgeInsets.all(12.r),
+      padding: const EdgeInsets.all(12),
       child: Shimmer.fromColors(
         baseColor: Colors.grey.shade800,
         highlightColor: Colors.grey.shade600,
@@ -176,38 +181,38 @@ class OfficesIndicator extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
-              width: 80.w,
-              height: 12.h,
+              width: 80,
+              height: 12,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(4.r),
+                borderRadius: BorderRadius.circular(4),
               ),
             ),
             Container(
-              width: 65.r,
-              height: 65.r,
+              width: 65,
+              height: 65,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(10.r),
+                borderRadius: BorderRadius.circular(10),
               ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  width: 45.w,
-                  height: 14.h,
+                  width: 45,
+                  height: 14,
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(4.r),
+                    borderRadius: BorderRadius.circular(4),
                   ),
                 ),
                 Container(
-                  width: 45.w,
-                  height: 14.h,
+                  width: 45,
+                  height: 14,
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(4.r),
+                    borderRadius: BorderRadius.circular(4),
                   ),
                 ),
               ],

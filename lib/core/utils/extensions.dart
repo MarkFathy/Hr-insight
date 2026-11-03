@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 export 'context_extensions.dart';
+export 'responsive.dart';
 
 extension ImagePath on String {
   String get toPng => 'assets/images/$this.png';
@@ -24,8 +24,8 @@ extension ValidImageUrl on String? {
 }
 
 extension EmptyPadding on num {
-  SizedBox get ph => SizedBox(height: h);
-  SizedBox get pw => SizedBox(width: w);
+  SizedBox get ph => SizedBox(height: toDouble());
+  SizedBox get pw => SizedBox(width: toDouble());
 }
 
 extension FormattedRadius on num? {

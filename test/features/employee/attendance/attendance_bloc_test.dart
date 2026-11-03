@@ -73,15 +73,25 @@ void main() {
 
   group('SignEvent', () {
     const tSignEntity = SignEntity(status: 200, message: 'Signed successfully');
+    const tAttendance = AttendanceEntity(status: 200, message: 'ok', data: []);
 
-    test('emits [loading, signed] when sign succeeds', () async {
+    test('emits [loading, signed, loaded] when sign succeeds', () async {
       when(
-        () => mockSignUC.call(isAttend: any(named: 'isAttend')),
+        () => mockSignUC.call(
+          isAttend: any(named: 'isAttend'),
+          attendanceId: any(named: 'attendanceId'),
+          date: any(named: 'date'),
+        ),
       ).thenAnswer((_) async => const Right(tSignEntity));
+
+      when(
+        () => mockGetAttendanceUC.call(),
+      ).thenAnswer((_) async => const Right(tAttendance));
 
       final expected = [
         const AttendanceState.loading(),
         const AttendanceState.signed(message: 'Signed successfully'),
+        const AttendanceState.loaded(attendance: tAttendance),
       ];
 
       final expectation = expectLater(bloc.stream, emitsInOrder(expected));
@@ -90,8 +100,48 @@ void main() {
       await expectation;
     });
 
+    test(
+      'passes attendanceId and date on departure sign and refreshes attendance',
+      () async {
+        when(
+          () => mockSignUC.call(
+            isAttend: false,
+            attendanceId: 15,
+            date: '2026-11-03',
+          ),
+        ).thenAnswer((_) async => const Right(tSignEntity));
+
+        when(
+          () => mockGetAttendanceUC.call(),
+        ).thenAnswer((_) async => const Right(tAttendance));
+
+        final expected = [
+          const AttendanceState.loading(),
+          const AttendanceState.signed(message: 'Signed successfully'),
+          const AttendanceState.loaded(attendance: tAttendance),
+        ];
+
+        final expectation = expectLater(bloc.stream, emitsInOrder(expected));
+
+        bloc.add(
+          const AttendanceEvent.sign(
+            isAttend: false,
+            attendanceId: 15,
+            date: '2026-11-03',
+          ),
+        );
+        await expectation;
+      },
+    );
+
     test('emits [loading, error] when sign fails', () async {
-      when(() => mockSignUC.call(isAttend: any(named: 'isAttend'))).thenAnswer(
+      when(
+        () => mockSignUC.call(
+          isAttend: any(named: 'isAttend'),
+          attendanceId: any(named: 'attendanceId'),
+          date: any(named: 'date'),
+        ),
+      ).thenAnswer(
         (_) async => const Left(AppFailure.server(message: 'Failed to sign')),
       );
 

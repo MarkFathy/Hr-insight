@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/utils/connectivity_auto_restore_mixin.dart';
 import 'package:hr_app/core/utils/extensions.dart';
 import 'package:hr_app/features/home/presentation/home_screen.dart';
@@ -37,20 +36,22 @@ class _NavigationScreenState extends State<NavigationScreen>
           ],
         ),
         SafeArea(
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(24.w, 0, 24.w, 16.h),
+          child: ResponsiveContainer(
+            maxWidth: 500,
+            alignment: Alignment.bottomCenter,
+            padding: const EdgeInsets.fromLTRB(24, 0, 24, 18),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(24.r),
+              borderRadius: BorderRadius.circular(24),
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
                 child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 12.w,
-                    vertical: 8.h,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 10,
                   ),
                   decoration: BoxDecoration(
                     color: context.colors.surface.withValues(alpha: 0.88),
-                    borderRadius: BorderRadius.circular(24.r),
+                    borderRadius: BorderRadius.circular(24),
                     border: Border.all(
                       color: context.colors.primary.withValues(alpha: 0.2),
                     ),
@@ -109,17 +110,17 @@ class _NavItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) => InkWell(
     onTap: onTap,
-    borderRadius: BorderRadius.circular(18.r),
+    borderRadius: BorderRadius.circular(18),
     child: AnimatedContainer(
       duration: context.durations.normal,
       curve: Curves.easeInOutCubic,
       padding: EdgeInsets.symmetric(
-        horizontal: isSelected ? 20.w : 14.w,
-        vertical: 10.h,
+        horizontal: isSelected ? 22 : 16,
+        vertical: 11,
       ),
       decoration: BoxDecoration(
         color: isSelected ? context.colors.primary : Colors.transparent,
-        borderRadius: BorderRadius.circular(18.r),
+        borderRadius: BorderRadius.circular(18),
         boxShadow: isSelected
             ? [
                 BoxShadow(
@@ -136,7 +137,7 @@ class _NavItem extends StatelessWidget {
           Icon(
             isSelected ? selectedIcon : icon,
             color: isSelected ? Colors.black : context.colors.textSecondary,
-            size: 22.r,
+            size: 24,
           ),
           if (isSelected) ...[
             8.pw,
@@ -145,6 +146,7 @@ class _NavItem extends StatelessWidget {
               style: context.typography.labelMedium.copyWith(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
+                fontSize: 14,
               ),
             ),
           ],

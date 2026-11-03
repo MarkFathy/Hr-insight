@@ -120,11 +120,11 @@ return sign(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  getAttendance,TResult Function( bool isAttend)?  sign,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  getAttendance,TResult Function( bool isAttend,  int? attendanceId,  String? date)?  sign,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case GetAttendanceEvent() when getAttendance != null:
 return getAttendance();case SignEvent() when sign != null:
-return sign(_that.isAttend);case _:
+return sign(_that.isAttend,_that.attendanceId,_that.date);case _:
   return orElse();
 
 }
@@ -142,11 +142,11 @@ return sign(_that.isAttend);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  getAttendance,required TResult Function( bool isAttend)  sign,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  getAttendance,required TResult Function( bool isAttend,  int? attendanceId,  String? date)  sign,}) {final _that = this;
 switch (_that) {
 case GetAttendanceEvent():
 return getAttendance();case SignEvent():
-return sign(_that.isAttend);}
+return sign(_that.isAttend,_that.attendanceId,_that.date);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -160,11 +160,11 @@ return sign(_that.isAttend);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  getAttendance,TResult? Function( bool isAttend)?  sign,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  getAttendance,TResult? Function( bool isAttend,  int? attendanceId,  String? date)?  sign,}) {final _that = this;
 switch (_that) {
 case GetAttendanceEvent() when getAttendance != null:
 return getAttendance();case SignEvent() when sign != null:
-return sign(_that.isAttend);case _:
+return sign(_that.isAttend,_that.attendanceId,_that.date);case _:
   return null;
 
 }
@@ -208,10 +208,12 @@ String toString() {
 
 
 class SignEvent implements AttendanceEvent {
-  const SignEvent({required this.isAttend});
+  const SignEvent({required this.isAttend, this.attendanceId, this.date});
   
 
  final  bool isAttend;
+ final  int? attendanceId;
+ final  String? date;
 
 /// Create a copy of AttendanceEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -223,18 +225,18 @@ $SignEventCopyWith<SignEvent> get copyWith => _$SignEventCopyWithImpl<SignEvent>
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is SignEvent&&(identical(other.isAttend, isAttend) || other.isAttend == isAttend));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is SignEvent&&(identical(other.isAttend, isAttend) || other.isAttend == isAttend)&&(identical(other.attendanceId, attendanceId) || other.attendanceId == attendanceId)&&(identical(other.date, date) || other.date == date));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,isAttend);
+    return Object.hash(runtimeType,isAttend,attendanceId,date);
 }
 
 @override
 String toString() {
-    return 'AttendanceEvent.sign(isAttend: $isAttend)';
+    return 'AttendanceEvent.sign(isAttend: $isAttend, attendanceId: $attendanceId, date: $date)';
 }
 
 
@@ -245,7 +247,7 @@ abstract mixin class $SignEventCopyWith<$Res> implements $AttendanceEventCopyWit
   factory $SignEventCopyWith(SignEvent value, $Res Function(SignEvent) _then) = _$SignEventCopyWithImpl;
 @useResult
 $Res call({
- bool isAttend
+ bool isAttend, int? attendanceId, String? date
 });
 
 
@@ -262,10 +264,12 @@ class _$SignEventCopyWithImpl<$Res>
 
 /// Create a copy of AttendanceEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? isAttend = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? isAttend = null,Object? attendanceId = freezed,Object? date = freezed,}) {
   return _then(SignEvent(
 isAttend: null == isAttend ? _self.isAttend : isAttend // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,attendanceId: freezed == attendanceId ? _self.attendanceId : attendanceId // ignore: cast_nullable_to_non_nullable
+as int?,date: freezed == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

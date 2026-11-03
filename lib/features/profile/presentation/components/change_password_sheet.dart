@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/di/service_locator.dart';
 import 'package:hr_app/core/utils/connectivity_auto_restore_mixin.dart';
 import 'package:hr_app/core/utils/extensions.dart';
@@ -42,10 +41,10 @@ class _ChangePasswordSheetState extends State<ChangePasswordSheet>
   Widget build(BuildContext context) => Container(
     decoration: BoxDecoration(
       color: context.colors.surface,
-      borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
     ),
     padding: EdgeInsets.only(
-      bottom: MediaQuery.viewInsetsOf(context).bottom + 20.r,
+      bottom: MediaQuery.viewInsetsOf(context).bottom + 20,
     ),
     child: BlocProvider.value(
       value: _bloc,
@@ -64,7 +63,7 @@ class _ChangePasswordSheetState extends State<ChangePasswordSheet>
             key: bloc.formKey,
             child: SingleChildScrollView(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.r),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -73,11 +72,11 @@ class _ChangePasswordSheetState extends State<ChangePasswordSheet>
                     // Drag handle
                     Center(
                       child: Container(
-                        width: 40.r,
-                        height: 4.r,
+                        width: 40,
+                        height: 4,
                         decoration: BoxDecoration(
                           color: Colors.white.withValues(alpha: 0.2),
-                          borderRadius: BorderRadius.circular(2.r),
+                          borderRadius: BorderRadius.circular(2),
                         ),
                       ),
                     ),
@@ -85,7 +84,7 @@ class _ChangePasswordSheetState extends State<ChangePasswordSheet>
                     Row(
                       children: [
                         Container(
-                          padding: EdgeInsets.all(8.r),
+                          padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             color: context.colors.primary.withValues(
                               alpha: 0.15,
@@ -95,7 +94,7 @@ class _ChangePasswordSheetState extends State<ChangePasswordSheet>
                           child: Icon(
                             Icons.lock_reset_rounded,
                             color: context.colors.primary,
-                            size: 20.r,
+                            size: 20,
                           ),
                         ),
                         10.pw,
@@ -152,7 +151,7 @@ class _ChangePasswordSheetState extends State<ChangePasswordSheet>
                     if (state is AuthFailureState) ...[
                       12.ph,
                       Container(
-                        padding: EdgeInsets.all(10.r),
+                        padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           color: context.colors.error.withValues(alpha: 0.12),
                           borderRadius: context.radius.smBorder,
@@ -164,7 +163,7 @@ class _ChangePasswordSheetState extends State<ChangePasswordSheet>
                           state.error,
                           style: TextStyle(
                             color: context.colors.error,
-                            fontSize: 12.r,
+                            fontSize: 12,
                           ),
                         ),
                       ),

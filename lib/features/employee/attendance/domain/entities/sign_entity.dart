@@ -8,7 +8,7 @@ part 'sign_entity.g.dart';
 abstract class SignEntity with _$SignEntity {
   const SignEntity._();
 
-  const factory SignEntity({int? status, String? message, String? data}) =
+  const factory SignEntity({int? status, String? message, dynamic data}) =
       _SignEntity;
 
   factory SignEntity.fromJson(Map<String, dynamic> json) =>

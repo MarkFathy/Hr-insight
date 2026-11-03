@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/constants/app_images.dart';
 import 'package:hr_app/core/utils/extensions.dart';
 import 'package:hr_app/core/utils/navigation_helper.dart';
@@ -11,7 +10,7 @@ class ManagerGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: EdgeInsets.symmetric(horizontal: 16.w),
+    padding: const EdgeInsets.symmetric(horizontal: 16),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -33,7 +32,7 @@ class ManagerGrid extends StatelessWidget {
                 ),
               ),
             ),
-            12.pw,
+            14.pw,
             Expanded(
               child: GridItem(
                 asset: AppImages.leaves,
@@ -47,7 +46,7 @@ class ManagerGrid extends StatelessWidget {
             ),
           ],
         ),
-        16.ph,
+        20.ph,
         // Section 2: Organization & Company Structure
         const AppSectionHeader(
           title: 'إدارة الهيكل المؤسسي',
@@ -64,7 +63,7 @@ class ManagerGrid extends StatelessWidget {
                     NavigationHelper.nextScreenNamed<void>(context, '/offices'),
               ),
             ),
-            12.pw,
+            14.pw,
             Expanded(
               child: GridItem(
                 asset: AppImages.employee,
@@ -78,17 +77,17 @@ class ManagerGrid extends StatelessWidget {
             ),
           ],
         ),
-        12.ph,
+        16.ph,
         // Full Width Card for Departments & Jobs
         InkWell(
           onTap: () =>
               NavigationHelper.nextScreenNamed<void>(context, '/departments'),
-          borderRadius: BorderRadius.circular(18.r),
+          borderRadius: BorderRadius.circular(20),
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
             decoration: BoxDecoration(
               color: context.colors.surface,
-              borderRadius: BorderRadius.circular(18.r),
+              borderRadius: BorderRadius.circular(20),
               border: Border.all(
                 color: context.colors.primary.withValues(alpha: 0.15),
               ),
@@ -103,12 +102,12 @@ class ManagerGrid extends StatelessWidget {
             child: Row(
               children: [
                 Container(
-                  width: 44.r,
-                  height: 44.r,
-                  padding: EdgeInsets.all(6.r),
+                  width: 52,
+                  height: 52,
+                  padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: context.colors.surfaceContainer,
-                    borderRadius: BorderRadius.circular(12.r),
+                    borderRadius: BorderRadius.circular(14),
                     border: Border.all(
                       color: context.colors.primary.withValues(alpha: 0.2),
                     ),
@@ -119,24 +118,25 @@ class ManagerGrid extends StatelessWidget {
                     cacheHeight: 100,
                   ),
                 ),
-                14.pw,
+                16.pw,
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'الأقسام والوظائف والمسميات',
-                        style: context.typography.titleSmall.copyWith(
+                        style: context.typography.titleMedium.copyWith(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
-                          fontSize: 13.sp,
+                          fontSize: 16,
                         ),
                       ),
-                      4.ph,
+                      6.ph,
                       Text(
                         'إدارة الهيكل الوظيفي وتعيين المسميات',
-                        style: context.typography.caption.copyWith(
+                        style: context.typography.bodySmall.copyWith(
                           color: context.colors.textSecondary,
+                          fontSize: 13,
                         ),
                       ),
                     ],
@@ -145,7 +145,7 @@ class ManagerGrid extends StatelessWidget {
                 Icon(
                   Icons.arrow_back_ios_new_rounded,
                   color: context.colors.primary,
-                  size: 16.r,
+                  size: 18,
                 ),
               ],
             ),

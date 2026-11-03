@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hr_app/core/service/internet_connection_service.dart';
 import 'package:hr_app/core/widgets/internet_connection_wrapper.dart';
@@ -63,15 +62,12 @@ class FakeControllableConnectionService implements IInternetConnectionService {
 Widget createTestWidget({
   required IInternetConnectionService service,
   Widget child = const Text('App Content', key: Key('child_content')),
-}) => ScreenUtilInit(
-  designSize: const Size(375, 812),
-  builder: (context, _) => MaterialApp(
-    localizationsDelegates: AppLocalizations.localizationsDelegates,
-    supportedLocales: AppLocalizations.supportedLocales,
-    locale: const Locale('en'),
-    home: Scaffold(
-      body: InternetConnectionWrapper(connectionService: service, child: child),
-    ),
+}) => MaterialApp(
+  localizationsDelegates: AppLocalizations.localizationsDelegates,
+  supportedLocales: AppLocalizations.supportedLocales,
+  locale: const Locale('en'),
+  home: Scaffold(
+    body: InternetConnectionWrapper(connectionService: service, child: child),
   ),
 );
 

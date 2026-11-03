@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/di/service_locator.dart';
 import 'package:hr_app/core/network/dio_error_handler.dart';
 import 'package:hr_app/core/service/internet_connection_service.dart';
@@ -42,21 +41,21 @@ void showBar(
       elevation: 6,
       behavior: SnackBarBehavior.floating,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(14.r),
+        borderRadius: BorderRadius.circular(14),
         side: BorderSide(
           color: isError || isSuccess
               ? Colors.white24
               : context.colors.primary.withValues(alpha: 0.3),
         ),
       ),
-      margin: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+      margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       content: Row(
         children: [
           Icon(
             icon,
             color: isError || isSuccess ? Colors.white : context.colors.primary,
-            size: 20.r,
+            size: 20,
           ),
           12.pw,
           Expanded(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/constants/app_images.dart';
 import 'package:hr_app/core/utils/extensions.dart';
 import 'package:hr_app/core/utils/navigation_helper.dart';
@@ -11,7 +10,7 @@ class EmployeeGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: EdgeInsets.symmetric(horizontal: 16.w),
+    padding: const EdgeInsets.symmetric(horizontal: 16),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -21,9 +20,9 @@ class EmployeeGrid extends StatelessWidget {
             context: context,
             builder: (context) => const LeaveForm(),
           ),
-          borderRadius: BorderRadius.circular(18.r),
+          borderRadius: BorderRadius.circular(20),
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
@@ -33,7 +32,7 @@ class EmployeeGrid extends StatelessWidget {
                 begin: Alignment.topRight,
                 end: Alignment.bottomLeft,
               ),
-              borderRadius: BorderRadius.circular(18.r),
+              borderRadius: BorderRadius.circular(20),
               border: Border.all(
                 color: context.colors.primary.withValues(alpha: 0.25),
               ),
@@ -48,11 +47,11 @@ class EmployeeGrid extends StatelessWidget {
             child: Row(
               children: [
                 Container(
-                  width: 48.r,
-                  height: 48.r,
+                  width: 56,
+                  height: 56,
                   decoration: BoxDecoration(
                     color: context.colors.primary.withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(14.r),
+                    borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color: context.colors.primary.withValues(alpha: 0.3),
                     ),
@@ -60,27 +59,29 @@ class EmployeeGrid extends StatelessWidget {
                   child: Icon(
                     Icons.add_circle_outline_rounded,
                     color: context.colors.primary,
-                    size: 26.r,
+                    size: 28,
                   ),
                 ),
-                14.pw,
+                16.pw,
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'تقديم طلب إجازة جديد',
-                        style: context.typography.titleSmall.copyWith(
+                        style: context.typography.titleMedium.copyWith(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
-                          fontSize: 14.sp,
+                          fontSize: 16.5,
                         ),
                       ),
-                      4.ph,
+                      6.ph,
                       Text(
                         'إرسال طلب إجازة اعتيادية أو عارضة للإدارة',
-                        style: context.typography.caption.copyWith(
+                        style: context.typography.bodySmall.copyWith(
                           color: context.colors.textSecondary,
+                          fontSize: 13,
+                          height: 1.35,
                         ),
                       ),
                     ],
@@ -89,13 +90,13 @@ class EmployeeGrid extends StatelessWidget {
                 Icon(
                   Icons.arrow_back_ios_new_rounded,
                   color: context.colors.primary,
-                  size: 16.r,
+                  size: 18,
                 ),
               ],
             ),
           ),
         ),
-        16.ph,
+        22.ph,
         // 2-Column Balanced Grid for Records
         Row(
           children: [
@@ -110,7 +111,7 @@ class EmployeeGrid extends StatelessWidget {
                 ),
               ),
             ),
-            12.pw,
+            14.pw,
             Expanded(
               child: GridItem(
                 asset: AppImages.leaves,

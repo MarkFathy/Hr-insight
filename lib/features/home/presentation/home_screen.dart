@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/constants/app_images.dart';
 import 'package:hr_app/core/di/service_locator.dart';
 import 'package:hr_app/core/utils/connectivity_auto_restore_mixin.dart';
@@ -64,42 +63,48 @@ class _HomeScreenState extends State<HomeScreen>
             },
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(16.w, 10.h, 16.w, 6.h),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        const Expanded(child: AppTitle()),
-                        12.pw,
-                        Padding(
-                          padding: EdgeInsets.all(4.r),
-                          child: Image.asset(AppImages.logo, height: 76.r),
-                        ),
-                      ],
+              child: ResponsiveContainer(
+                maxWidth: 680,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          const Expanded(child: AppTitle()),
+                          14.pw,
+                          Padding(
+                            padding: const EdgeInsets.all(4),
+                            child: Image.asset(AppImages.logo, height: 76),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Divider(
-                      color: ctx.colors.primary.withValues(alpha: 0.5),
-                      height: 14.h,
-                      thickness: 1,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Divider(
+                        color: ctx.colors.primary.withValues(alpha: 0.5),
+                        height: 20,
+                        thickness: 1,
+                      ),
                     ),
-                  ),
-                  if (!isEmployee) const ManagerGrid(),
-                  if (isEmployee) ...[
-                    14.ph,
-                    const SignWidget(),
-                    16.ph,
-                    const EmployeeGrid(),
+                    if (!isEmployee) ...[
+                      14.ph,
+                      const ManagerGrid(),
+                    ],
+                    if (isEmployee) ...[
+                      20.ph,
+                      const SignWidget(),
+                      24.ph,
+                      const EmployeeGrid(),
+                    ],
+                    // Spacing to clear floating navigation bar
+                    120.ph,
                   ],
-                  // Spacing to clear floating navigation bar
-                  120.ph,
-                ],
+                ),
               ),
             ),
           ),
@@ -110,7 +115,6 @@ class _HomeScreenState extends State<HomeScreen>
     if (isEmployee && _attendanceBloc != null) {
       return BlocProvider.value(value: _attendanceBloc!, child: content);
     }
-
     return content;
   }
 }

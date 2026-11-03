@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/utils/extensions.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -13,11 +12,11 @@ class ListIndicator extends StatelessWidget {
     final highlightColor = colors.primary.withValues(alpha: 0.18);
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
       child: Container(
         decoration: BoxDecoration(
           color: colors.surface,
-          borderRadius: BorderRadius.circular(16.r),
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(color: colors.primary.withValues(alpha: 0.18)),
           boxShadow: [
             BoxShadow(
@@ -27,7 +26,7 @@ class ListIndicator extends StatelessWidget {
             ),
           ],
         ),
-        padding: EdgeInsets.all(14.r),
+        padding: const EdgeInsets.all(14),
         child: Shimmer.fromColors(
           baseColor: baseColor,
           highlightColor: highlightColor,
@@ -41,30 +40,30 @@ class ListIndicator extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                        width: 28.r,
-                        height: 28.r,
+                        width: 28,
+                        height: 28,
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(10.r),
+                          borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                       8.pw,
                       Container(
-                        width: 85.w,
-                        height: 14.h,
+                        width: 85,
+                        height: 14,
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(6.r),
+                          borderRadius: BorderRadius.circular(6),
                         ),
                       ),
                     ],
                   ),
                   Container(
-                    width: 76.w,
-                    height: 24.h,
+                    width: 76,
+                    height: 24,
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(20.r),
+                      borderRadius: BorderRadius.circular(20),
                     ),
                   ),
                 ],
@@ -72,10 +71,10 @@ class ListIndicator extends StatelessWidget {
               12.ph,
               // Duration strip
               Container(
-                height: 38.h,
+                height: 38,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(12.r),
+                  borderRadius: BorderRadius.circular(12),
                 ),
               ),
             ],

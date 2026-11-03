@@ -96,27 +96,45 @@ class _ManagerMonthlySignaturesCalendarState
             state.attendance?.data != null) {
           for (final record in state.attendance!.data!) {
             if (record.date != null) {
-              attendanceMap[record.date!] = _ManagerDayEntry(
-                data: record,
-                formattedAttendanceTime:
-                    record.attendanceTime != null
-                        ? (AttendanceDataEntity.formatServerTime(
-                                time: record.attendanceTime,
-                                date: record.date,
-                                isoTimestamp: record.createdAt,
-                              ) ??
-                              record.attendanceTime)
-                        : null,
-                formattedDepartureTime:
-                    record.departureTime != null
-                        ? (AttendanceDataEntity.formatServerTime(
-                                time: record.departureTime,
-                                date: record.date,
-                                isoTimestamp: record.updatedAt,
-                              ) ??
-                              record.departureTime)
-                        : null,
-              );
+              final attTime = record.attendanceTime != null
+                  ? (AttendanceDataEntity.formatServerTime(
+                          time: record.attendanceTime,
+                          date: record.date,
+                          isoTimestamp: record.createdAt,
+                        ) ??
+                        record.attendanceTime)
+                  : null;
+              final depTime = record.departureTime != null
+                  ? (AttendanceDataEntity.formatServerTime(
+                          time: record.departureTime,
+                          date: record.date,
+                          isoTimestamp: record.updatedAt,
+                        ) ??
+                        record.departureTime)
+                  : null;
+
+              final existing = attendanceMap[record.date!];
+              if (existing == null) {
+                attendanceMap[record.date!] = _ManagerDayEntry(
+                  data: record,
+                  formattedAttendanceTime: attTime,
+                  formattedDepartureTime: depTime,
+                );
+              } else {
+                final mergedAtt = (attTime != null && attTime.isNotEmpty)
+                    ? attTime
+                    : existing.formattedAttendanceTime;
+                final mergedDep = (depTime != null && depTime.isNotEmpty)
+                    ? depTime
+                    : existing.formattedDepartureTime;
+                attendanceMap[record.date!] = _ManagerDayEntry(
+                  data: (depTime != null && depTime.isNotEmpty)
+                      ? record
+                      : existing.data,
+                  formattedAttendanceTime: mergedAtt,
+                  formattedDepartureTime: mergedDep,
+                );
+              }
             }
           }
         }

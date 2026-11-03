@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/di/service_locator.dart';
 import 'package:hr_app/core/utils/connectivity_auto_restore_mixin.dart';
 import 'package:hr_app/core/utils/extensions.dart';
@@ -79,7 +78,7 @@ class _DepartmentFormScreenState extends State<DepartmentFormScreen>
           ),
           bottomNavigationBar: SafeArea(
             child: Padding(
-              padding: EdgeInsets.fromLTRB(16.r, 8.r, 16.r, 16.r),
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
               child: AppButton(
                 title: isEdit ? 'حفظ التعديلات' : 'إضافة القسم',
                 isLoading: state is DepartmentsLoadingState,
@@ -99,17 +98,17 @@ class _DepartmentFormScreenState extends State<DepartmentFormScreen>
           ),
           body: SafeArea(
             child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 16.r, vertical: 12.r),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: Form(
                 key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Container(
-                      padding: EdgeInsets.all(16.r),
+                      padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         color: colors.secondary.withValues(alpha: 0.5),
-                        borderRadius: BorderRadius.circular(16.r),
+                        borderRadius: BorderRadius.circular(16),
                         border: Border.all(
                           color: colors.primary.withValues(alpha: 0.25),
                         ),
@@ -117,8 +116,8 @@ class _DepartmentFormScreenState extends State<DepartmentFormScreen>
                       child: Row(
                         children: [
                           Container(
-                            width: 48.r,
-                            height: 48.r,
+                            width: 48,
+                            height: 48,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: colors.primary.withValues(alpha: 0.15),
@@ -129,7 +128,7 @@ class _DepartmentFormScreenState extends State<DepartmentFormScreen>
                             child: Icon(
                               Icons.corporate_fare_rounded,
                               color: colors.primary,
-                              size: 26.r,
+                              size: 26,
                             ),
                           ),
                           14.pw,
@@ -151,7 +150,7 @@ class _DepartmentFormScreenState extends State<DepartmentFormScreen>
                                   'أدخل اسم القسم لتنظيم الهيكل الإداري والوظائف التابعة له',
                                   style: TextStyle(
                                     color: Colors.white.withValues(alpha: 0.6),
-                                    fontSize: 12.r,
+                                    fontSize: 12,
                                   ),
                                 ),
                               ],

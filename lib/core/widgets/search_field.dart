@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/utils/extensions.dart';
 
 class SearchField extends StatefulWidget {
@@ -53,11 +52,11 @@ class _SearchFieldState extends State<SearchField> {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     child: DecoratedBox(
       decoration: BoxDecoration(
         color: context.colors.surface,
-        borderRadius: BorderRadius.circular(14.r),
+        borderRadius: BorderRadius.circular(14),
         border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
       ),
       child: TextField(
@@ -74,13 +73,13 @@ class _SearchFieldState extends State<SearchField> {
           prefixIcon: Icon(
             Icons.search_rounded,
             color: context.colors.primary,
-            size: 22.r,
+            size: 22,
           ),
           suffixIcon: _hasText
               ? IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.close_rounded,
-                    size: 18.r,
+                    size: 18,
                     color: Colors.white70,
                   ),
                   onPressed: () {
@@ -93,9 +92,9 @@ class _SearchFieldState extends State<SearchField> {
           border: InputBorder.none,
           enabledBorder: InputBorder.none,
           focusedBorder: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(
-            horizontal: 16.w,
-            vertical: 12.h,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 12,
           ),
         ),
       ),

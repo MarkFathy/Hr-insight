@@ -77,6 +77,13 @@ abstract class AttendanceDataEntity with _$AttendanceDataEntity {
     String pattern = 'hh:mm a',
   }) {
     if (time == null || time.trim().isEmpty) return null;
+    final trimmed = time.trim();
+    if (trimmed.contains('T')) {
+      final parsed = DateTime.tryParse(trimmed);
+      if (parsed != null) {
+        return intl.DateFormat(pattern, 'en').format(parsed.toLocal());
+      }
+    }
     try {
       final effectiveDate =
           date ?? intl.DateFormat('yyyy-MM-dd', 'en').format(DateTime.now());

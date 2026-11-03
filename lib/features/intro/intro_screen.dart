@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/constants/app_images.dart';
 import 'package:hr_app/core/utils/connectivity_auto_restore_mixin.dart';
 import 'package:hr_app/core/utils/extensions.dart';
@@ -73,38 +72,43 @@ class IntoPage extends StatelessWidget {
   final bool firstPage;
 
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: EdgeInsets.symmetric(horizontal: 20.w),
+  Widget build(BuildContext context) => ResponsiveContainer(
+    maxWidth: 520,
+    alignment: Alignment.center,
+    padding: const EdgeInsets.symmetric(horizontal: 20),
     child: Column(
       children: [
         const Spacer(),
-        LottieBuilder.asset(image, height: 300.h),
+        Flexible(
+          flex: 4,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxHeight: 280),
+            child: LottieBuilder.asset(image),
+          ),
+        ),
+        16.ph,
         Text(
           title,
-          style: TextStyle(
-            fontSize: 22.sp,
+          textAlign: TextAlign.center,
+          style: context.typography.h2.copyWith(
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
         ),
-        SizedBox(height: 12.h),
+        12.ph,
         Text(
           sub,
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 14.sp, color: Colors.white70),
+          style: context.typography.body.copyWith(color: Colors.white70),
         ),
         const Spacer(),
         if (firstPage)
           Padding(
-            padding: EdgeInsets.only(bottom: 30.h),
+            padding: const EdgeInsets.only(bottom: 24),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                LottieBuilder.asset(
-                  AppImages.lSlideUp,
-                  height: 36.r,
-                  width: 36.r,
-                ),
+                LottieBuilder.asset(AppImages.lSlideUp, height: 36, width: 36),
                 8.pw,
                 Text(
                   'اسحب للأعلى',
@@ -118,7 +122,7 @@ class IntoPage extends StatelessWidget {
           ),
         if (lastPage)
           Padding(
-            padding: EdgeInsets.only(bottom: 30.h),
+            padding: const EdgeInsets.only(bottom: 24),
             child: AppButton(
               title: 'ابدأ الآن',
               onTap: () {

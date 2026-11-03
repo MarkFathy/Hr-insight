@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/di/service_locator.dart';
 import 'package:hr_app/core/utils/connectivity_auto_restore_mixin.dart';
 import 'package:hr_app/core/utils/extensions.dart';
@@ -146,11 +145,11 @@ class _OfficeDetailsScreenState extends State<OfficeDetailsScreen>
                         // Map Section
                         if (currentLat != null && currentLng != null)
                           Padding(
-                            padding: EdgeInsets.all(12.r),
+                            padding: const EdgeInsets.all(12),
                             child: Container(
                               height: size.height * 0.32,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20.r),
+                                borderRadius: BorderRadius.circular(20),
                                 border: Border.all(
                                   color: context.colors.primary.withValues(
                                     alpha: 0.3,
@@ -175,7 +174,7 @@ class _OfficeDetailsScreenState extends State<OfficeDetailsScreen>
 
                         // Quick Stats Row
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 12.r),
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
                           child: Row(
                             children: [
                               Expanded(
@@ -203,12 +202,12 @@ class _OfficeDetailsScreenState extends State<OfficeDetailsScreen>
 
                         // Section Title
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.r),
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Row(
                             children: [
                               Icon(
                                 Icons.groups_rounded,
-                                size: 20.r,
+                                size: 20,
                                 color: context.colors.primary,
                               ),
                               8.pw,
@@ -217,27 +216,27 @@ class _OfficeDetailsScreenState extends State<OfficeDetailsScreen>
                                 style: context.typography.titleMedium.copyWith(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
-                                  fontSize: 15.r,
+                                  fontSize: 15,
                                 ),
                               ),
                               const Spacer(),
                               Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 8.r,
-                                  vertical: 2.r,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 2,
                                 ),
                                 decoration: BoxDecoration(
                                   color: context.colors.primary.withValues(
                                     alpha: 0.15,
                                   ),
-                                  borderRadius: BorderRadius.circular(10.r),
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Text(
                                   '$currentCount',
                                   style: TextStyle(
                                     color: context.colors.primary,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 12.r,
+                                    fontSize: 12,
                                   ),
                                 ),
                               ),
@@ -268,13 +267,13 @@ class _OfficeDetailsScreenState extends State<OfficeDetailsScreen>
                           )
                         else if (employees.isEmpty)
                           Padding(
-                            padding: EdgeInsets.symmetric(vertical: 36.r),
+                            padding: const EdgeInsets.symmetric(vertical: 36),
                             child: Center(
                               child: Column(
                                 children: [
                                   Icon(
                                     Icons.person_off_outlined,
-                                    size: 38.r,
+                                    size: 38,
                                     color: Colors.white.withValues(alpha: 0.4),
                                   ),
                                   8.ph,
@@ -285,7 +284,7 @@ class _OfficeDetailsScreenState extends State<OfficeDetailsScreen>
                                           color: Colors.white.withValues(
                                             alpha: 0.5,
                                           ),
-                                          fontSize: 12.r,
+                                          fontSize: 12,
                                         ),
                                   ),
                                 ],
@@ -294,16 +293,16 @@ class _OfficeDetailsScreenState extends State<OfficeDetailsScreen>
                           )
                         else
                           Padding(
-                            padding: EdgeInsets.fromLTRB(12.r, 0, 12.r, 20.r),
+                            padding: const EdgeInsets.fromLTRB(12, 0, 12, 20),
                             child: GridView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
-                                    childAspectRatio: 1.05.r,
-                                    mainAxisSpacing: 10.r,
-                                    crossAxisSpacing: 10.r,
+                                    childAspectRatio: 1.05,
+                                    mainAxisSpacing: 10,
+                                    crossAxisSpacing: 10,
                                   ),
                               itemCount: employees.length,
                               itemBuilder: (context, index) => EmployeeCard(
@@ -335,20 +334,20 @@ class _OfficeDetailsScreenState extends State<OfficeDetailsScreen>
         builder: (ctx) => AlertDialog(
           backgroundColor: ctx.colors.surface,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18.r),
+            borderRadius: BorderRadius.circular(18),
             side: BorderSide(color: Colors.red.withValues(alpha: 0.3)),
           ),
           title: Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.delete_outline_rounded,
                 color: Colors.redAccent,
-                size: 24.r,
+                size: 24,
               ),
               8.pw,
-              Text(
+              const Text(
                 'تأكيد حذف المكتب',
-                style: TextStyle(fontSize: 15.r, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -356,7 +355,7 @@ class _OfficeDetailsScreenState extends State<OfficeDetailsScreen>
             'هل أنت متأكد من حذف فرع "${officeName ?? widget.office.name}" نهائياً؟',
             style: TextStyle(
               color: Colors.white.withValues(alpha: 0.8),
-              fontSize: 13.r,
+              fontSize: 13,
             ),
           ),
           actions: [
@@ -372,7 +371,7 @@ class _OfficeDetailsScreenState extends State<OfficeDetailsScreen>
                 backgroundColor: Colors.red.shade700,
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.r),
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
               onPressed: () {
@@ -403,21 +402,21 @@ class _OfficeInfoTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-    padding: EdgeInsets.all(12.r),
+    padding: const EdgeInsets.all(12),
     decoration: BoxDecoration(
       color: context.colors.surface,
-      borderRadius: BorderRadius.circular(14.r),
+      borderRadius: BorderRadius.circular(14),
       border: Border.all(color: color.withValues(alpha: 0.25)),
     ),
     child: Row(
       children: [
         Container(
-          padding: EdgeInsets.all(8.r),
+          padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: color.withValues(alpha: 0.12),
             shape: BoxShape.circle,
           ),
-          child: Icon(icon, size: 20.r, color: color),
+          child: Icon(icon, size: 20, color: color),
         ),
         10.pw,
         Expanded(
@@ -428,7 +427,7 @@ class _OfficeInfoTile extends StatelessWidget {
                 title,
                 style: TextStyle(
                   color: Colors.white.withValues(alpha: 0.6),
-                  fontSize: 10.r,
+                  fontSize: 10,
                 ),
               ),
               2.ph,

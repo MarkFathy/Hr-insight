@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/di/service_locator.dart';
 import 'package:hr_app/core/network/dio_error_handler.dart';
 import 'package:hr_app/core/service/internet_connection_service.dart';
@@ -66,13 +65,13 @@ class AppErrorState extends StatelessWidget {
 
     return Center(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
         child: Container(
-          constraints: BoxConstraints(maxWidth: 340.w),
-          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 28.h),
+          constraints: const BoxConstraints(maxWidth: 380),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 28),
           decoration: BoxDecoration(
             color: context.colors.surface,
-            borderRadius: BorderRadius.circular(24.r),
+            borderRadius: BorderRadius.circular(24),
             border: Border.all(
               color: accentColor.withValues(alpha: 0.22),
               width: 1.2,
@@ -94,16 +93,16 @@ class AppErrorState extends StatelessWidget {
                 clipBehavior: Clip.none,
                 children: [
                   Container(
-                    width: 96.r,
-                    height: 96.r,
+                    width: 96,
+                    height: 96,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: accentColor.withValues(alpha: 0.08),
                     ),
                   ),
                   Container(
-                    width: 72.r,
-                    height: 72.r,
+                    width: 72,
+                    height: 72,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: accentColor.withValues(alpha: 0.16),
@@ -112,14 +111,14 @@ class AppErrorState extends StatelessWidget {
                         width: 1.5,
                       ),
                     ),
-                    child: Icon(mainIcon, size: 34.r, color: accentColor),
+                    child: Icon(mainIcon, size: 34, color: accentColor),
                   ),
                   if (isOffline)
                     Positioned(
-                      bottom: 4.r,
-                      right: 4.r,
+                      bottom: 4,
+                      right: 4,
                       child: Container(
-                        padding: EdgeInsets.all(5.r),
+                        padding: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
                           color: context.colors.surface,
                           shape: BoxShape.circle,
@@ -129,7 +128,7 @@ class AppErrorState extends StatelessWidget {
                         ),
                         child: Icon(
                           Icons.cloud_off_rounded,
-                          size: 14.r,
+                          size: 14,
                           color: accentColor,
                         ),
                       ),
@@ -139,20 +138,20 @@ class AppErrorState extends StatelessWidget {
               18.ph,
               if (isOffline) ...[
                 Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 12.w,
-                    vertical: 4.h,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 4,
                   ),
                   decoration: BoxDecoration(
                     color: accentColor.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(20.r),
+                    borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
                     isTimeout ? 'انتهت مهلة الاتصال' : 'غير متصل بالشبكة',
                     style: context.typography.labelSmall.copyWith(
                       color: accentColor,
                       fontWeight: FontWeight.bold,
-                      fontSize: 11.sp,
+                      fontSize: 11,
                     ),
                   ),
                 ),
@@ -164,7 +163,7 @@ class AppErrorState extends StatelessWidget {
                 style: context.typography.titleLarge.copyWith(
                   color: context.colors.textPrimary,
                   fontWeight: FontWeight.bold,
-                  fontSize: 17.sp,
+                  fontSize: 17,
                 ),
               ),
               8.ph,
@@ -174,7 +173,7 @@ class AppErrorState extends StatelessWidget {
                 style: context.typography.bodySmall.copyWith(
                   color: context.colors.textSecondary,
                   height: 1.5,
-                  fontSize: 13.sp,
+                  fontSize: 13,
                 ),
               ),
               if (currentRetry != null) ...[

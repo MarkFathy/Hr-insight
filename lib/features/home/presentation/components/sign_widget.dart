@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/utils/extensions.dart';
 import 'package:hr_app/core/widgets/animated_switch.dart';
 import 'package:hr_app/core/widgets/app_snack_bar.dart';
@@ -25,7 +24,6 @@ class SignWidget extends StatelessWidget {
     listener: (context, state) {
       if (state is AttendanceSignedState) {
         showBar(state.message, context, isSuccess: true);
-        context.read<AttendanceBloc>().add(const GetAttendanceEvent());
       }
       if (state is AttendanceErrorState) {
         showBar(state.message, context, isError: true);
@@ -36,21 +34,55 @@ class SignWidget extends StatelessWidget {
       final now = DateTime.now();
       final todayStr = _dateFormatter.format(now);
       final attendanceList = bloc.attendance?.data;
+
+      final todayRecords =
+          attendanceList?.where((record) => record.date == todayStr).toList() ??
+          [];
+
       AttendanceDataEntity? todayRecord;
-      if (attendanceList != null) {
-        for (final record in attendanceList) {
-          if (record.date == todayStr) {
-            todayRecord = record;
+      if (todayRecords.isNotEmpty) {
+        AttendanceDataEntity? signedOutRecord;
+        for (final r in todayRecords) {
+          final dep = r.departureTime?.trim();
+          if (dep != null &&
+              dep.isNotEmpty &&
+              dep != 'null' &&
+              dep != '00:00:00') {
+            signedOutRecord = r;
             break;
           }
+        }
+
+        if (signedOutRecord != null) {
+          AttendanceDataEntity? recordWithAttendance;
+          for (final r in todayRecords) {
+            final att = r.attendanceTime?.trim();
+            if (att != null && att.isNotEmpty && att != 'null') {
+              recordWithAttendance = r;
+              break;
+            }
+          }
+
+          todayRecord = signedOutRecord.copyWith(
+            attendanceTime:
+                signedOutRecord.attendanceTime ??
+                recordWithAttendance?.attendanceTime,
+          );
+        } else {
+          todayRecord = todayRecords.last;
         }
       }
 
       final isAttended = todayRecord != null;
-      final isSignedOut = todayRecord?.departureTime != null;
+      final depTimeStr = todayRecord?.departureTime?.trim();
+      final isSignedOut =
+          depTimeStr != null &&
+          depTimeStr.isNotEmpty &&
+          depTimeStr != 'null' &&
+          depTimeStr != '00:00:00';
 
       return Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
@@ -62,26 +94,26 @@ class SignWidget extends StatelessWidget {
                   Container(
                     decoration: BoxDecoration(
                       color: context.colors.primary,
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(16.r),
-                        bottomRight: Radius.circular(16.r),
+                      borderRadius: const BorderRadius.only(
+                        topRight: Radius.circular(18),
+                        bottomRight: Radius.circular(18),
                       ),
                       border: Border.all(
                         color: context.colors.primary,
-                        width: 2.w,
+                        width: 2,
                       ),
                     ),
                     clipBehavior: Clip.hardEdge,
                     child: (isAttended && isSignedOut)
-                        ? Padding(
+                        ? const Padding(
                             padding: EdgeInsets.symmetric(
-                              horizontal: 14.w,
-                              vertical: 8.h,
+                              horizontal: 18,
+                              vertical: 12,
                             ),
                             child: Icon(
                               Icons.domain_verification_outlined,
                               color: Colors.black,
-                              size: 46.r,
+                              size: 52,
                             ),
                           )
                         : InkWell(
@@ -94,16 +126,20 @@ class SignWidget extends StatelessWidget {
                                   todayRecord: todayRecord,
                                   onConfirm: () {
                                     bloc.add(
-                                      SignEvent(isAttend: !isAttended),
+                                      SignEvent(
+                                        isAttend: !isAttended,
+                                        attendanceId: todayRecord?.id,
+                                        date: todayStr,
+                                      ),
                                     );
                                   },
                                 ),
                               );
                             },
                             child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 14.w,
-                                vertical: 8.h,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 18,
+                                vertical: 12,
                               ),
                               child: AnimatedSwitch(
                                 isFadeTransition: true,
@@ -114,16 +150,16 @@ class SignWidget extends StatelessWidget {
                                         period: const Duration(
                                           milliseconds: 400,
                                         ),
-                                        child: Icon(
+                                        child: const Icon(
                                           Icons.fingerprint,
                                           color: Colors.black,
-                                          size: 46.r,
+                                          size: 52,
                                         ),
                                       )
-                                    : Icon(
+                                    : const Icon(
                                         Icons.fingerprint,
                                         color: Colors.black,
-                                        size: 46.r,
+                                        size: 52,
                                       ),
                               ),
                             ),
@@ -133,19 +169,22 @@ class SignWidget extends StatelessWidget {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(16.r),
-                          bottomLeft: Radius.circular(16.r),
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(18),
+                          bottomLeft: Radius.circular(18),
                         ),
                         color: context.colors.surface,
                         border: Border.all(
                           color: context.colors.primary,
-                          width: 2.w,
+                          width: 2,
                         ),
                       ),
                       clipBehavior: Clip.hardEdge,
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 14.w),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 18,
+                          vertical: 4,
+                        ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -166,7 +205,7 @@ class SignWidget extends StatelessWidget {
                                                               .success,
                                                           fontWeight:
                                                               FontWeight.bold,
-                                                          fontSize: 16.sp,
+                                                          fontSize: 18.5,
                                                         ),
                                                   )
                                                 : Text(
@@ -183,7 +222,7 @@ class SignWidget extends StatelessWidget {
                                                               .primary,
                                                           fontWeight:
                                                               FontWeight.bold,
-                                                          fontSize: 16.sp,
+                                                          fontSize: 18.5,
                                                         ),
                                                   ))
                                           : Text(
@@ -195,7 +234,7 @@ class SignWidget extends StatelessWidget {
                                                   .copyWith(
                                                     color: Colors.white,
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize: 16.sp,
+                                                    fontSize: 18.5,
                                                   ),
                                             ),
                                     )
@@ -204,7 +243,8 @@ class SignWidget extends StatelessWidget {
                                       highlightColor: context.colors.primary,
                                       child: Text(
                                         '--------',
-                                        style: context.typography.titleMedium,
+                                        style: context.typography.titleMedium
+                                            .copyWith(fontSize: 18.5),
                                       ),
                                     ),
                             ),
@@ -220,53 +260,103 @@ class SignWidget extends StatelessWidget {
                 ],
               ),
             ),
-            if (isAttended && !isSignedOut) ...[
-              8.ph,
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 5.h),
-                decoration: BoxDecoration(
-                  color: context.colors.surfaceContainer,
-                  borderRadius: BorderRadius.circular(10.r),
-                  border: Border.all(
-                    color: context.colors.primary.withValues(alpha: 0.35),
-                    width: 1.w,
-                  ),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.access_time_rounded,
-                      size: 14.r,
-                      color: context.colors.primary,
+            if (isAttended) ...[
+              12.ph,
+              Wrap(
+                spacing: 10,
+                runSpacing: 8,
+                alignment: WrapAlignment.end,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 7,
                     ),
-                    6.pw,
-                    Text(
-                      'الحضور : ',
-                      style: context.typography.labelMedium.copyWith(
-                        color: context.colors.primary,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12.sp,
+                    decoration: BoxDecoration(
+                      color: context.colors.surfaceContainer,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: context.colors.primary.withValues(alpha: 0.35),
                       ),
                     ),
-                    Flexible(
-                      child: Text(
-                        todayRecord.getAdjustedAttendanceTime(
-                              pattern: 'hh:mm:ss a',
-                            ) ??
-                            '',
-                        textDirection: TextDirection.ltr,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: context.typography.labelMedium.copyWith(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.access_time_rounded,
+                          size: 16,
                           color: context.colors.primary,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12.sp,
+                        ),
+                        8.pw,
+                        Text(
+                          'الحضور : ',
+                          style: context.typography.labelMedium.copyWith(
+                            color: context.colors.primary,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13.5,
+                          ),
+                        ),
+                        Text(
+                          todayRecord.getAdjustedAttendanceTime(
+                                pattern: 'hh:mm:ss a',
+                              ) ??
+                              '',
+                          textDirection: TextDirection.ltr,
+                          style: context.typography.labelMedium.copyWith(
+                            color: context.colors.primary,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13.5,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  if (isSignedOut)
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 7,
+                      ),
+                      decoration: BoxDecoration(
+                        color: context.colors.surfaceContainer,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: context.colors.success.withValues(alpha: 0.35),
                         ),
                       ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.logout_rounded,
+                            size: 16,
+                            color: context.colors.success,
+                          ),
+                          8.pw,
+                          Text(
+                            'الإنصراف : ',
+                            style: context.typography.labelMedium.copyWith(
+                              color: context.colors.success,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13.5,
+                            ),
+                          ),
+                          Text(
+                            todayRecord.getAdjustedDepartureTime(
+                                  pattern: 'hh:mm:ss a',
+                                ) ??
+                                '',
+                            textDirection: TextDirection.ltr,
+                            style: context.typography.labelMedium.copyWith(
+                              color: context.colors.success,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13.5,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
+                ],
               ),
             ],
           ],

@@ -11,7 +11,11 @@ import 'package:latlong2/latlong.dart';
 
 abstract class AttendanceRemoteDataSrc {
   Future<AttendanceEntity> fetchAttendance();
-  Future<SignEntity> sign({required bool isAttend});
+  Future<SignEntity> sign({
+    required bool isAttend,
+    int? attendanceId,
+    String? date,
+  });
 }
 
 class AttendanceRemoteDataSrcImpl implements AttendanceRemoteDataSrc {
@@ -45,15 +49,32 @@ class AttendanceRemoteDataSrcImpl implements AttendanceRemoteDataSrc {
   }
 
   @override
-  Future<SignEntity> sign({required bool isAttend}) async {
+  Future<SignEntity> sign({
+    required bool isAttend,
+    int? attendanceId,
+    String? date,
+  }) async {
     final location = await getCurrentLocation();
     try {
-      final endpoint =
-          '/employee/${isAttend ? 'setAttendance' : 'setDeparture'}';
-      final response = await dioClient.post(
-        endpoint,
-        data: {'lat': location!.latitude, 'lng': location.longitude},
-      );
+      // Note: The backend Laravel API handles both check-in (attendance) and
+      // check-out (departure) through the `/employee/setAttendance` endpoint.
+      // If no attendance exists for today, it creates the attendance record.
+      // If an attendance record exists, it records the departure time.
+      // The `/employee/setDeparture` endpoint is a legacy stub that does not persist changes to the database.
+      const endpoint = '/employee/setAttendance';
+      final body = <String, dynamic>{
+        'lat': location!.latitude,
+        'lng': location.longitude,
+      };
+      if (attendanceId != null) {
+        body['id'] = attendanceId;
+        body['attendance_id'] = attendanceId;
+      }
+      if (date != null && date.trim().isNotEmpty) {
+        body['date'] = date.trim();
+      }
+
+      final response = await dioClient.post(endpoint, data: body);
 
       final data = _extractData(response.data);
       if (data['status'] == 0) {

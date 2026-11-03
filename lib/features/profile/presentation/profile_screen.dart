@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/constants/app_images.dart';
 import 'package:hr_app/core/di/service_locator.dart';
 import 'package:hr_app/core/utils/connectivity_auto_restore_mixin.dart';
@@ -91,48 +90,50 @@ class _ProfileScreenState extends State<ProfileScreen>
 
                   return SingleChildScrollView(
                     physics: const AlwaysScrollableScrollPhysics(),
-                    child: Column(
-                      children: [
-                        UserCard(isEmployee: isEmployee),
-                        10.ph,
-                        if (isEmployee)
-                          MoreCard(
-                            title: 'تغيير كلمة المرور',
-                            icon: Icons.lock_reset_rounded,
-                            onTap: () {
-                              unawaited(
-                                showModalBottomSheet<void>(
-                                  context: screenCtx,
-                                  isScrollControlled: true,
-                                  useSafeArea: true,
-                                  builder: (context) => ChangePasswordSheet(
-                                    isEmployee: isEmployee,
+                    child: ResponsiveContainer(
+                      child: Column(
+                        children: [
+                          UserCard(isEmployee: isEmployee),
+                          10.ph,
+                          if (isEmployee)
+                            MoreCard(
+                              title: 'تغيير كلمة المرور',
+                              icon: Icons.lock_reset_rounded,
+                              onTap: () {
+                                unawaited(
+                                  showModalBottomSheet<void>(
+                                    context: screenCtx,
+                                    isScrollControlled: true,
+                                    useSafeArea: true,
+                                    builder: (context) => ChangePasswordSheet(
+                                      isEmployee: isEmployee,
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
+                                );
+                              },
+                            ),
+                          MoreCard(
+                            title: 'حذف الحساب نهائياً',
+                            icon: Icons.delete_forever_rounded,
+                            isDestructive: true,
+                            onTap: () => _showDeleteAccountDialog(screenCtx),
                           ),
-                        MoreCard(
-                          title: 'حذف الحساب نهائياً',
-                          icon: Icons.delete_forever_rounded,
-                          isDestructive: true,
-                          onTap: () => _showDeleteAccountDialog(screenCtx),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            top: 32.h,
-                            bottom: (size.height * .08).h,
-                          ),
-                          child: Center(
-                            child: Image.asset(
-                              AppImages.logo,
-                              height: 100.r,
-                              fit: BoxFit.contain,
+                          Padding(
+                            padding: EdgeInsets.only(
+                              top: 32,
+                              bottom: size.height * 0.08,
+                            ),
+                            child: Center(
+                              child: Image.asset(
+                                AppImages.logo,
+                                height: 100,
+                                fit: BoxFit.contain,
+                              ),
                             ),
                           ),
-                        ),
-                        120.ph,
-                      ],
+                          120.ph,
+                        ],
+                      ),
                     ),
                   );
                 },
@@ -245,7 +246,7 @@ class _DeleteAccountDialogState extends State<_DeleteAccountDialog>
             Icon(
               Icons.warning_amber_rounded,
               color: context.colors.error,
-              size: 22.r,
+              size: 22,
             ),
             8.pw,
             Text(
@@ -306,10 +307,10 @@ class _DeleteAccountDialogState extends State<_DeleteAccountDialog>
             ),
             onPressed: isLoading ? null : _onDeletePressed,
             child: isLoading
-                ? SizedBox(
-                    width: 18.r,
-                    height: 18.r,
-                    child: const CircularProgressIndicator(
+                ? const SizedBox(
+                    width: 18,
+                    height: 18,
+                    child: CircularProgressIndicator(
                       strokeWidth: 2,
                       color: Colors.white,
                     ),

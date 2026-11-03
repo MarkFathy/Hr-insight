@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:hr_app/core/di/service_locator.dart';
@@ -47,11 +46,7 @@ void main() {
     );
 
     await tester.pumpWidget(
-      ScreenUtilInit(
-        designSize: const Size(375, 812),
-        builder: (context, child) =>
-            MaterialApp(theme: themeData, home: const LeavesScreen()),
-      ),
+      MaterialApp(theme: themeData, home: const LeavesScreen()),
     );
 
     await tester.pump();

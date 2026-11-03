@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/constants/app_constants.dart';
+import 'package:hr_app/core/utils/responsive.dart';
 import 'package:hr_app/localization/app_localizations.dart';
 
 /// Semantic color tokens for the app theme.
@@ -60,57 +60,57 @@ class AppTypography {
 
   TextStyle get h1 =>
       _textTheme.headlineLarge ??
-      const TextStyle(fontSize: 24, fontWeight: FontWeight.bold);
+      const TextStyle(fontSize: 26, fontWeight: FontWeight.bold);
   TextStyle get h2 =>
       _textTheme.headlineMedium ??
-      const TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
+      const TextStyle(fontSize: 22, fontWeight: FontWeight.bold);
   TextStyle get h3 =>
       _textTheme.headlineSmall ??
-      const TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
+      const TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
   TextStyle get titleLarge =>
       _textTheme.titleLarge ??
-      const TextStyle(fontSize: 16, fontWeight: FontWeight.bold);
+      const TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
   TextStyle get titleMedium =>
       _textTheme.titleMedium ??
-      const TextStyle(fontSize: 14, fontWeight: FontWeight.w600);
+      const TextStyle(fontSize: 16, fontWeight: FontWeight.w600);
   TextStyle get titleSmall =>
       _textTheme.titleSmall ??
-      const TextStyle(fontSize: 12, fontWeight: FontWeight.w600);
-  TextStyle get body => _textTheme.bodyMedium ?? const TextStyle(fontSize: 14);
+      const TextStyle(fontSize: 14, fontWeight: FontWeight.w600);
+  TextStyle get body => _textTheme.bodyMedium ?? const TextStyle(fontSize: 15);
   TextStyle get bodyLarge =>
-      _textTheme.bodyLarge ?? const TextStyle(fontSize: 16);
+      _textTheme.bodyLarge ?? const TextStyle(fontSize: 17);
   TextStyle get bodySmall =>
-      _textTheme.bodySmall ?? const TextStyle(fontSize: 12);
+      _textTheme.bodySmall ?? const TextStyle(fontSize: 13);
   TextStyle get labelLarge =>
       _textTheme.labelLarge ??
-      const TextStyle(fontSize: 14, fontWeight: FontWeight.w500);
+      const TextStyle(fontSize: 15, fontWeight: FontWeight.w500);
   TextStyle get labelMedium =>
       _textTheme.labelMedium ??
-      const TextStyle(fontSize: 12, fontWeight: FontWeight.w500);
+      const TextStyle(fontSize: 13.5, fontWeight: FontWeight.w500);
   TextStyle get labelSmall =>
       _textTheme.labelSmall ??
-      const TextStyle(fontSize: 10, fontWeight: FontWeight.w500);
+      const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w500);
   TextStyle get caption =>
-      _textTheme.bodySmall ?? const TextStyle(fontSize: 11);
+      _textTheme.bodySmall ?? const TextStyle(fontSize: 12.5);
 }
 
 /// Standardized radius tokens across the application.
 class AppRadius {
   const AppRadius();
 
-  Radius get xs => Radius.circular(4.r);
-  Radius get sm => Radius.circular(8.r);
-  Radius get md => Radius.circular(12.r);
-  Radius get lg => Radius.circular(16.r);
-  Radius get xl => Radius.circular(24.r);
-  Radius get full => Radius.circular(999.r);
+  Radius get xs => const Radius.circular(4);
+  Radius get sm => const Radius.circular(8);
+  Radius get md => const Radius.circular(12);
+  Radius get lg => const Radius.circular(16);
+  Radius get xl => const Radius.circular(24);
+  Radius get full => const Radius.circular(999);
 
-  BorderRadius get xsBorder => BorderRadius.circular(4.r);
-  BorderRadius get smBorder => BorderRadius.circular(8.r);
-  BorderRadius get mdBorder => BorderRadius.circular(12.r);
-  BorderRadius get lgBorder => BorderRadius.circular(16.r);
-  BorderRadius get xlBorder => BorderRadius.circular(24.r);
-  BorderRadius get fullBorder => BorderRadius.circular(999.r);
+  BorderRadius get xsBorder => BorderRadius.circular(4);
+  BorderRadius get smBorder => BorderRadius.circular(8);
+  BorderRadius get mdBorder => BorderRadius.circular(12);
+  BorderRadius get lgBorder => BorderRadius.circular(16);
+  BorderRadius get xlBorder => BorderRadius.circular(24);
+  BorderRadius get fullBorder => BorderRadius.circular(999);
 }
 
 /// Standardized animation durations across the application.
@@ -122,25 +122,25 @@ class AppDurations {
   Duration get slow => const Duration(milliseconds: 500);
 }
 
-/// Standardized spacing tokens using flutter_screenutil.
+/// Standardized spacing tokens using native logical pixels.
 class AppSpacing {
   const AppSpacing();
 
-  double get xs => 4.w;
-  double get sm => 8.w;
-  double get md => 16.w;
-  double get lg => 24.w;
-  double get xl => 32.w;
+  double get xs => 4.0;
+  double get sm => 8.0;
+  double get md => 16.0;
+  double get lg => 24.0;
+  double get xl => 32.0;
 }
 
-/// Standardized sizing tokens using flutter_screenutil.
+/// Standardized sizing tokens using native logical pixels.
 class AppSizes {
   const AppSizes();
 
-  double get buttonHeight => 48.h;
-  double get inputHeight => 48.h;
-  double get minTouchTarget => 48.w;
-  double get cardPadding => 16.r;
+  double get buttonHeight => 48.0;
+  double get inputHeight => 48.0;
+  double get minTouchTarget => 48.0;
+  double get cardPadding => 16.0;
 }
 
 /// Extension on [BuildContext] providing clean access to design system tokens and localization.
@@ -154,4 +154,9 @@ extension AppContextExtensions on BuildContext {
   AppSizes get sizes => const AppSizes();
   AppLocalizations? get l10n => AppLocalizations.of(this);
   bool get isDarkMode => theme.brightness == Brightness.dark;
+
+  bool get isCompact => AppBreakpoints.isCompact(this);
+  bool get isStandardPhone => AppBreakpoints.isStandardPhone(this);
+  bool get isTablet => AppBreakpoints.isTablet(this);
+  bool get isExpanded => AppBreakpoints.isExpanded(this);
 }

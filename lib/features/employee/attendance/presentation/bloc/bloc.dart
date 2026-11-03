@@ -40,12 +40,23 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
 
   FutureOr<void> _sign(SignEvent event, Emitter<AttendanceState> emit) async {
     emit(const AttendanceState.loading());
-    final failureOrSections = await signUC.call(isAttend: event.isAttend);
-    emit(
-      failureOrSections.fold(
-        (failure) => AttendanceState.error(message: failure.message),
-        (result) => AttendanceState.signed(message: result.message ?? ''),
-      ),
+    final failureOrSections = await signUC.call(
+      isAttend: event.isAttend,
+      attendanceId: event.attendanceId,
+      date: event.date,
+    );
+    await failureOrSections.fold(
+      (failure) async {
+        emit(AttendanceState.error(message: failure.message));
+      },
+      (result) async {
+        emit(AttendanceState.signed(message: result.message ?? ''));
+        final freshAttendance = await getAttendanceUC.call();
+        freshAttendance.fold((_) {}, (updated) {
+          attendance = updated;
+          emit(AttendanceState.loaded(attendance: updated));
+        });
+      },
     );
   }
 }

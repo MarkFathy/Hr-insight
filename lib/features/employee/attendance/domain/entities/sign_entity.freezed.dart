@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SignEntity {
 
- int? get status; String? get message; String? get data;
+ int? get status; String? get message; dynamic get data;
 /// Create a copy of SignEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -30,14 +30,14 @@ $SignEntityCopyWith<SignEntity> get copyWith => _$SignEntityCopyWithImpl<SignEnt
 @override
 bool operator ==(Object other) {
   final _this = this as SignEntity;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SignEntity&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.message, _this.message) || other.message == _this.message)&&(identical(other.data, _this.data) || other.data == _this.data));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SignEntity&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.message, _this.message) || other.message == _this.message)&&const DeepCollectionEquality().equals(other.data, _this.data));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as SignEntity;
-  return Object.hash(runtimeType,_this.status,_this.message,_this.data);
+  return Object.hash(runtimeType,_this.status,_this.message,const DeepCollectionEquality().hash(_this.data));
 }
 
 @override
@@ -54,7 +54,7 @@ abstract mixin class $SignEntityCopyWith<$Res>  {
   factory $SignEntityCopyWith(SignEntity value, $Res Function(SignEntity) _then) = _$SignEntityCopyWithImpl;
 @useResult
 $Res call({
- int? status, String? message, String? data
+ int? status, String? message, dynamic data
 });
 
 
@@ -76,7 +76,7 @@ class _$SignEntityCopyWithImpl<$Res>
 status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as int?,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String?,data: freezed == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
-as String?,
+as dynamic,
   ));
 }
 
@@ -161,7 +161,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? status,  String? message,  String? data)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? status,  String? message,  dynamic data)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SignEntity() when $default != null:
 return $default(_that.status,_that.message,_that.data);case _:
@@ -182,7 +182,7 @@ return $default(_that.status,_that.message,_that.data);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? status,  String? message,  String? data)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? status,  String? message,  dynamic data)  $default,) {final _that = this;
 switch (_that) {
 case _SignEntity():
 return $default(_that.status,_that.message,_that.data);case _:
@@ -202,7 +202,7 @@ return $default(_that.status,_that.message,_that.data);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? status,  String? message,  String? data)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? status,  String? message,  dynamic data)?  $default,) {final _that = this;
 switch (_that) {
 case _SignEntity() when $default != null:
 return $default(_that.status,_that.message,_that.data);case _:
@@ -222,7 +222,7 @@ class _SignEntity extends SignEntity {
 
 @override final  int? status;
 @override final  String? message;
-@override final  String? data;
+@override final  dynamic data;
 
 /// Create a copy of SignEntity
 /// with the given fields replaced by the non-null parameter values.
@@ -237,13 +237,13 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SignEntity&&(identical(other.status, status) || other.status == status)&&(identical(other.message, message) || other.message == message)&&(identical(other.data, data) || other.data == data));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SignEntity&&(identical(other.status, status) || other.status == status)&&(identical(other.message, message) || other.message == message)&&const DeepCollectionEquality().equals(other.data, data));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,status,message,data);
+    return Object.hash(runtimeType,status,message,const DeepCollectionEquality().hash(data));
 }
 
 @override
@@ -259,7 +259,7 @@ abstract mixin class _$SignEntityCopyWith<$Res> implements $SignEntityCopyWith<$
   factory _$SignEntityCopyWith(_SignEntity value, $Res Function(_SignEntity) _then) = __$SignEntityCopyWithImpl;
 @override @useResult
 $Res call({
- int? status, String? message, String? data
+ int? status, String? message, dynamic data
 });
 
 
@@ -281,7 +281,7 @@ class __$SignEntityCopyWithImpl<$Res>
 status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as int?,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String?,data: freezed == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
-as String?,
+as dynamic,
   ));
 }
 

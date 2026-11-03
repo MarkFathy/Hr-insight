@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/utils/extensions.dart';
 import 'package:hr_app/features/employee/attendance/domain/entities/attendance_entity.dart';
 
@@ -71,9 +70,9 @@ class DayWidget extends StatelessWidget {
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 2.w,
-                                      vertical: 2.h,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 2,
+                                      vertical: 2,
                                     ),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
@@ -105,9 +104,9 @@ class DayWidget extends StatelessWidget {
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 2.w,
-                                      vertical: 2.h,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 2,
+                                      vertical: 2,
                                     ),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
@@ -162,7 +161,7 @@ class _TimeBadge extends StatelessWidget {
         ),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -186,7 +185,7 @@ class _TimeBadge extends StatelessWidget {
                 style: context.typography.caption.copyWith(
                   color: accentColor,
                   fontWeight: FontWeight.w800,
-                  fontSize: 9.sp,
+                  fontSize: 9,
                   height: 1.0,
                   letterSpacing: 0.5,
                 ),

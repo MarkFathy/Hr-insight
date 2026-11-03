@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/di/service_locator.dart';
 import 'package:hr_app/core/utils/connectivity_auto_restore_mixin.dart';
 import 'package:hr_app/core/utils/extensions.dart';
@@ -159,9 +158,9 @@ class _DepartmentsScreenState extends State<DepartmentsScreen>
                                 )
                               else
                                 SliverPadding(
-                                  padding: EdgeInsets.only(
-                                    bottom: 80.h,
-                                    top: 4.h,
+                                  padding: const EdgeInsets.only(
+                                    bottom: 80,
+                                    top: 4,
                                   ),
                                   sliver: SliverList(
                                     delegate: SliverChildBuilderDelegate(
@@ -216,12 +215,12 @@ class _SummaryBanner extends StatelessWidget {
     );
 
     return Padding(
-      padding: EdgeInsets.fromLTRB(14.w, 8.h, 14.w, 6.h),
+      padding: const EdgeInsets.fromLTRB(14, 8, 14, 6),
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
         decoration: BoxDecoration(
           color: colors.secondary.withValues(alpha: 0.5),
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(color: colors.primary.withValues(alpha: 0.2)),
         ),
         child: Row(
@@ -235,7 +234,7 @@ class _SummaryBanner extends StatelessWidget {
             ),
             Container(
               width: 1,
-              height: 26.h,
+              height: 26,
               color: Colors.white.withValues(alpha: 0.15),
             ),
             _StatItem(
@@ -268,24 +267,24 @@ class _StatItem extends StatelessWidget {
   Widget build(BuildContext context) => Row(
     mainAxisSize: MainAxisSize.min,
     children: [
-      Icon(icon, size: 18.r, color: color),
+      Icon(icon, size: 18, color: color),
       8.pw,
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             count,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
-              fontSize: 14.r,
+              fontSize: 14,
             ),
           ),
           Text(
             title,
             style: TextStyle(
               color: Colors.white.withValues(alpha: 0.6),
-              fontSize: 10.r,
+              fontSize: 10,
             ),
           ),
         ],

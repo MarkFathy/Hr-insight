@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/utils/connectivity_auto_restore_mixin.dart';
 import 'package:hr_app/core/utils/extensions.dart';
 import 'package:hr_app/features/authentication/domain/entities/employee_entity.dart';
@@ -92,9 +91,9 @@ class _EmployeePickerSheetState extends State<EmployeePickerSheet>
           // Drag handle
           Center(
             child: Container(
-              margin: EdgeInsets.only(top: 12.r, bottom: 8.r),
-              width: 40.r,
-              height: 4.r,
+              margin: const EdgeInsets.only(top: 12, bottom: 8),
+              width: 40,
+              height: 4,
               decoration: BoxDecoration(
                 color: Colors.white.withValues(alpha: 0.25),
                 borderRadius: BorderRadius.circular(2),
@@ -104,14 +103,14 @@ class _EmployeePickerSheetState extends State<EmployeePickerSheet>
 
           // Header
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.r, vertical: 8.r),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   children: [
                     Container(
-                      padding: EdgeInsets.all(8.r),
+                      padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         color: context.colors.primary.withValues(alpha: 0.12),
                         borderRadius: context.radius.smBorder,
@@ -119,7 +118,7 @@ class _EmployeePickerSheetState extends State<EmployeePickerSheet>
                       child: Icon(
                         Icons.people_alt_rounded,
                         color: context.colors.primary,
-                        size: 20.r,
+                        size: 20,
                       ),
                     ),
                     10.pw,
@@ -127,15 +126,15 @@ class _EmployeePickerSheetState extends State<EmployeePickerSheet>
                       'اختر الموظف',
                       style: context.typography.titleMedium.copyWith(
                         fontWeight: FontWeight.bold,
-                        fontSize: 16.r,
+                        fontSize: 16,
                       ),
                     ),
                   ],
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 10.r,
-                    vertical: 4.r,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
                   ),
                   decoration: BoxDecoration(
                     color: context.colors.surface,
@@ -155,7 +154,7 @@ class _EmployeePickerSheetState extends State<EmployeePickerSheet>
 
           // Search Field
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.r, vertical: 8.r),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: TextField(
               controller: _searchCtrl,
               onChanged: (val) {
@@ -163,9 +162,9 @@ class _EmployeePickerSheetState extends State<EmployeePickerSheet>
                   _searchQuery = val;
                 });
               },
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
-                fontSize: 13.r,
+                fontSize: 13,
                 fontWeight: FontWeight.w600,
               ),
               decoration: InputDecoration(
@@ -174,23 +173,23 @@ class _EmployeePickerSheetState extends State<EmployeePickerSheet>
                 hintText: 'بحث باسم الموظف أو القسم...',
                 hintStyle: TextStyle(
                   color: Colors.white.withValues(alpha: 0.6),
-                  fontSize: 13.r,
+                  fontSize: 13,
                 ),
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: 16.r,
-                  vertical: 12.r,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
                 ),
                 prefixIcon: Icon(
                   Icons.search_rounded,
                   color: context.colors.primary,
-                  size: 20.r,
+                  size: 20,
                 ),
                 suffixIcon: _searchQuery.isNotEmpty
                     ? IconButton(
                         icon: Icon(
                           Icons.close_rounded,
                           color: Colors.white.withValues(alpha: 0.7),
-                          size: 18.r,
+                          size: 18,
                         ),
                         onPressed: () {
                           _searchCtrl.clear();
@@ -201,21 +200,21 @@ class _EmployeePickerSheetState extends State<EmployeePickerSheet>
                       )
                     : null,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25.r),
+                  borderRadius: BorderRadius.circular(25),
                   borderSide: BorderSide(
                     color: context.colors.primary,
                     width: 1.5,
                   ),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25.r),
+                  borderRadius: BorderRadius.circular(25),
                   borderSide: BorderSide(
                     color: context.colors.primary,
                     width: 1.5,
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25.r),
+                  borderRadius: BorderRadius.circular(25),
                   borderSide: BorderSide(
                     color: context.colors.primary,
                     width: 2.0,
@@ -231,13 +230,13 @@ class _EmployeePickerSheetState extends State<EmployeePickerSheet>
           Flexible(
             child: filteredEmployees.isEmpty && !showAllTile
                 ? Padding(
-                    padding: EdgeInsets.symmetric(vertical: 40.r),
+                    padding: const EdgeInsets.symmetric(vertical: 40),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(
                           Icons.person_search_rounded,
-                          size: 48.r,
+                          size: 48,
                           color: Colors.white.withValues(alpha: 0.3),
                         ),
                         10.ph,
@@ -245,7 +244,7 @@ class _EmployeePickerSheetState extends State<EmployeePickerSheet>
                           'لا يوجد موظف بهذا الاسم',
                           style: TextStyle(
                             color: Colors.white.withValues(alpha: 0.6),
-                            fontSize: 14.r,
+                            fontSize: 14,
                           ),
                         ),
                       ],
@@ -253,9 +252,9 @@ class _EmployeePickerSheetState extends State<EmployeePickerSheet>
                   )
                 : ListView.builder(
                     shrinkWrap: true,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16.r,
-                      vertical: 8.r,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
                     ),
                     itemCount: totalCount,
                     itemBuilder: (context, index) {
@@ -313,13 +312,13 @@ class _EmployeePickerSheetState extends State<EmployeePickerSheet>
     final validImageUrl = imageUrl.toValidImageUrl;
 
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 4.r),
+      padding: const EdgeInsets.symmetric(vertical: 4),
       child: Material(
         color: isSelected
             ? context.colors.primary.withValues(alpha: 0.12)
             : context.colors.surface.withValues(alpha: 0.5),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(14.r),
+          borderRadius: BorderRadius.circular(14),
           side: BorderSide(
             color: isSelected ? context.colors.primary : Colors.transparent,
             width: 1.5,
@@ -328,10 +327,13 @@ class _EmployeePickerSheetState extends State<EmployeePickerSheet>
         clipBehavior: Clip.antiAlias,
         child: ListTile(
           onTap: onTap,
-          contentPadding: EdgeInsets.symmetric(horizontal: 14.r, vertical: 4.r),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 14,
+            vertical: 4,
+          ),
           leading: Container(
-            width: 44.r,
-            height: 44.r,
+            width: 44,
+            height: 44,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: context.colors.primary.withValues(alpha: 0.15),
@@ -351,8 +353,8 @@ class _EmployeePickerSheetState extends State<EmployeePickerSheet>
                         color: context.colors.surface,
                         child: Center(
                           child: SizedBox(
-                            width: 16.r,
-                            height: 16.r,
+                            width: 16,
+                            height: 16,
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
                               color: context.colors.primary,
@@ -363,13 +365,13 @@ class _EmployeePickerSheetState extends State<EmployeePickerSheet>
                       errorWidget: (_, _, _) => Icon(
                         Icons.person_rounded,
                         color: context.colors.primary,
-                        size: 24.r,
+                        size: 24,
                       ),
                     )
                   : Icon(
                       icon ?? Icons.person_rounded,
                       color: context.colors.primary,
-                      size: 24.r,
+                      size: 24,
                     ),
             ),
           ),
@@ -378,19 +380,19 @@ class _EmployeePickerSheetState extends State<EmployeePickerSheet>
             style: context.typography.titleSmall.copyWith(
               fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
               color: isSelected ? context.colors.primary : Colors.white,
-              fontSize: 14.r,
+              fontSize: 14,
             ),
           ),
           subtitle: Text(
             subtitle,
             style: context.typography.bodySmall.copyWith(
               color: Colors.white.withValues(alpha: 0.6),
-              fontSize: 11.r,
+              fontSize: 11,
             ),
           ),
           trailing: Container(
-            width: 24.r,
-            height: 24.r,
+            width: 24,
+            height: 24,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: isSelected ? context.colors.primary : Colors.transparent,

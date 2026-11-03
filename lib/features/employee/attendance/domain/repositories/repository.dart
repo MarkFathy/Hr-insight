@@ -4,5 +4,9 @@ import 'package:hr_app/features/employee/attendance/domain/entities/sign_entity.
 
 abstract interface class AttendanceRepo {
   ResultFuture<AttendanceEntity> getAttendance();
-  ResultFuture<SignEntity> sign({required bool isAttend});
+  ResultFuture<SignEntity> sign({
+    required bool isAttend,
+    int? attendanceId,
+    String? date,
+  });
 }

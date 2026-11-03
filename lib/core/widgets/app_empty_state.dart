@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/utils/extensions.dart';
 import 'package:hr_app/core/widgets/app_button.dart';
 
@@ -24,13 +23,13 @@ class AppEmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Center(
     child: Padding(
-      padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 24.h),
+      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: 72.r,
-            height: 72.r,
+            width: 72,
+            height: 72,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: context.colors.primary.withValues(alpha: 0.12),
@@ -38,7 +37,7 @@ class AppEmptyState extends StatelessWidget {
                 color: context.colors.primary.withValues(alpha: 0.25),
               ),
             ),
-            child: Icon(icon, size: 34.r, color: context.colors.primary),
+            child: Icon(icon, size: 34, color: context.colors.primary),
           ),
           16.ph,
           Text(

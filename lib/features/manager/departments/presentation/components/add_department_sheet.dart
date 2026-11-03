@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hr_app/core/utils/connectivity_auto_restore_mixin.dart';
 import 'package:hr_app/core/utils/extensions.dart';
 import 'package:hr_app/core/utils/navigation_helper.dart';
@@ -23,7 +22,7 @@ class AddDepartmentSheet extends StatefulWidget {
         useSafeArea: true,
         backgroundColor: colors.background,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
           side: BorderSide(color: colors.primary.withValues(alpha: 0.3)),
         ),
         builder: (ctx) => AddDepartmentSheet(bloc: bloc),
@@ -48,13 +47,13 @@ class _AddDepartmentSheetState extends State<AddDepartmentSheet>
 
     return Padding(
       padding: EdgeInsets.only(
-        left: 20.r,
-        right: 20.r,
-        top: 16.r,
+        left: 20,
+        right: 20,
+        top: 16,
         bottom:
             MediaQuery.of(context).viewInsets.bottom +
             MediaQuery.of(context).padding.bottom +
-            20.r,
+            20,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -62,8 +61,8 @@ class _AddDepartmentSheetState extends State<AddDepartmentSheet>
         children: [
           Center(
             child: Container(
-              width: 40.r,
-              height: 4.r,
+              width: 40,
+              height: 4,
               decoration: BoxDecoration(
                 color: Colors.white.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(2),
@@ -74,7 +73,7 @@ class _AddDepartmentSheetState extends State<AddDepartmentSheet>
           Row(
             children: [
               Container(
-                padding: EdgeInsets.all(8.r),
+                padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: colors.primary.withValues(alpha: 0.15),
                   shape: BoxShape.circle,
@@ -82,7 +81,7 @@ class _AddDepartmentSheetState extends State<AddDepartmentSheet>
                 child: Icon(
                   Icons.corporate_fare_rounded,
                   color: colors.primary,
-                  size: 22.r,
+                  size: 22,
                 ),
               ),
               12.pw,
@@ -109,18 +108,18 @@ class _AddDepartmentSheetState extends State<AddDepartmentSheet>
                 ),
                 filled: true,
                 fillColor: colors.secondary,
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: 16.r,
-                  vertical: 14.r,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 14,
                 ),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(14.r),
+                  borderRadius: BorderRadius.circular(14),
                   borderSide: BorderSide(
                     color: colors.primary.withValues(alpha: 0.6),
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(14.r),
+                  borderRadius: BorderRadius.circular(14),
                   borderSide: BorderSide(color: colors.primary, width: 2),
                 ),
               ),
@@ -137,9 +136,9 @@ class _AddDepartmentSheetState extends State<AddDepartmentSheet>
             style: ElevatedButton.styleFrom(
               backgroundColor: colors.primary,
               foregroundColor: Colors.black,
-              padding: EdgeInsets.symmetric(vertical: 12.r),
+              padding: const EdgeInsets.symmetric(vertical: 12),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14.r),
+                borderRadius: BorderRadius.circular(14),
               ),
             ),
             onPressed: () {
