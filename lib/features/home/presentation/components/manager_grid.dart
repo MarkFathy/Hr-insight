@@ -114,8 +114,7 @@ class ManagerGrid extends StatelessWidget {
                   ),
                   child: Image.asset(
                     AppImages.departments,
-                    cacheWidth: 100,
-                    cacheHeight: 100,
+                    fit: BoxFit.contain,
                   ),
                 ),
                 16.pw,

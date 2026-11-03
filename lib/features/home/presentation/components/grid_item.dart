@@ -62,8 +62,6 @@ class GridItem extends StatelessWidget {
                   child: Image.asset(
                     asset,
                     fit: BoxFit.contain,
-                    cacheWidth: 140,
-                    cacheHeight: 140,
                   ),
                 ),
                 14.ph,
