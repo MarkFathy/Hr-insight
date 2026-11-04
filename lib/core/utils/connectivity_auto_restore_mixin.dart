@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
-import 'package:hr_app/core/di/service_locator.dart';
-import 'package:hr_app/core/service/internet_connection_service.dart';
+import 'package:hr_app/app/di/service_locator.dart';
+import 'package:hr_app/core/network/internet_connection_service.dart';
 
 /// Mixin for [State] widgets that triggers a callback when real internet connectivity
 /// is restored after being disconnected.

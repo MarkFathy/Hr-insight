@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:hr_app/core/errors/exceptions.dart';
+import 'package:hr_app/core/error/exceptions.dart';
 import 'package:hr_app/core/network/dio_client.dart';
 import 'package:hr_app/core/network/dio_error_handler.dart';
 import 'package:hr_app/features/authentication/domain/entities/account_delete_params.dart';

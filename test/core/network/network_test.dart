@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hr_app/core/errors/exceptions.dart';
+import 'package:hr_app/core/error/exceptions.dart';
 import 'package:hr_app/core/network/dio_client.dart';
 import 'package:hr_app/core/network/dio_error_handler.dart';
-import 'package:hr_app/core/public_models/token.dart';
+import 'package:hr_app/core/network/token_manager.dart';
 
 void main() {
   group('Token in-memory caching tests', () {

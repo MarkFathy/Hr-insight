@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hr_app/core/extensions/extensions.dart';
+import 'package:hr_app/core/shared/widgets/app_button.dart';
+import 'package:hr_app/core/shared/widgets/app_empty_state.dart';
+import 'package:hr_app/core/shared/widgets/app_error_state.dart';
+import 'package:hr_app/core/shared/widgets/app_section_header.dart';
+import 'package:hr_app/core/shared/widgets/app_text_field.dart';
 import 'package:hr_app/core/theme/core_theme.dart';
-import 'package:hr_app/core/utils/extensions.dart';
-import 'package:hr_app/core/widgets/app_button.dart';
-import 'package:hr_app/core/widgets/app_empty_state.dart';
-import 'package:hr_app/core/widgets/app_error_state.dart';
-import 'package:hr_app/core/widgets/app_section_header.dart';
-import 'package:hr_app/core/widgets/app_text_field.dart';
 import 'package:hr_app/localization/app_localizations.dart';
 
 void main() {
@@ -68,9 +68,7 @@ void main() {
       home: Directionality(
         textDirection: textDirection,
         child: MediaQuery(
-          data: MediaQueryData(
-            textScaler: TextScaler.linear(textScaleFactor),
-          ),
+          data: MediaQueryData(textScaler: TextScaler.linear(textScaleFactor)),
           child: Scaffold(body: SafeArea(child: child)),
         ),
       ),
@@ -96,7 +94,9 @@ void main() {
         await tester.pumpAndSettle();
 
         final innerBox = tester.getRect(find.byKey(const Key('inner_box')));
-        final expectedWidth = entry.value.width > 640 ? 640.0 : entry.value.width;
+        final expectedWidth = entry.value.width > 640
+            ? 640.0
+            : entry.value.width;
         expect(innerBox.width, closeTo(expectedWidth, 0.1));
       });
 
@@ -161,53 +161,55 @@ void main() {
       });
     }
 
-    testWidgets('Accessibility text scale factors (1.3x and 2.0x) do not cause overflow', (
-      tester,
-    ) async {
-      tester.view.physicalSize = const Size(360, 800);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(() => tester.view.resetPhysicalSize());
+    testWidgets(
+      'Accessibility text scale factors (1.3x and 2.0x) do not cause overflow',
+      (tester) async {
+        tester.view.physicalSize = const Size(360, 800);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(() => tester.view.resetPhysicalSize());
 
-      for (final scale in [1.3, 2.0]) {
-        await tester.pumpWidget(
-          createTestApp(
-            textScaleFactor: scale,
-            child: SingleChildScrollView(
-              child: ResponsiveContainer(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      const AppSectionHeader(
-                        title: 'قسم مخصص للاختبار مع تكبير الخط',
-                      ),
-                      16.ph,
-                      AppButton(
-                        title: 'تأكيد العملية مع نص أطول للاختبار',
-                        onTap: () {},
-                      ),
-                      16.ph,
-                      const AppEmptyState(
-                        title: 'نص عريض لتجربة إمكانية الوصول',
-                        subtitle: 'تفاصيل تجربة إمكانية الوصول مع تكبير الخط وتجنب الفيضان',
-                      ),
-                    ],
+        for (final scale in [1.3, 2.0]) {
+          await tester.pumpWidget(
+            createTestApp(
+              textScaleFactor: scale,
+              child: SingleChildScrollView(
+                child: ResponsiveContainer(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const AppSectionHeader(
+                          title: 'قسم مخصص للاختبار مع تكبير الخط',
+                        ),
+                        16.ph,
+                        AppButton(
+                          title: 'تأكيد العملية مع نص أطول للاختبار',
+                          onTap: () {},
+                        ),
+                        16.ph,
+                        const AppEmptyState(
+                          title: 'نص عريض لتجربة إمكانية الوصول',
+                          subtitle:
+                              'تفاصيل تجربة إمكانية الوصول مع تكبير الخط وتجنب الفيضان',
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        );
-        await tester.pumpAndSettle();
+          );
+          await tester.pumpAndSettle();
 
-        expect(
-          tester.takeException(),
-          isNull,
-          reason: 'Failed at textScaleFactor: $scale',
-        );
-      }
-    });
+          expect(
+            tester.takeException(),
+            isNull,
+            reason: 'Failed at textScaleFactor: $scale',
+          );
+        }
+      },
+    );
 
     testWidgets('RTL and LTR directionality render correctly', (tester) async {
       tester.view.physicalSize = const Size(390, 844);

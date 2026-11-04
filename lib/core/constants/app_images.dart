@@ -1,4 +1,4 @@
-import 'package:hr_app/core/utils/extensions.dart';
+import 'package:hr_app/core/extensions/extensions.dart';
 
 class AppImages {
   static final String managerIntroCenter = 'manager'.toPng;

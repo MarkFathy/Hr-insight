@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hr_app/features/authentication/domain/entities/manager_entity.dart';
-import 'package:hr_app/features/manager/departments/domain/entities/departments_entity.dart';
-import 'package:hr_app/features/manager/offices/domain/entities/offices_entity.dart';
+import 'package:hr_app/features/manager_departments/domain/entities/departments_entity.dart';
+import 'package:hr_app/features/manager_offices/domain/entities/offices_entity.dart';
 
 part 'manager_info_entity.freezed.dart';
 part 'manager_info_entity.g.dart';

@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:hr_app/core/errors/app_failure.dart';
+import 'package:hr_app/core/error/app_failure.dart';
 import 'package:hr_app/features/profile/data/models/employee_profile_model.dart';
 import 'package:hr_app/features/profile/domain/entities/update_profile_params.dart';
-import 'package:hr_app/features/profile/domain/use_cases/get_profile.dart';
-import 'package:hr_app/features/profile/domain/use_cases/update_profile.dart';
-import 'package:hr_app/features/profile/presentation/bloc/bloc.dart';
+import 'package:hr_app/features/profile/domain/usecases/get_profile.dart';
+import 'package:hr_app/features/profile/domain/usecases/update_profile.dart';
+import 'package:hr_app/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockGetProfileUC extends Mock implements GetProfileUC {}

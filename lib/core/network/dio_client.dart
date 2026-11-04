@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:hr_app/app/di/service_locator.dart';
 import 'package:hr_app/core/constants/app_constants.dart';
-import 'package:hr_app/core/di/service_locator.dart';
 import 'package:hr_app/core/network/interceptors/auth_interceptor.dart';
 import 'package:hr_app/core/network/interceptors/logging_interceptor.dart';
-import 'package:hr_app/core/public_models/token.dart';
-import 'package:hr_app/core/service/stability_interceptor.dart';
+import 'package:hr_app/core/network/interceptors/stability_interceptor.dart';
+import 'package:hr_app/core/network/token_manager.dart';
 
 /// Centralized Dio HTTP client wrapper with standard configuration,
 /// timeouts, interceptors, and request methods.

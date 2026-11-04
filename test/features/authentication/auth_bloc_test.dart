@@ -1,24 +1,28 @@
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:hr_app/core/errors/app_failure.dart';
+import 'package:hr_app/core/error/app_failure.dart';
 import 'package:hr_app/core/usecases/usecase.dart';
 import 'package:hr_app/features/authentication/domain/entities/account_delete_params.dart';
 import 'package:hr_app/features/authentication/domain/entities/employee_entity.dart';
+import 'package:hr_app/features/authentication/domain/entities/employee_register_params.dart';
 import 'package:hr_app/features/authentication/domain/entities/manager_entity.dart';
 import 'package:hr_app/features/authentication/domain/entities/manager_info_entity.dart';
-import 'package:hr_app/features/authentication/domain/use_cases/auto_login_uc.dart';
-import 'package:hr_app/features/authentication/domain/use_cases/change_password_uc.dart';
-import 'package:hr_app/features/authentication/domain/use_cases/delete_account_use_case.dart';
-import 'package:hr_app/features/authentication/domain/use_cases/employee_sign_in_uc.dart';
-import 'package:hr_app/features/authentication/domain/use_cases/employee_sign_up_uc.dart';
-import 'package:hr_app/features/authentication/domain/use_cases/forget_password.dart';
-import 'package:hr_app/features/authentication/domain/use_cases/get_departments_uc.dart';
-import 'package:hr_app/features/authentication/domain/use_cases/manager_sign_in_uc.dart';
-import 'package:hr_app/features/authentication/domain/use_cases/manager_sign_up_uc.dart';
-import 'package:hr_app/features/authentication/domain/use_cases/reset_password.dart';
-import 'package:hr_app/features/authentication/domain/use_cases/sign_out_uc.dart';
-import 'package:hr_app/features/authentication/domain/use_cases/verify_email.dart';
-import 'package:hr_app/features/authentication/presentation/bloc/bloc.dart';
+import 'package:hr_app/features/authentication/domain/entities/manager_register_params.dart';
+import 'package:hr_app/features/authentication/domain/usecases/auto_login.dart';
+import 'package:hr_app/features/authentication/domain/usecases/change_password.dart';
+import 'package:hr_app/features/authentication/domain/usecases/delete_account.dart';
+import 'package:hr_app/features/authentication/domain/usecases/employee_sign_in.dart';
+import 'package:hr_app/features/authentication/domain/usecases/employee_sign_up.dart';
+import 'package:hr_app/features/authentication/domain/usecases/forget_password.dart';
+import 'package:hr_app/features/authentication/domain/usecases/get_manager_departments.dart';
+import 'package:hr_app/features/authentication/domain/usecases/manager_sign_in.dart';
+import 'package:hr_app/features/authentication/domain/usecases/manager_sign_up.dart';
+import 'package:hr_app/features/authentication/domain/usecases/reset_password.dart';
+import 'package:hr_app/features/authentication/domain/usecases/sign_out.dart';
+import 'package:hr_app/features/authentication/domain/usecases/verify_email.dart';
+import 'package:hr_app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockAutoLoginUC extends Mock implements AutoLoginUC {}
@@ -46,6 +50,11 @@ class MockResetPasswordUC extends Mock implements ResetPasswordUC {}
 
 class MockDeleteAccountUC extends Mock implements DeleteAccountUC {}
 
+class FakeManagerRegisterParams extends Fake implements ManagerRegisterParams {}
+
+class FakeEmployeeRegisterParams extends Fake
+    implements EmployeeRegisterParams {}
+
 void main() {
   late AuthBloc bloc;
   late MockAutoLoginUC mockAutoLoginUC;
@@ -64,6 +73,8 @@ void main() {
   setUpAll(() {
     registerFallbackValue(const NoParams());
     registerFallbackValue(const AccountDeleteParams(password: 'dummy'));
+    registerFallbackValue(FakeManagerRegisterParams());
+    registerFallbackValue(FakeEmployeeRegisterParams());
   });
 
   setUp(() {
@@ -279,5 +290,77 @@ void main() {
       bloc.add(const AuthEvent.deleteAccount(params));
       await expectation;
     });
+  });
+
+  group('ManagerSignUpEvent with params', () {
+    final tParams = ManagerRegisterParams(
+      name: 'Manager User',
+      email: 'manager@test.com',
+      password: 'password123',
+      passwordConfirmation: 'password123',
+      companyName: 'Acme Corp',
+      phone: '01234567890',
+      image: File('test_avatar.png'),
+    );
+    const tManager = ManagerEntity(status: 201, message: 'registered');
+
+    test(
+      'emits [loading, emailVerified] when managerSignUp with params succeeds',
+      () async {
+        when(
+          () => mockManagerSignUpUC.call(any()),
+        ).thenAnswer((_) async => const Right(tManager));
+
+        final expected = [
+          const AuthState.loading(),
+          const AuthState.emailVerified(manager: tManager),
+        ];
+
+        final expectation = expectLater(bloc.stream, emitsInOrder(expected));
+
+        bloc.add(AuthEvent.managerSignUp(params: tParams));
+        await expectation;
+
+        verify(() => mockManagerSignUpUC.call(tParams)).called(1);
+      },
+    );
+  });
+
+  group('EmployeeSignUpEvent with params', () {
+    final tParams = EmployeeRegisterParams(
+      name: 'Employee User',
+      email: 'employee@test.com',
+      password: 'password123',
+      confirmPassword: 'password123',
+      phone: '01012345678',
+      address: 'Cairo, Egypt',
+      image: File('test_emp.png'),
+      managerPin: '1234',
+      departmentId: 1,
+      jobId: 2,
+      officeId: 3,
+    );
+    const tEmployee = EmployeeEntity(status: 201, message: 'registered');
+
+    test(
+      'emits [loading, emailVerified] when employeeSignUp with params succeeds',
+      () async {
+        when(
+          () => mockEmployeeSignUpUC.call(any()),
+        ).thenAnswer((_) async => const Right(tEmployee));
+
+        final expected = [
+          const AuthState.loading(),
+          const AuthState.emailVerified(employee: tEmployee),
+        ];
+
+        final expectation = expectLater(bloc.stream, emitsInOrder(expected));
+
+        bloc.add(AuthEvent.employeeSignUp(params: tParams));
+        await expectation;
+
+        verify(() => mockEmployeeSignUpUC.call(tParams)).called(1);
+      },
+    );
   });
 }

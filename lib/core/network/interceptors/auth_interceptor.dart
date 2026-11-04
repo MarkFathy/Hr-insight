@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:hr_app/core/public_models/token.dart';
+import 'package:hr_app/core/network/token_manager.dart';
 
 /// Interceptor that attaches the Bearer token to every outgoing HTTP request
 /// when available.

@@ -1,6 +1,6 @@
 import 'package:fpdart/fpdart.dart';
-import 'package:hr_app/core/errors/app_failure.dart';
-import 'package:hr_app/core/errors/exceptions.dart';
+import 'package:hr_app/core/error/app_failure.dart';
+import 'package:hr_app/core/error/exceptions.dart';
 import 'package:hr_app/core/functional/typedefs.dart';
 import 'package:hr_app/features/authentication/data/datasources/auth_local_data_source.dart';
 import 'package:hr_app/features/authentication/data/datasources/auth_remote_data_source.dart';

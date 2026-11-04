@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:hr_app/app.dart';
-import 'package:hr_app/core/di/service_locator.dart' as di;
+import 'package:hr_app/app/app.dart';
+import 'package:hr_app/app/di/service_locator.dart' as di;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

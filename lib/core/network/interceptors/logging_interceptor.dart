@@ -10,6 +10,10 @@ class SafeLoggingInterceptor extends Interceptor {
     'password_confirmation',
     'token',
     'authorization',
+    'pin',
+    'manager_pin',
+    'code',
+    'otp',
   };
 
   @override

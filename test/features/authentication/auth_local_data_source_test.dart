@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hr_app/core/errors/exceptions.dart';
-import 'package:hr_app/core/public_models/token.dart';
+import 'package:hr_app/core/error/exceptions.dart';
+import 'package:hr_app/core/network/token_manager.dart';
 import 'package:hr_app/features/authentication/data/datasources/auth_local_data_source.dart';
 import 'package:hr_app/features/authentication/domain/entities/employee_entity.dart';
 import 'package:hr_app/features/authentication/domain/entities/manager_entity.dart';
